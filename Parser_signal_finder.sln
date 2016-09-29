@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Parser_signal_finder", "Parser_signal_finder.vcxproj", "{D8280F0A-59E7-4B4C-8001-39C0AEEA4EDF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D8280F0A-59E7-4B4C-8001-39C0AEEA4EDF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D8280F0A-59E7-4B4C-8001-39C0AEEA4EDF}.Debug|Win32.Build.0 = Debug|Win32
+		{D8280F0A-59E7-4B4C-8001-39C0AEEA4EDF}.Release|Win32.ActiveCfg = Release|Win32
+		{D8280F0A-59E7-4B4C-8001-39C0AEEA4EDF}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
