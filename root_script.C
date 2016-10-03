@@ -248,6 +248,10 @@ void graph_LeCroy_binary(unsigned int number_of_file, unsigned int type_of_file,
 		fclose(f);
 		exit(1);
 	}
+	else
+	{
+		cout << f_oss.str() << endl;
+	}
 
 	if(type_of_file == 1)
 	{
@@ -315,6 +319,7 @@ void graph_LeCroy_binary(unsigned int number_of_file, unsigned int type_of_file,
 	//yv_integral = integral_vs_time(yv_double, baseline, dt);//[V * ns] 
 	yv_integral = integral_vs_time(xv_, yv_double, yv_der, time_scale, th, dead_time);//[V * ns] advanced
 	
+	cout << "t_start_V.size() = " << t_start_V.size() << endl;
 	
 	//fit S1 signal
 	TF1 fitFcn("fitFcn", fit_exp, t_stop_V[0], t_start_V[1], 4);
