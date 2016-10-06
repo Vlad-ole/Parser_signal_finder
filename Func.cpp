@@ -87,10 +87,13 @@ vector< vector<double> > find_start_and_stop(vector<double> yv_der, double th, d
 
 
 
-double find_s1_area(vector<double> xv, vector<double> yv, vector< vector<double> > t_start_stop_V)
+vector<double> find_s1_area(vector<double> xv, vector<double> yv, vector< vector<double> > t_start_stop_V)
 {
 	vector<double> t_start_V = t_start_stop_V[0];
 	vector<double> t_stop_V = t_start_stop_V[1];
+
+	vector<double> result;
+	result.resize(4);
 
 	//cout << t_start_V.size() << "\t" << t_stop_V.size() << endl;
 	
@@ -115,13 +118,14 @@ double find_s1_area(vector<double> xv, vector<double> yv, vector< vector<double>
 		//gr0.Fit("fitFcn", "R+");
 		gr0.Fit("fitFcn", "RQ");
 
-		return fitFcn.GetParameter(1) * fitFcn.GetParameter(3);
-	}
-	else
-	{
-		return 0;
+		result[0] = fitFcn.GetParameter(0);
+		result[1] = fitFcn.GetParameter(1);
+		result[2] = fitFcn.GetParameter(2);
+		result[3] = fitFcn.GetParameter(3);
+		//return fitFcn.GetParameter(1) * fitFcn.GetParameter(3);
 	}
 
+	return result;
 }
 
 

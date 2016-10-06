@@ -6,11 +6,22 @@
 
 #include "TF1.h"
 #include "TGraph.h"
+#include "TFile.h"
+
+#include "TRandom.h"
+#include "TMath.h"
+#include "TObjArray.h"
+#include "TGraphErrors.h"
+#include  "TF1.h"
+#include "TFile.h"
+#include "TTree.h"
 
 #include "Func.h"
 #include "Golay_filter.h"
 #include "Input_Output.h"
 #include "Baseline_calc.h"
+
+#define write_trees
 
 using namespace std;
 
@@ -24,7 +35,7 @@ int main(int argc, char *argv[])
 	const int vsize = 50000;
 	const double time_scale = 2; //[ns / point]	
 	const bool show_graphs = false;
-	const string dir_name = "D://Data_work//run_2_bkg//";
+	const string dir_name = "D://Data_work//run1_n//";
 
 
 	//x points to ns
@@ -34,10 +45,11 @@ int main(int argc, char *argv[])
 		xv[i] = time_scale * i;
 	}
 
-	ofstream file_out("D://Data_work//bkg_results_short.dat");
+	ofstream file_out("D://Data_work//n_results_short.dat");
+	ofstream file_out_details("D://Data_work//n_results_in_detail.dat");
 
-	int n_start = 0;
-	int n_of_files = 9901;
+	const int n_start = 1849;
+	const int n_of_files = 14109;
 	clock_t t_0 = clock();
 
 	clock_t t_read_file = 0;
@@ -47,6 +59,7 @@ int main(int argc, char *argv[])
 	clock_t t_integral_vs_time = 0;
 	clock_t t_find_s1_area = 0;
 	clock_t t_find_s2_area = 0;
+	clock_t t_trees = 0;
 
 	for (int number_of_file = n_start; number_of_file < n_start + n_of_files; number_of_file++)
 	{
@@ -56,6 +69,31 @@ int main(int argc, char *argv[])
 		yv = read_file(dir_name, number_of_file, 1, vsize);
 		clock_t t_after = clock();
 		t_read_file += t_after - t_before;
+
+		//create root tree
+#ifdef write_trees
+			t_before = clock();
+			string dir_trees = dir_name + "trees//";
+			ostringstream file_tree_oss;
+			file_tree_oss << dir_trees << "run_" << setfill('0') << setw(5) << number_of_file << ".root";
+			TFile f_tree(file_tree_oss.str().c_str(), "RECREATE");
+			TTree tree("t1", "Parser tree");
+			
+			TGraph graph_11(yv.size(), &xv[0], &yv[0]);
+			tree.Branch("gr_tr", "TGraph", &graph_11, 128000, 0);
+
+			double baseline_par_br, amp_par_br, start_time_par_br, tau_par_br;//fit params
+			double s2_area_br;
+
+			tree.Branch("baseline_par_br", &baseline_par_br, "baseline_par_br/D");
+			tree.Branch("amp_par_br", &amp_par_br, "amp_par_br/D");
+			tree.Branch("start_time_par_br", &start_time_par_br, "start_time_par_br/D");
+			tree.Branch("tau_par_br", &tau_par_br, "tau_par_br/D");
+			tree.Branch("s2_area_br", &s2_area_br, "s2_area_br/D");
+			t_after = clock();
+			t_trees+= t_after - t_before;
+#endif // write_trees
+
 
 		//calculate derivative (Savitzky–Golay filter)
 		t_before = clock();
@@ -87,7 +125,8 @@ int main(int argc, char *argv[])
 
 		//find s1 & s2 area
 		t_before = clock();
-		double s1_area = find_s1_area(xv, yv, t_start_stop_V);
+		vector<double> s1_fit_param = find_s1_area(xv, yv, t_start_stop_V);
+		double s1_area = s1_fit_param[1] * s1_fit_param[3];
 		t_after = clock();
 		t_find_s1_area+= t_after - t_before;
 
@@ -108,6 +147,23 @@ int main(int argc, char *argv[])
 		//s1, s2 areas
 		//cout << "s1 = " << s1_area << "\t s2 = " << s2_area << endl;
 		file_out << s1_area << "\t" << s2_area << endl;
+		file_out_details << s1_fit_param[0] << "\t" << s1_fit_param[1] << "\t" << s1_fit_param[2] << "\t" << s1_fit_param[3] << "\t" << s2_area << endl;
+
+#ifdef write_trees
+		t_before = clock();
+
+		baseline_par_br = s1_fit_param[0];
+		amp_par_br = s1_fit_param[1];
+		start_time_par_br = s1_fit_param[2];
+		tau_par_br = s1_fit_param[3];
+		s2_area_br = s2_area;
+
+		tree.Fill();
+		tree.Write();
+
+		t_after = clock();
+		t_trees += t_after - t_before;
+#endif // write_trees
 
 	}
 
@@ -120,6 +176,7 @@ int main(int argc, char *argv[])
 	cout << "t_integral_vs_time[ms] = " << (double)(t_integral_vs_time) / CLOCKS_PER_SEC * 1000 << endl;
 	cout << "t_find_s1_area[ms] = " << (double)(t_find_s1_area) / CLOCKS_PER_SEC * 1000 << endl;
 	cout << "t_find_s2_area[ms] = " << (double)(t_find_s2_area) / CLOCKS_PER_SEC * 1000 << endl;
+	cout << "t_trees[ms] = " << (double)(t_trees) / CLOCKS_PER_SEC * 1000 << endl;
 
 	file_out.close();
 	system("pause");
