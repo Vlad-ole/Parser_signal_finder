@@ -9,6 +9,8 @@
 
 using namespace std;
 
+TGraph* gr0 = 0;
+
 double fit_exp(double *x, double *par)
 {
 	double time = x[0] - par[2];
@@ -100,8 +102,10 @@ vector<double> find_s1_area(vector<double> xv, vector<double> yv, vector< vector
 	//fit S1 signal
 	if (t_stop_V[0] < 59000)
 	{
-		TGraph gr0(yv.size(), &xv[0], &yv[0]);
+		//cout << "gr0 in find_s1_area before creation" << gr0 << endl;
+		gr0 = new TGraph(yv.size(), &xv[0], &yv[0]);
 		TF1 fitFcn("fitFcn", fit_exp, t_stop_V[0], t_start_V[1], 4);
+		//cout << "gr0 in find_s1_area after creation" << gr0 << endl;
 
 		fitFcn.SetLineColor(3);
 
@@ -116,7 +120,7 @@ vector<double> find_s1_area(vector<double> xv, vector<double> yv, vector< vector
 		fitFcn.SetParameter(2, t_stop_V[0]);
 		fitFcn.SetParameter(3, 100);
 		//gr0.Fit("fitFcn", "R+");
-		gr0.Fit("fitFcn", "RQ");
+		gr0->Fit("fitFcn", "RQ");
 
 		result[0] = fitFcn.GetParameter(0);
 		result[1] = fitFcn.GetParameter(1);

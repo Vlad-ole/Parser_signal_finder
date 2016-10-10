@@ -7,7 +7,7 @@
 
 using namespace std;
 
-vector<double> read_file(const string dir_name, const unsigned int file_number, const unsigned short int type_of_binary, const int vsize)
+vector<double> read_file(const string dir_name, const unsigned int file_number, const unsigned short int type_of_binary, const int vsize, const double voltage_scale, const int number_of_channel)
 {
 	vector<double> yv;
 
@@ -15,7 +15,7 @@ vector<double> read_file(const string dir_name, const unsigned int file_number, 
 	vector<unsigned short int> yv_two_byte;
 
 	ostringstream f_oss;
-	f_oss << dir_name << "C1Trace" << setfill('0') << setw(5) << file_number << ".trc"; //my PC
+	f_oss << dir_name << "C" << number_of_channel << "Trace" << setfill('0') << setw(5) << file_number << ".trc"; //my PC
 	FILE *f = fopen(f_oss.str().c_str(), "rb");
 	if (f == NULL)
 	{
@@ -57,7 +57,7 @@ vector<double> read_file(const string dir_name, const unsigned int file_number, 
 			yv[i] = (double)real_value;
 		}
 
-		double V_max = 4;
+		double V_max = voltage_scale * 4;
 		double k = V_max / 127.0;
 		double b = -V_max * (1 + 128.0 / 127);
 		//convert ADC code to Voltage

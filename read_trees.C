@@ -1,24 +1,27 @@
 void ReadTree()
 {
-	string dir_name = "D:\\Data_work\\run_3_Am\\trees\\";
+	string dir_name = "D:\\Data_work\\161005\\run_1_n\\trees\\";
 	string graph_name = dir_name + "results\\graphs_fit1.root";
 	
 	TObjArray Hlist_gr(0);
 	Hlist_gr.SetOwner(kTRUE);
-	
+
 	TGraph* graph = 0;
+	TCanvas* canv = 0;
 	
 	TChain chain("t1");// name of the tree is the argument
 	//const int n_max = 22426; //Am
-	const int n_max = 1000; //for tests
+	const int n_max = 1; //for tests
 	for(int i = 0; i < n_max; i++)
 	{
 		ostringstream file_tree_oss;
 		file_tree_oss << dir_name << "run_" << setfill('0') << setw(5) << i << ".root";
-		chain.Add(file_tree_oss.str().c_str());
+		//chain.Add(file_tree_oss.str().c_str());
+		chain.Add("D:\\Data_work\\161005\\run_1_n\\trees\\run_00000.root");
 	}
 	
-	chain.SetBranchAddress("gr_tr", &graph);
+	chain.SetBranchAddress("canvas_tr", &canv);
+/* 	chain.SetBranchAddress("gr_tr", &graph);
 	
 	double baseline_par_br, amp_par_br, start_time_par_br, tau_par_br;//fit params
 	double s2_area_br;
@@ -33,16 +36,24 @@ void ReadTree()
 
 	chain.SetMarkerStyle(4);
 	
-	chain.Draw("amp_par_br * tau_par_br", total_cut);	
+	//chain.Draw("amp_par_br * tau_par_br", total_cut);	 */
 	
 	
 	
 	for (int i = 0; i < chain.GetEntries() ; ++i)
 	{
 		chain.GetEntry(i);
-		if( (amp_par_br * tau_par_br < 100) && (amp_par_br * tau_par_br > 1) )//condition
-			Hlist_gr.Add(graph->Clone());
+		//bool condition = (amp_par_br * tau_par_br < 100) && (amp_par_br * tau_par_br > 1);
+		//bool condition = true;
+		//if( condition )//condition
+		//{
+			Hlist_gr.Add(canv->Clone());
+			//Hlist_gr.Add(graph->Clone());
+		//}
 	}
+	
+	//TCanvas* canv123 = new TCanvas("cq1", "cq2", 0, 0, 190, 100);
+	Hlist_gr.Add(canv->Clone());
 	
 	
 	TFile ofile_Hlist_gr(graph_name.c_str(), "RECREATE");

@@ -8,7 +8,7 @@ using namespace std;
 //Calculate Filter Coeff for (Savitzky–Golay filter)
 vector<double> CalculateFilterCoeff(int points)
 {
-	cout << endl << "start Calculate filter coefficients" << endl;
+	//cout << endl << "start Calculate filter coefficients" << endl;
 
 	//Savitzky–Golay filter
 	//order = 3
@@ -23,7 +23,7 @@ vector<double> CalculateFilterCoeff(int points)
 		double denominator = m * (pow(m, 2.0) - 1) * (3 * pow(m, 4.0) - 39 * pow(m, 2.0) + 108) / 15.0;
 		C_i_der.push_back(numerator / denominator);
 	}
-	cout << endl << "stop Calculate filter coefficients" << endl;
+	//cout << endl << "stop Calculate filter coefficients" << endl;
 	return C_i_der;
 }
 

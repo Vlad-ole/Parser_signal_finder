@@ -2,7 +2,11 @@
 
 #include <vector>
 
+#include "TGraph.h"
+
 using namespace std;
+
+extern TGraph* gr0;
 
 double fit_exp(double *x, double *par);
 vector<double> integral_vs_time(vector<double> yv, vector<double> baseline, double time_scale);

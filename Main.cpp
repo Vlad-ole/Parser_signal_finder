@@ -15,6 +15,7 @@
 #include  "TF1.h"
 #include "TFile.h"
 #include "TTree.h"
+#include "TCanvas.h"
 
 #include "Func.h"
 #include "Golay_filter.h"
@@ -28,14 +29,18 @@ using namespace std;
 double t_calculate_baseline = 0;
 double t_set_baseline = 0;
 
+
+
 int main(int argc, char *argv[])
 {
 	vector<double> xv;
 
-	const int vsize = 50000;
-	const double time_scale = 2; //[ns / point]	
+	const int vsize = 20000;
+	const double time_scale = 5; //[ns / point]	
+	const double voltage_scale_c1 = 0.5; //[V / div]
+	const double voltage_scale_c3 = 0.2; //[V / div]
 	const bool show_graphs = false;
-	const string dir_name = "D://Data_work//run1_n//";
+	const string dir_name = "D://Data_work//161005//run_1_n//";
 
 
 	//x points to ns
@@ -45,11 +50,11 @@ int main(int argc, char *argv[])
 		xv[i] = time_scale * i;
 	}
 
-	ofstream file_out("D://Data_work//n_results_short.dat");
-	ofstream file_out_details("D://Data_work//n_results_in_detail.dat");
+	ofstream file_out("D://Data_work//161005//n_results_short.dat");
+	ofstream file_out_details("D://Data_work//161005//n_results_in_detail.dat");
 
-	const int n_start = 1849;
-	const int n_of_files = 14109;
+	const int n_start = 0;
+	const int n_of_files = 1;
 	clock_t t_0 = clock();
 
 	clock_t t_read_file = 0;
@@ -65,8 +70,10 @@ int main(int argc, char *argv[])
 	{
 		//read file
 		clock_t t_before = clock();
-		vector<double> yv;
-		yv = read_file(dir_name, number_of_file, 1, vsize);
+		vector<double> yv_c1;
+		vector<double> yv_c3;
+		yv_c1 = read_file(dir_name, number_of_file, 1, vsize, voltage_scale_c1, 1);// signal from ortec CSA
+		yv_c3 = read_file(dir_name, number_of_file, 1, vsize, voltage_scale_c3, 3);// signal from cean CSA
 		clock_t t_after = clock();
 		t_read_file += t_after - t_before;
 
@@ -79,7 +86,13 @@ int main(int argc, char *argv[])
 			TFile f_tree(file_tree_oss.str().c_str(), "RECREATE");
 			TTree tree("t1", "Parser tree");
 			
-			TGraph graph_11(yv.size(), &xv[0], &yv[0]);
+			TCanvas canv("c", "c", 0, 0, 1900, 1000);
+			//canv.Divide(2, 2);
+			//canv.cd(1);
+			//graph_11.Draw();
+			tree.Branch("canvas_tr", "TCanvas", &canv);
+
+			TGraph graph_11(yv_c1.size(), &xv[0], &yv_c1[0]);			
 			tree.Branch("gr_tr", "TGraph", &graph_11, 128000, 0);
 
 			double baseline_par_br, amp_par_br, start_time_par_br, tau_par_br;//fit params
@@ -98,7 +111,7 @@ int main(int argc, char *argv[])
 		//calculate derivative (Savitzky–Golay filter)
 		t_before = clock();
 		const int points = 101; //this number must be odd!!! 101 points -> 202 ns ~ tau of PMT signal
-		vector<double> yv_der = CalculateDerivative(yv, points);
+		vector<double> yv_der = CalculateDerivative(yv_c3, points);
 		t_after = clock();
 		t_CalculateDerivative+= t_after - t_before;
 
@@ -113,22 +126,31 @@ int main(int argc, char *argv[])
 
 		//calculate and set baseline
 		t_before = clock();
-		vector<double> baselineV = calculate_and_set_baseline(xv, yv, t_start_stop_V, time_scale);
+		vector<double> baselineV = calculate_and_set_baseline(xv, yv_c1, t_start_stop_V, time_scale);
 		t_after = clock();
 		t_calculate_and_set_baseline+= t_after - t_before;
 
 		//integral_vs_time
 		t_before = clock();
-		vector<double> yv_integral = integral_vs_time(yv, baselineV, time_scale);//[V * ns]
+		vector<double> yv_integral = integral_vs_time(yv_c1, baselineV, time_scale);//[V * ns]
 		t_after = clock();
 		t_integral_vs_time+= t_after - t_before;
 
 		//find s1 & s2 area
 		t_before = clock();
-		vector<double> s1_fit_param = find_s1_area(xv, yv, t_start_stop_V);
+		vector<double> s1_fit_param = find_s1_area(xv, yv_c3, t_start_stop_V);
 		double s1_area = s1_fit_param[1] * s1_fit_param[3];
 		t_after = clock();
 		t_find_s1_area+= t_after - t_before;
+
+		//graph_11 = *(gr0);
+		//gr0->GetMaximum();
+		if (t_start_stop_V[0].size() > 1)
+		{
+			//cout << gr0 << endl;
+			graph_11 = *(gr0);
+		}
+		
 
 		t_before = clock();
 		double s2_area = find_s2_area(yv_integral, time_scale);
