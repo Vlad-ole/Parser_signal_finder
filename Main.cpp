@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
 	const double voltage_scale_c3 = 0.2; //[V / div]
 	const bool show_graphs = false;
 	const string dir_name = "D://Data_work//161005//run_1_n//";
-
+	const string raw_path = dir_name + "raw//";
 
 	//x points to ns
 	xv.resize(vsize);
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 	ofstream file_out_details("D://Data_work//161005//n_results_in_detail.dat");
 
 	const int n_start = 0;
-	const int n_of_files = 1;
+	const int n_of_files = 10;
 	clock_t t_0 = clock();
 
 	clock_t t_read_file = 0;
@@ -72,8 +72,8 @@ int main(int argc, char *argv[])
 		clock_t t_before = clock();
 		vector<double> yv_c1;
 		vector<double> yv_c3;
-		yv_c1 = read_file(dir_name, number_of_file, 1, vsize, voltage_scale_c1, 1);// signal from ortec CSA
-		yv_c3 = read_file(dir_name, number_of_file, 1, vsize, voltage_scale_c3, 3);// signal from cean CSA
+		yv_c1 = read_file(raw_path, number_of_file, 1, vsize, voltage_scale_c1, 1);// signal from ortec CSA
+		yv_c3 = read_file(raw_path, number_of_file, 1, vsize, voltage_scale_c3, 3);// signal from cean CSA
 		clock_t t_after = clock();
 		t_read_file += t_after - t_before;
 
@@ -87,8 +87,8 @@ int main(int argc, char *argv[])
 			TTree tree("t1", "Parser tree");
 			
 			TCanvas canv("c", "c", 0, 0, 1900, 1000);
-			//canv.Divide(2, 2);
-			//canv.cd(1);
+			canv.Divide(2, 2);
+			canv.cd(1);
 			//graph_11.Draw();
 			tree.Branch("canvas_tr", "TCanvas", &canv);
 
@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
 			t_trees+= t_after - t_before;
 #endif // write_trees
 
-
+			 
 		//calculate derivative (Savitzky–Golay filter)
 		t_before = clock();
 		const int points = 101; //this number must be odd!!! 101 points -> 202 ns ~ tau of PMT signal
