@@ -21,6 +21,7 @@
 #include "Golay_filter.h"
 #include "Input_Output.h"
 #include "Baseline_calc.h"
+#include "TROOT.h"
 
 #define write_trees
 
@@ -33,6 +34,8 @@ double t_set_baseline = 0;
 
 int main(int argc, char *argv[])
 {
+	gROOT->SetBatch(kTRUE);
+	
 	vector<double> xv;
 
 	const int vsize = 20000;
@@ -54,7 +57,7 @@ int main(int argc, char *argv[])
 	ofstream file_out_details("D://Data_work//161005//n_results_in_detail.dat");
 
 	const int n_start = 0;
-	const int n_of_files = 10;
+	const int n_of_files = 100;
 	clock_t t_0 = clock();
 
 	clock_t t_read_file = 0;
@@ -72,8 +75,8 @@ int main(int argc, char *argv[])
 		clock_t t_before = clock();
 		vector<double> yv_c1;
 		vector<double> yv_c3;
-		yv_c1 = read_file(raw_path, number_of_file, 1, vsize, voltage_scale_c1, 1);// signal from ortec CSA
-		yv_c3 = read_file(raw_path, number_of_file, 1, vsize, voltage_scale_c3, 3);// signal from cean CSA
+		yv_c1 = read_file(raw_path, number_of_file, 1, vsize, voltage_scale_c1, 1, -0.96);// signal from ortec CSA
+		yv_c3 = read_file(raw_path, number_of_file, 1, vsize, voltage_scale_c3, 3, -0.5526);// signal from cean CSA
 		clock_t t_after = clock();
 		t_read_file += t_after - t_before;
 
@@ -88,12 +91,9 @@ int main(int argc, char *argv[])
 			
 			TCanvas canv("c", "c", 0, 0, 1900, 1000);
 			canv.Divide(2, 2);
-			canv.cd(1);
-			//graph_11.Draw();
 			tree.Branch("canvas_tr", "TCanvas", &canv);
-
-			TGraph graph_11(yv_c1.size(), &xv[0], &yv_c1[0]);			
-			tree.Branch("gr_tr", "TGraph", &graph_11, 128000, 0);
+									
+			//tree.Branch("gr_tr", "TGraph", &graph_11, 128000, 0);
 
 			double baseline_par_br, amp_par_br, start_time_par_br, tau_par_br;//fit params
 			double s2_area_br;
@@ -126,13 +126,14 @@ int main(int argc, char *argv[])
 
 		//calculate and set baseline
 		t_before = clock();
-		vector<double> baselineV = calculate_and_set_baseline(xv, yv_c1, t_start_stop_V, time_scale);
+		vector<double> baselineV_c3 = calculate_and_set_baseline(xv, yv_c3, t_start_stop_V, time_scale);
+		vector<double> baselineV_c1 = calculate_and_set_baseline(xv, yv_c1, t_start_stop_V, time_scale);
 		t_after = clock();
 		t_calculate_and_set_baseline+= t_after - t_before;
 
 		//integral_vs_time
 		t_before = clock();
-		vector<double> yv_integral = integral_vs_time(yv_c1, baselineV, time_scale);//[V * ns]
+		vector<double> yv_integral = integral_vs_time(yv_c1, baselineV_c1, time_scale);//[V * ns]
 		t_after = clock();
 		t_integral_vs_time+= t_after - t_before;
 
@@ -142,15 +143,6 @@ int main(int argc, char *argv[])
 		double s1_area = s1_fit_param[1] * s1_fit_param[3];
 		t_after = clock();
 		t_find_s1_area+= t_after - t_before;
-
-		//graph_11 = *(gr0);
-		//gr0->GetMaximum();
-		if (t_start_stop_V[0].size() > 1)
-		{
-			//cout << gr0 << endl;
-			graph_11 = *(gr0);
-		}
-		
 
 		t_before = clock();
 		double s2_area = find_s2_area(yv_integral, time_scale);
@@ -173,6 +165,39 @@ int main(int argc, char *argv[])
 
 #ifdef write_trees
 		t_before = clock();
+
+		//write Signal from Ortec
+		TGraph graph_ortec(yv_c1.size(), &xv[0], &yv_c1[0]);
+
+		// choose graph with fit if s1 exist
+		//if (t_start_stop_V[0].size() > 1)
+		//{
+		//	graph_ortec = *(gr0);
+		//}
+		graph_ortec.SetTitle("Signal from Ortec");
+		canv.cd(1);
+		graph_ortec.Draw();
+		
+		//write Derivative of Caen signal
+		TGraph graph_der(yv_der.size(), &xv[0], &yv_der[0]);
+		graph_der.SetTitle("Derivative of Caen signal");
+		canv.cd(2);
+		graph_der.Draw();
+
+		//write Signal from Caen
+		TGraph graph_caen(yv_c3.size(), &xv[0], &yv_c3[0]);
+		graph_caen.SetTitle("Signal from Caen");
+		canv.cd(3);
+		graph_caen.Draw();
+
+		//write Integral of Ortec signal
+		TGraph graph_integral(yv_integral.size(), &xv[0], &yv_integral[0]);
+		graph_integral.SetTitle("Integral of Ortec signal");
+		canv.cd(4);
+		graph_integral.Draw();
+
+
+		
 
 		baseline_par_br = s1_fit_param[0];
 		amp_par_br = s1_fit_param[1];

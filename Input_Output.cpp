@@ -7,7 +7,7 @@
 
 using namespace std;
 
-vector<double> read_file(const string dir_name, const unsigned int file_number, const unsigned short int type_of_binary, const int vsize, const double voltage_scale, const int number_of_channel)
+vector<double> read_file(const string dir_name, const unsigned int file_number, const unsigned short int type_of_binary, const int vsize, const double voltage_scale, const int number_of_channel, const double approx_baseline)
 {
 	vector<double> yv;
 
@@ -72,9 +72,9 @@ vector<double> read_file(const string dir_name, const unsigned int file_number, 
 
 	//There strange noise in the start of the signal.
 	//For right double integration we have to rewrite this noise to baseline value   
-	for (int i = 0; i < 400; i++)
+	for (int i = 0; i < 357; i++)
 	{
-		yv[i] = -2.9;
+		yv[i] = approx_baseline;
 	}
 
 	return yv;

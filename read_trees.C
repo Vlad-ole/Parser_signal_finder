@@ -8,12 +8,12 @@ void ReadTree()
 	TObjArray Hlist_gr(0);
 	Hlist_gr.SetOwner(kTRUE);
 
-	TGraph* graph = 0;
+	//TGraph* graph = 0;
 	TCanvas* canv = 0;
 	
 	TChain chain("t1");// name of the tree is the argument
 	//const int n_max = 22426; //Am
-	const int n_max = 10; //for tests
+	const int n_max = 100; //for tests
 	for(int i = 0; i < n_max; i++)
 	{
 		ostringstream file_tree_oss;
@@ -23,7 +23,7 @@ void ReadTree()
 	}
 	
 	chain.SetBranchAddress("canvas_tr", &canv);
-	chain.SetBranchAddress("gr_tr", &graph);
+	//chain.SetBranchAddress("gr_tr", &graph);
 	
 	double baseline_par_br, amp_par_br, start_time_par_br, tau_par_br;//fit params
 	double s2_area_br;
