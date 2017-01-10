@@ -1,6 +1,6 @@
 void ReadTree()
 {
-	gROOT->SetBatch(kTRUE); // it's really important to use this line if you save TCanvas in a tree!
+	
 	
 	string dir_name = "D:\\Data_work\\161005\\run_1_n\\trees\\";
 	string graph_name = dir_name + "results\\graphs_fit1.root";
@@ -8,7 +8,6 @@ void ReadTree()
 	TObjArray Hlist_gr(0);
 	Hlist_gr.SetOwner(kTRUE);
 
-	//TGraph* graph = 0;
 	TCanvas* canv = 0;
 	
 	TChain chain("t1");// name of the tree is the argument
@@ -19,11 +18,9 @@ void ReadTree()
 		ostringstream file_tree_oss;
 		file_tree_oss << dir_name << "run_" << setfill('0') << setw(5) << i << ".root";
 		chain.Add(file_tree_oss.str().c_str());
-		//chain.Add("D:\\Data_work\\161005\\run_1_n\\trees\\run_00000.root");
 	}
 	
 	chain.SetBranchAddress("canvas_tr", &canv);
-	//chain.SetBranchAddress("gr_tr", &graph);
 	
 	double baseline_par_br, amp_par_br, start_time_par_br, tau_par_br;//fit params
 	double s2_area_br;
@@ -33,30 +30,34 @@ void ReadTree()
 	chain.SetBranchAddress("tau_par_br", &tau_par_br);
 	chain.SetBranchAddress("s2_area_br", &s2_area_br);
 	
-	//TCut total_cut = "";
-	TCut total_cut = "(amp_par_br * tau_par_br < 100) && (amp_par_br * tau_par_br > 1)";
+	TCut total_cut = "amp_par_br > 0.3";
+	//TCut total_cut = "(amp_par_br * tau_par_br < 100) && (amp_par_br * tau_par_br > 1)";
 
 	chain.SetMarkerStyle(4);
 	
 	//chain.Draw("amp_par_br * tau_par_br", total_cut);	
+	chain.Draw("amp_par_br", total_cut);	
 	
 	
-	
-	for (int i = 0; i < chain.GetEntries() ; ++i)
+	if(true)
 	{
-		chain.GetEntry(i);
-		//bool condition = (amp_par_br * tau_par_br < 100) && (amp_par_br * tau_par_br > 1);
-		//bool condition = true;
-		//if( condition )//condition
-		//{
-			Hlist_gr.Add( canv->Clone() );
-			//Hlist_gr.Add(graph->Clone());
-		//}
+		gROOT->SetBatch(kTRUE); // it's really important to use this line if you save TCanvas in a tree!
+		for (int i = 0; i < chain.GetEntries() ; ++i)
+		{
+			chain.GetEntry(i);
+			//bool condition = (amp_par_br * tau_par_br < 100) && (amp_par_br * tau_par_br > 1);
+			//bool condition = true;
+			if( amp_par_br > 0.3 )//condition
+			{
+				Hlist_gr.Add( canv->Clone() );
+				//Hlist_gr.Add(graph->Clone());
+			}
+		}
+		
+		TFile ofile_Hlist_gr(graph_name.c_str(), "RECREATE");
+		Hlist_gr.Write();
+		ofile_Hlist_gr.Close();
 	}
-	
-	TFile ofile_Hlist_gr(graph_name.c_str(), "RECREATE");
-	Hlist_gr.Write();
-	ofile_Hlist_gr.Close();
 	
 	
 }

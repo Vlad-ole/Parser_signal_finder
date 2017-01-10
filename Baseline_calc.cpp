@@ -16,7 +16,7 @@ using namespace std;
 
 
 //calculate and set baseline
-vector<double> calculate_and_set_baseline(vector<double> xv, vector<double> yv, vector< vector<double> > t_start_stop_V, const double time_scale)
+vector<double> calculate_and_set_baseline(vector<double> xv, vector<double> yv, vector< vector<double> > t_start_stop_V, const double time_scale, const unsigned int number_of_channel)
 {
 	vector<double> baselineV;
 	vector<double> baselineV_single;

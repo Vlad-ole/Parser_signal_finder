@@ -89,7 +89,7 @@ vector< vector<double> > find_start_and_stop(vector<double> yv_der, double th, d
 
 
 
-vector<double> find_s1_area(vector<double> xv, vector<double> yv, vector< vector<double> > t_start_stop_V)
+vector<double> find_s1_area(vector<double> xv, vector<double> yv, vector< vector<double> > t_start_stop_V, vector<double> baselineV_single)
 {
 	vector<double> t_start_V = t_start_stop_V[0];
 	vector<double> t_stop_V = t_start_stop_V[1];
@@ -109,13 +109,13 @@ vector<double> find_s1_area(vector<double> xv, vector<double> yv, vector< vector
 
 		fitFcn.SetLineColor(3);
 
-		fitFcn.SetParLimits(0, -2.92442, -2.92442);
+		fitFcn.SetParLimits(0, baselineV_single[0], baselineV_single[0]);
 		fitFcn.SetParLimits(1, 0, 10);
 		fitFcn.SetParLimits(2, t_stop_V[0], t_start_V[1]);
-		fitFcn.SetParLimits(3, 150, 200);//ns 		
+		fitFcn.SetParLimits(3, 150, 400);//ns 		
 
 
-		fitFcn.SetParameter(0, -2.92442);
+		fitFcn.SetParameter(0, baselineV_single[0]);
 		fitFcn.SetParameter(1, 0.5);
 		fitFcn.SetParameter(2, t_stop_V[0]);
 		fitFcn.SetParameter(3, 100);

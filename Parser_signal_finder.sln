@@ -9,6 +9,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_save_canvas(work ok)",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Parser_signal_finder_Copy", "Copy\Parser_signal_finder_Copy.vcxproj", "{731884B8-716B-4729-B4D4-83BAC43514F9}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Parser_signal_finder_oop", "Parser_signal_finder_oop\Parser_signal_finder_oop.vcxproj", "{BDFE5C33-D36C-4CC3-8B1C-5A1DB8B4E56E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_read_write_structure", "test_read_write_structure\test_read_write_structure.vcxproj", "{3CA0B125-31BB-4F3C-8058-EE3A152D478E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -37,6 +41,22 @@ Global
 		{731884B8-716B-4729-B4D4-83BAC43514F9}.Release|Win32.ActiveCfg = Release|Win32
 		{731884B8-716B-4729-B4D4-83BAC43514F9}.Release|Win32.Build.0 = Release|Win32
 		{731884B8-716B-4729-B4D4-83BAC43514F9}.Release|x64.ActiveCfg = Release|Win32
+		{BDFE5C33-D36C-4CC3-8B1C-5A1DB8B4E56E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BDFE5C33-D36C-4CC3-8B1C-5A1DB8B4E56E}.Debug|Win32.Build.0 = Debug|Win32
+		{BDFE5C33-D36C-4CC3-8B1C-5A1DB8B4E56E}.Debug|x64.ActiveCfg = Debug|x64
+		{BDFE5C33-D36C-4CC3-8B1C-5A1DB8B4E56E}.Debug|x64.Build.0 = Debug|x64
+		{BDFE5C33-D36C-4CC3-8B1C-5A1DB8B4E56E}.Release|Win32.ActiveCfg = Release|Win32
+		{BDFE5C33-D36C-4CC3-8B1C-5A1DB8B4E56E}.Release|Win32.Build.0 = Release|Win32
+		{BDFE5C33-D36C-4CC3-8B1C-5A1DB8B4E56E}.Release|x64.ActiveCfg = Release|x64
+		{BDFE5C33-D36C-4CC3-8B1C-5A1DB8B4E56E}.Release|x64.Build.0 = Release|x64
+		{3CA0B125-31BB-4F3C-8058-EE3A152D478E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3CA0B125-31BB-4F3C-8058-EE3A152D478E}.Debug|Win32.Build.0 = Debug|Win32
+		{3CA0B125-31BB-4F3C-8058-EE3A152D478E}.Debug|x64.ActiveCfg = Debug|x64
+		{3CA0B125-31BB-4F3C-8058-EE3A152D478E}.Debug|x64.Build.0 = Debug|x64
+		{3CA0B125-31BB-4F3C-8058-EE3A152D478E}.Release|Win32.ActiveCfg = Release|Win32
+		{3CA0B125-31BB-4F3C-8058-EE3A152D478E}.Release|Win32.Build.0 = Release|Win32
+		{3CA0B125-31BB-4F3C-8058-EE3A152D478E}.Release|x64.ActiveCfg = Release|x64
+		{3CA0B125-31BB-4F3C-8058-EE3A152D478E}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -126,8 +126,8 @@ int main(int argc, char *argv[])
 
 		//calculate and set baseline
 		t_before = clock();
-		vector<double> baselineV_c3 = calculate_and_set_baseline(xv, yv_c3, t_start_stop_V, time_scale);
-		vector<double> baselineV_c1 = calculate_and_set_baseline(xv, yv_c1, t_start_stop_V, time_scale);
+		vector<double> baselineV_c3 = calculate_and_set_baseline(xv, yv_c3, t_start_stop_V, time_scale, 3);
+		vector<double> baselineV_c1 = calculate_and_set_baseline(xv, yv_c1, t_start_stop_V, time_scale, 1);
 		t_after = clock();
 		t_calculate_and_set_baseline+= t_after - t_before;
 
@@ -139,7 +139,7 @@ int main(int argc, char *argv[])
 
 		//find s1 & s2 area
 		t_before = clock();
-		vector<double> s1_fit_param = find_s1_area(xv, yv_c3, t_start_stop_V);
+		vector<double> s1_fit_param = find_s1_area(xv, yv_c3, t_start_stop_V, baselineV_c3);
 		double s1_area = s1_fit_param[1] * s1_fit_param[3];
 		t_after = clock();
 		t_find_s1_area+= t_after - t_before;
@@ -168,12 +168,6 @@ int main(int argc, char *argv[])
 
 		//write Signal from Ortec
 		TGraph graph_ortec(yv_c1.size(), &xv[0], &yv_c1[0]);
-
-		// choose graph with fit if s1 exist
-		//if (t_start_stop_V[0].size() > 1)
-		//{
-		//	graph_ortec = *(gr0);
-		//}
 		graph_ortec.SetTitle("Signal from Ortec");
 		canv.cd(1);
 		graph_ortec.Draw();
@@ -186,6 +180,11 @@ int main(int argc, char *argv[])
 
 		//write Signal from Caen
 		TGraph graph_caen(yv_c3.size(), &xv[0], &yv_c3[0]);
+		// choose graph with fit if s1 exist
+		if (t_start_stop_V[0].size() > 1)
+		{
+			graph_caen = *(gr0);
+		}
 		graph_caen.SetTitle("Signal from Caen");
 		canv.cd(3);
 		graph_caen.Draw();
