@@ -13,6 +13,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Parser_signal_finder_oop", 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_read_write_structure", "test_read_write_structure\test_read_write_structure.vcxproj", "{3CA0B125-31BB-4F3C-8058-EE3A152D478E}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ProcessTrees", "ProcessTrees\ProcessTrees.vcxproj", "{4BC435ED-95C1-40D2-B861-442E7F1AE56E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -57,6 +59,14 @@ Global
 		{3CA0B125-31BB-4F3C-8058-EE3A152D478E}.Release|Win32.Build.0 = Release|Win32
 		{3CA0B125-31BB-4F3C-8058-EE3A152D478E}.Release|x64.ActiveCfg = Release|x64
 		{3CA0B125-31BB-4F3C-8058-EE3A152D478E}.Release|x64.Build.0 = Release|x64
+		{4BC435ED-95C1-40D2-B861-442E7F1AE56E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4BC435ED-95C1-40D2-B861-442E7F1AE56E}.Debug|Win32.Build.0 = Debug|Win32
+		{4BC435ED-95C1-40D2-B861-442E7F1AE56E}.Debug|x64.ActiveCfg = Debug|x64
+		{4BC435ED-95C1-40D2-B861-442E7F1AE56E}.Debug|x64.Build.0 = Debug|x64
+		{4BC435ED-95C1-40D2-B861-442E7F1AE56E}.Release|Win32.ActiveCfg = Release|Win32
+		{4BC435ED-95C1-40D2-B861-442E7F1AE56E}.Release|Win32.Build.0 = Release|Win32
+		{4BC435ED-95C1-40D2-B861-442E7F1AE56E}.Release|x64.ActiveCfg = Release|x64
+		{4BC435ED-95C1-40D2-B861-442E7F1AE56E}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

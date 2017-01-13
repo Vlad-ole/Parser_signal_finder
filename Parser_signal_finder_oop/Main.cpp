@@ -32,12 +32,12 @@ int main(int argc, char *argv[])
 
 	WriteTree *wrt = NULL;
 
-	const int events_per_file = 100;
+	const int events_per_file = 1;
 	const int start_event_number = 1;
-	for (int event_number = start_event_number; event_number <= 100; event_number++)
+	for (int event_number = start_event_number; event_number <= 1; event_number++)
 	{
 		ReadData rdt(path_name, event_number, ch_list, str_comm);
-		CalcData calc_data( rdt.GetDataDouble() );
+		CalcData calc_data( rdt.GetDataDouble(), rdt.GetTimeArray() );
 
 		if ( (event_number - start_event_number) % events_per_file == 0)
 			wrt = new WriteTree(path_name + "trees\\", calc_data);
@@ -47,7 +47,6 @@ int main(int argc, char *argv[])
 		if ( (event_number - start_event_number) % events_per_file == events_per_file - 1)
 			delete wrt;
 	}
-	
 	
 	cout << "all is ok" << endl;
 	system("pause");

@@ -17,6 +17,14 @@ WriteTree::WriteTree(const std::string path_name, CalcData &calc_data) : path_na
 	f_tree = new TFile(file_tree_oss.str().c_str(), "RECREATE");
 
 	tree.Branch("baseline_ch1", &calc_data.baseline, "baseline_ch1/D");
+	//
+	//double xa[] = {1, 2, 3};
+	//double ya[] = {11, 12, 13};
+	//TGraph graph(3, &xa[0], &ya[0]);
+	//graph.Draw("apl");
+
+	tree.Branch("canvas", "TCanvas", calc_data.canv);
+	//tree.Branch("canvas", "TCanvas", calc_data.canv);
 	
 	counter_f_tree++;	
 }
@@ -25,6 +33,8 @@ WriteTree::WriteTree(const std::string path_name, CalcData &calc_data) : path_na
 WriteTree::~WriteTree()
 {
 	tree.Write();
+
+	tree.ls();
 
 	f_tree->Close();
 	delete f_tree;

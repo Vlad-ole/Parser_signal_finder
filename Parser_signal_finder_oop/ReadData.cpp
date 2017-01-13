@@ -12,13 +12,19 @@ ReadData::ReadData(const string path_name, const int file_number, const std::vec
 	const int vsize = 10000;
 	vector<unsigned char> header(357);
 
+	time.resize(vsize);
+	for (int i = 0; i < vsize; i++)
+	{
+		time[i] = i * str_comm.HORIZ_INTERVAL;
+	}
+
 	for (int i = 0; i < ch_list.size(); i++)
 	{
 		data[i].resize(vsize);
 		data_double[i].resize(vsize);
 		
 		stringstream file_full_path;
-		file_full_path << path_name << "C" << ch_list[i].id << "Trace" << setfill('0') << setw(5) << file_number << ".trc";
+		file_full_path << path_name << "raw\\" << "C" << ch_list[i].id << "Trace" << setfill('0') << setw(5) << file_number << ".trc";
 
 		cout << "file_full_path = " << file_full_path.str() << endl;
 		//file.open(file_full_path.str());
@@ -40,7 +46,7 @@ ReadData::ReadData(const string path_name, const int file_number, const std::vec
 		fclose(f);
 
 		//y points to volts
-		for (int j = 0; j < 10; j++)
+		for (int j = 0; j < vsize; j++)
 		{
 			data_double[i][j] = ch_list[i].VERTICAL_GAIN * data[i][j] - ch_list[i].VERTICAL_OFFSET;
 			//cout << i << " " << j << " " << data[i][j] << " " <<  data_double[i][j] << endl;
@@ -58,4 +64,9 @@ ReadData::~ReadData()
 std::vector<std::vector<double>> ReadData::GetDataDouble()
 {
 	return data_double;
+}
+
+std::vector<double> ReadData::GetTimeArray()
+{
+	return time;
 }

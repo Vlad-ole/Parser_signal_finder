@@ -4,11 +4,12 @@
 using namespace std;
 
 
-CalcData::CalcData(std::vector< std::vector<double> > data)
+CalcData::CalcData(std::vector< std::vector<double> > data, std::vector<double> time) : fill_canv(data, time)
 {
 	CalcBaseline calc_baseline(data[0]);
 	baseline = calc_baseline.GetBaseline();
-	//cout << "calc_baseline.GetBaseline() = " << calc_baseline.GetBaseline() << endl;
+
+	canv = &fill_canv.GetCanv();
 }
 
 
