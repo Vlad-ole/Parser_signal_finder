@@ -4,25 +4,29 @@
 #include <vector>
 #include <fstream>
 
+struct ch_info
+{
+	int id;	
+	double VERTICAL_OFFSET;
+	double VERTICAL_GAIN;
+};
+
+struct comm_info
+{
+	int write_type;
+	double HORIZ_INTERVAL;
+	double time_offset;
+};
+
 ///read data from .trc files (LeCroy oscilloscope)
 class ReadData
 {
 public:
-	ReadData(const std::string path_name, const int file_number, const std::vector<int> ch_list);
+	ReadData(const std::string path_name, const int file_number, const std::vector<ch_info> ch_list, struct comm_info str_comm);
 	~ReadData();
+	std::vector< std::vector<double> > GetDataDouble();
 private:
-	std::vector< std::vector<double> > data;
-	std::ifstream file;
-	struct WAVEDESC
-	{
-		char DESCRIPTOR_NAME[20];
-		char TEMPLATE_NAME[16];
-		unsigned short int COMM_TYPE;
-		unsigned short int COMM_ORDER;
-		long int WAVE_DESCRIPTOR;
-		long int USER_TEXT;
-		long int RES_DESC1;
-
-	} Wavedesc;
+	std::vector< std::vector<short int> > data;
+	std::vector< std::vector<double> > data_double;
 };
 

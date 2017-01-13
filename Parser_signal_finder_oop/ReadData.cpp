@@ -5,53 +5,47 @@ using namespace std;
 
 #include <iomanip>
 
-ReadData::ReadData(const string path_name, const int file_number, const std::vector<int> ch_list)
+ReadData::ReadData(const string path_name, const int file_number, const std::vector<ch_info> ch_list, struct comm_info str_comm)
 {
+	data.resize(ch_list.size());
+	data_double.resize(ch_list.size());
+	const int vsize = 10000;
+	vector<unsigned char> header(357);
+
 	for (int i = 0; i < ch_list.size(); i++)
 	{
+		data[i].resize(vsize);
+		data_double[i].resize(vsize);
+		
 		stringstream file_full_path;
-		file_full_path << path_name << "C" << ch_list[i] << "Trace" << setfill('0') << setw(5) << file_number << ".trc";
+		file_full_path << path_name << "C" << ch_list[i].id << "Trace" << setfill('0') << setw(5) << file_number << ".trc";
 
 		cout << "file_full_path = " << file_full_path.str() << endl;
-		file.open(file_full_path.str());
+		//file.open(file_full_path.str());
+		//I do not why, but c++ style of reading gives unexpected result, i.e. incorrect reading
+		//so I chose usual c-style
 
-		if (!file.is_open())
+		FILE *f = fopen(file_full_path.str().c_str(), "rb");
+
+		if (/*!file.is_open()*/f == NULL)
 		{
 			cout << "can't open this file: " << file_full_path.str() << endl;
 			system("pause");
-			file.close();
+			fclose(f);
 			exit(1);
 		}
 
-		//fread(&yv_one_byte[0], sizeof(vector<unsigned char>::value_type), vsize, f); // c style
-		
-		//var1
-		//char ch;
-		//for (int i = 0; i < 50; i++)
-		//{
-		//	file.read(&ch, sizeof(ch));
-		//	cout << i << " " << ch << endl;
-		//}
+		fread(&header[0], sizeof(vector<unsigned char>::value_type), header.size(), f);
+		fread(&data[i][0], sizeof(vector<short int>::value_type), vsize, f);
+		fclose(f);
 
-		//var2
-		//char buffer[1];
-		//file.read( (char*)(&buffer[0]), sizeof(buffer) );
-		//cout << (int)buffer << endl;
+		//y points to volts
+		for (int j = 0; j < 10; j++)
+		{
+			data_double[i][j] = ch_list[i].VERTICAL_GAIN * data[i][j] - ch_list[i].VERTICAL_OFFSET;
+			//cout << i << " " << j << " " << data[i][j] << " " <<  data_double[i][j] << endl;
+		}
 
-		
-		cout << endl;
-		//file.read((char *)&Wavedesc, sizeof(Wavedesc));
-
-		//cout << "Wavedesc.DESCRIPTOR_NAME = " << Wavedesc.DESCRIPTOR_NAME << endl;
-		//cout << "Wavedesc.TEMPLATE_NAME = " << Wavedesc.TEMPLATE_NAME << endl;
-		//cout << "Wavedesc.COMM_TYPE = " << Wavedesc.COMM_TYPE << endl;
-		//cout << "Wavedesc.COMM_ORDER = " << Wavedesc.COMM_ORDER << endl;
-
-		//cout << "Wavedesc.WAVE_DESCRIPTOR = " << Wavedesc.WAVE_DESCRIPTOR << endl;
-		//cout << "Wavedesc.USER_TEXT = " << Wavedesc.USER_TEXT << endl;
-		//cout << "Wavedesc.RES_DESC1 = " << Wavedesc.RES_DESC1 << endl;
-
-		file.close();
 
 	}
 
@@ -59,4 +53,9 @@ ReadData::ReadData(const string path_name, const int file_number, const std::vec
 
 ReadData::~ReadData()
 {
+}
+
+std::vector<std::vector<double>> ReadData::GetDataDouble()
+{
+	return data_double;
 }

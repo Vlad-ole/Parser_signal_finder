@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\CalcData">
+      <UniqueIdentifier>{266ab470-e69d-42ee-9fee-005e930cc616}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CalcData">
+      <UniqueIdentifier>{7185680f-a1a7-4376-ac8b-11e556a9b948}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -21,10 +27,28 @@
     <ClCompile Include="ReadData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="WriteTree.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcData.cpp">
+      <Filter>Source Files\CalcData</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcBaseline.cpp">
+      <Filter>Source Files\CalcData</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ReadData.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WriteTree.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcData.h">
+      <Filter>Header Files\CalcData</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcBaseline.h">
+      <Filter>Header Files\CalcData</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

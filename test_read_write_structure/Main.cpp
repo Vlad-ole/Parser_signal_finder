@@ -7,9 +7,19 @@
 
 using namespace std;
 
+struct WAVEDESC
+{
+	//char DESCRIPTOR_NAME[27] = {"#9000040350WAVEDESC"};
+	//char TEMPLATE_NAME[16] = {"LECROY_2_3"};
+	//char COMM_TYPE[2] = {1};
+	char COMM_ORDER[2] = {1};
+	long int WAVE_DESCRIPTOR = 346;
+} Wavedesc;
+
 int main(int argc, char *argv[])
 {
 	fstream file;
+
 	file.open("D://git_repositories//Parser_signal_finder//test_data.txt", ios::out | ios::binary);
 	if (!file.is_open())
 	{
@@ -19,17 +29,12 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	int x = 50;
-	//char str[] = {'a', 'b', 'c', '\0'};
-	char str[] = "abc";
-
-	file.write( (char*)& x, sizeof(x) );
-	file.write( (char*)& str, sizeof(str) );
+	file.write( (char*)& Wavedesc, sizeof(Wavedesc) );
 
 	file.close();
 
 	//	------------------------------
-	file.open("D://git_repositories//Parser_signal_finder//test_data.txt", ios::in | ios::binary);
+	file.open("D://git_repositories//Parser_signal_finder//test_data.txt" /*"D://Data_work//C1Trace00000.trc"*/, ios::in | ios::binary);
 	if (!file.is_open())
 	{
 		cout << "can't open this file: " << "D://git_repositories//Parser_signal_finder//test_data.txt" << endl;
@@ -38,14 +43,14 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
-	int y;
-	char buf[4];
+	file.read((char*)& Wavedesc, sizeof(Wavedesc));
 
-	file.read((char*)& y, sizeof(y));
-	file.read((char*)& buf, sizeof(buf));
+	//cout << "Wavedesc.DESCRIPTOR_NAME = " << Wavedesc.DESCRIPTOR_NAME << endl;
+	//cout << "Wavedesc.TEMPLATE_NAME = " << Wavedesc.TEMPLATE_NAME << endl;
+	//cout << "Wavedesc.COMM_TYPE = " << (int) Wavedesc.COMM_TYPE[0] << endl;
+	cout << "Wavedesc.COMM_ORDER = " << (int) Wavedesc.COMM_ORDER[0] << endl;
+	cout << "Wavedesc.WAVE_DESCRIPTOR = " << Wavedesc.WAVE_DESCRIPTOR << endl;
 
-	cout << "y = " << y << endl;
-	cout << "buf = " << buf << endl;
 
 	file.close();
 
