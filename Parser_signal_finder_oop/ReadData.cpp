@@ -26,7 +26,7 @@ ReadData::ReadData(const string path_name, const int file_number, const std::vec
 		stringstream file_full_path;
 		file_full_path << path_name << "raw\\" << "C" << ch_list[i].id << "Trace" << setfill('0') << setw(5) << file_number << ".trc";
 
-		cout << "file_full_path = " << file_full_path.str() << endl;
+		//cout << "file_full_path = " << file_full_path.str() << endl;
 		//file.open(file_full_path.str());
 		//I do not why, but c++ style of reading gives unexpected result, i.e. incorrect reading
 		//so I chose usual c-style
@@ -48,7 +48,7 @@ ReadData::ReadData(const string path_name, const int file_number, const std::vec
 		//y points to volts
 		for (int j = 0; j < vsize; j++)
 		{
-			data_double[i][j] = ch_list[i].VERTICAL_GAIN * data[i][j] - ch_list[i].VERTICAL_OFFSET;
+			data_double[i][j] = (ch_list[i].VERTICAL_GAIN * data[i][j] - ch_list[i].VERTICAL_OFFSET) * 1000/*V -> mV */;
 			//cout << i << " " << j << " " << data[i][j] << " " <<  data_double[i][j] << endl;
 		}
 

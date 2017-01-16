@@ -5,7 +5,6 @@
 #include <fstream>
 
 #include "CalcBaseline.h"
-#include "FillCanv.h"
 
 class CalcData
 {
@@ -13,9 +12,12 @@ public:
 	CalcData(std::vector< std::vector<double> > data, std::vector<double> time);
 	~CalcData();
 
-	double baseline;
-	TCanvas *canv;
+	std::vector< std::vector<double> >& GetData();
+	std::vector<double>& GetTime();
+	std::vector<double>& GetBaseline();
 private:
-	FillCanv fill_canv;
+	std::vector< std::vector<double> > data;
+	std::vector<double> time;
+	std::vector<double> baseline;
 };
 

@@ -8,11 +8,12 @@
 #include "TTree.h"
 #include "TObjArray.h"
 #include "CalcData.h"
+#include "FillCanv.h"
 
 class WriteTree
 {
 public:
-	WriteTree(const std::string path_name, CalcData &calc_data);
+	WriteTree(const std::string path_name, CalcData &calc_data, FillCanv &fill_canv);
 	~WriteTree();
 
 	void GenerateBranches();
@@ -23,5 +24,6 @@ private:
 	const std::string path_name;
 	static unsigned int counter_f_tree;
 	CalcData &calc_data;
+	FillCanv &fill_canv;
 };
 

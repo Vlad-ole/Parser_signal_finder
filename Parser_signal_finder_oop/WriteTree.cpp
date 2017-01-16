@@ -8,7 +8,8 @@ using namespace std;
 
 unsigned int WriteTree::counter_f_tree = 0;
 
-WriteTree::WriteTree(const std::string path_name, CalcData &calc_data) : path_name(path_name), tree("t1", "Parser tree"), calc_data(calc_data)
+WriteTree::WriteTree(const std::string path_name, CalcData &calc_data, FillCanv &fill_canv) : 
+	path_name(path_name), tree("t1", "Parser tree"), calc_data(calc_data), fill_canv(fill_canv)
 {
 	//create file name to write root tree
 	ostringstream file_tree_oss;
@@ -16,15 +17,8 @@ WriteTree::WriteTree(const std::string path_name, CalcData &calc_data) : path_na
 
 	f_tree = new TFile(file_tree_oss.str().c_str(), "RECREATE");
 
-	tree.Branch("baseline_ch1", &calc_data.baseline, "baseline_ch1/D");
-	//
-	//double xa[] = {1, 2, 3};
-	//double ya[] = {11, 12, 13};
-	//TGraph graph(3, &xa[0], &ya[0]);
-	//graph.Draw("apl");
-
-	tree.Branch("canvas", "TCanvas", calc_data.canv);
-	//tree.Branch("canvas", "TCanvas", calc_data.canv);
+	tree.Branch("baseline_ch1", &calc_data.GetBaseline()[0], "baseline_ch1/D");
+	tree.Branch("canvas", "TCanvas", &fill_canv.GetCanv() );
 	
 	counter_f_tree++;	
 }
@@ -48,7 +42,5 @@ void WriteTree::GenerateBranches()
 
 void WriteTree::Fill()
 {
-	cout << "calc_data.baseline = " << calc_data.baseline << endl;
-	
 	tree.Fill();
 }

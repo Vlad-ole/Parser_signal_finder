@@ -37,7 +37,7 @@
       <Filter>Source Files\CalcData</Filter>
     </ClCompile>
     <ClCompile Include="FillCanv.cpp">
-      <Filter>Source Files\CalcData</Filter>
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -54,7 +54,7 @@
       <Filter>Header Files\CalcData</Filter>
     </ClInclude>
     <ClInclude Include="FillCanv.h">
-      <Filter>Header Files\CalcData</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,10 +8,16 @@
 #include "WriteTree.h"
 #include "CalcData.h"
 
+#include "TApplication.h"
+#include "TROOT.h"
+
 using namespace std;
 
 int main(int argc, char *argv[])
 {
+	TApplication theApp("theApp", &argc, argv);//let's add some magic! https://root.cern.ch/phpBB3/viewtopic.php?f=3&t=22972
+	gROOT->SetBatch(kTRUE);
+	
 	const string path_name = "D:\\Data_work\\161026\\run3\\";
 	vector<ch_info> ch_list;
 	ch_list.resize(2);
@@ -32,23 +38,29 @@ int main(int argc, char *argv[])
 
 	WriteTree *wrt = NULL;
 
-	const int events_per_file = 1;
+	const int events_per_file = 100;
 	const int start_event_number = 1;
-	for (int event_number = start_event_number; event_number <= 1; event_number++)
+	const int stop_event_number = 10;
+	for (int event_number = start_event_number; event_number <= stop_event_number; event_number++)
 	{
 		ReadData rdt(path_name, event_number, ch_list, str_comm);
 		CalcData calc_data( rdt.GetDataDouble(), rdt.GetTimeArray() );
+		FillCanv fill_canv(calc_data);
 
 		if ( (event_number - start_event_number) % events_per_file == 0)
-			wrt = new WriteTree(path_name + "trees\\", calc_data);
+			wrt = new WriteTree(path_name + "trees\\", calc_data, fill_canv);
 
 		wrt->Fill();
 
-		if ( (event_number - start_event_number) % events_per_file == events_per_file - 1)
+		if ( ((event_number - start_event_number) % events_per_file == events_per_file - 1) || (event_number == stop_event_number) )
 			delete wrt;
+
+		cout << "event_number = " << event_number << endl;
 	}
 	
 	cout << "all is ok" << endl;
 	system("pause");
+	theApp.Terminate();
+	theApp.Run();
 	return 0;
 }
