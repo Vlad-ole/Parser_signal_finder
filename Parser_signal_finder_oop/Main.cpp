@@ -38,9 +38,9 @@ int main(int argc, char *argv[])
 
 	WriteTree *wrt = NULL;
 
-	const int events_per_file = 100;
+	const int events_per_file = 10;
 	const int start_event_number = 1;
-	const int stop_event_number = 10;
+	const int stop_event_number = 2;
 	for (int event_number = start_event_number; event_number <= stop_event_number; event_number++)
 	{
 		ReadData rdt(path_name, event_number, ch_list, str_comm);
@@ -48,14 +48,20 @@ int main(int argc, char *argv[])
 		FillCanv fill_canv(calc_data);
 
 		if ( (event_number - start_event_number) % events_per_file == 0)
-			wrt = new WriteTree(path_name + "trees\\", calc_data, fill_canv);
+			wrt = new WriteTree(path_name + "trees\\");
 
-		wrt->Fill();
+		//cout << "&rdt = " << &rdt << endl;
+		//cout << "&calc_data = " << &calc_data << endl;
+		//cout << "&fill_canv = " << &fill_canv << endl;
+		//cout << &calc_data.GetMin()[0] << " " << &calc_data.GetMin()[1] << " " << &calc_data.GetMax()[0] << " " << &calc_data.GetMax()[1] << endl;
+
+		wrt->Fill(calc_data, fill_canv);
 
 		if ( ((event_number - start_event_number) % events_per_file == events_per_file - 1) || (event_number == stop_event_number) )
 			delete wrt;
 
-		cout << "event_number = " << event_number << endl;
+		if(event_number % 10 == 0)
+			cout << "event_number = " << event_number << endl;
 	}
 	
 	cout << "all is ok" << endl;

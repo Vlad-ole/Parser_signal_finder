@@ -8,7 +8,7 @@
 class FillCanv
 {
 public:
-	FillCanv(CalcData calc_data);
+	FillCanv(CalcData& calc_data);
 	~FillCanv();
 	TCanvas& GetCanv();
 private:

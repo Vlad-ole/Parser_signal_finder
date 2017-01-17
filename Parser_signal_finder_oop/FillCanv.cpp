@@ -7,7 +7,7 @@
 #include <algorithm>
 using namespace std;
 
-FillCanv::FillCanv(CalcData calc_data) : canv("c", "c", 0, 0, 1900, 1000)
+FillCanv::FillCanv(CalcData& calc_data) : canv("c", "c", 0, 0, 1900, 1000)
 {
 	canv.Divide(2, 2);
 	canv.SetGrid();

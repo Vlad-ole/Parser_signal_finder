@@ -17,6 +17,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ProcessTrees", "ProcessTree
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_ditionary", "test_ditionary\test_ditionary.vcxproj", "{7B6F8873-0651-4D4F-9054-F59166E0296C}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_iterator", "test_iterator\test_iterator.vcxproj", "{B2502C6A-B829-4881-9C9E-BCDA00E7AAE5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -77,6 +79,14 @@ Global
 		{7B6F8873-0651-4D4F-9054-F59166E0296C}.Release|Win32.Build.0 = Release|Win32
 		{7B6F8873-0651-4D4F-9054-F59166E0296C}.Release|x64.ActiveCfg = Release|x64
 		{7B6F8873-0651-4D4F-9054-F59166E0296C}.Release|x64.Build.0 = Release|x64
+		{B2502C6A-B829-4881-9C9E-BCDA00E7AAE5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B2502C6A-B829-4881-9C9E-BCDA00E7AAE5}.Debug|Win32.Build.0 = Debug|Win32
+		{B2502C6A-B829-4881-9C9E-BCDA00E7AAE5}.Debug|x64.ActiveCfg = Debug|x64
+		{B2502C6A-B829-4881-9C9E-BCDA00E7AAE5}.Debug|x64.Build.0 = Debug|x64
+		{B2502C6A-B829-4881-9C9E-BCDA00E7AAE5}.Release|Win32.ActiveCfg = Release|Win32
+		{B2502C6A-B829-4881-9C9E-BCDA00E7AAE5}.Release|Win32.Build.0 = Release|Win32
+		{B2502C6A-B829-4881-9C9E-BCDA00E7AAE5}.Release|x64.ActiveCfg = Release|x64
+		{B2502C6A-B829-4881-9C9E-BCDA00E7AAE5}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -39,6 +39,12 @@
     <ClCompile Include="FillCanv.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CalcDer.cpp">
+      <Filter>Source Files\CalcData</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcIntegral.cpp">
+      <Filter>Source Files\CalcData</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ReadData.h">
@@ -55,6 +61,12 @@
     </ClInclude>
     <ClInclude Include="FillCanv.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcDer.h">
+      <Filter>Header Files\CalcData</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcIntegral.h">
+      <Filter>Header Files\CalcData</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

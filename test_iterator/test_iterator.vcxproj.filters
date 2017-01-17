@@ -15,11 +15,22 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="TestRead.cpp">
+    <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Overlapping.cpp">
+    <ClCompile Include="A.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="B.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="A.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="B.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -13,17 +13,15 @@
 class WriteTree
 {
 public:
-	WriteTree(const std::string path_name, CalcData &calc_data, FillCanv &fill_canv);
+	WriteTree(const std::string path_name);
 	~WriteTree();
 
 	void GenerateBranches();
-	void Fill();
+	void Fill(CalcData &calc_data, FillCanv &fill_canv);
 private:
 	TFile *f_tree;
 	TTree tree;
 	const std::string path_name;
 	static unsigned int counter_f_tree;
-	CalcData &calc_data;
-	FillCanv &fill_canv;
 };
 

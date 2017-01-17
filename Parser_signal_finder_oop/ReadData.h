@@ -24,8 +24,8 @@ class ReadData
 public:
 	ReadData(const std::string path_name, const int file_number, const std::vector<ch_info> ch_list, struct comm_info str_comm);
 	~ReadData();
-	std::vector< std::vector<double> > GetDataDouble();
-	std::vector<double> GetTimeArray();
+	std::vector< std::vector<double> >& GetDataDouble();
+	std::vector<double>& GetTimeArray();
 private:
 	std::vector< std::vector<short int> > data;
 	std::vector< std::vector<double> > data_double;

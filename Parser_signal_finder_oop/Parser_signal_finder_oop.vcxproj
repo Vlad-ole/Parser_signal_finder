@@ -79,8 +79,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\root_v5.34.34\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\root_v5.34.34\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\root_v5.34.36\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\root_v5.34.36\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -154,6 +154,8 @@
   <ItemGroup>
     <ClCompile Include="CalcBaseline.cpp" />
     <ClCompile Include="CalcData.cpp" />
+    <ClCompile Include="CalcDer.cpp" />
+    <ClCompile Include="CalcIntegral.cpp" />
     <ClCompile Include="FillCanv.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ReadData.cpp" />
@@ -162,6 +164,8 @@
   <ItemGroup>
     <ClInclude Include="CalcBaseline.h" />
     <ClInclude Include="CalcData.h" />
+    <ClInclude Include="CalcDer.h" />
+    <ClInclude Include="CalcIntegral.h" />
     <ClInclude Include="FillCanv.h" />
     <ClInclude Include="ReadData.h" />
     <ClInclude Include="WriteTree.h" />
