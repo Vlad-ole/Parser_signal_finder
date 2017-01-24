@@ -5,6 +5,7 @@
 #include <fstream>
 
 #include "CalcBaseline.h"
+#include "CalcDer.h"
 
 class CalcData
 {
@@ -17,8 +18,10 @@ public:
 
 	std::vector<double>& GetBaseline();
 	std::vector< std::vector<double> >& GetDer();
+	std::vector< std::vector<double> >& GetInt();
 	std::vector<double>& GetMax();
 	std::vector<double>& GetMin();
+
 private:
 	std::vector< std::vector<double> >& data;
 	std::vector<double>& time;
@@ -27,7 +30,9 @@ private:
 	std::vector<double> min;
 	
 	std::vector<double> baseline;
-	std::vector< std::vector<double> > der;
-	
+	std::vector< std::vector<double> > der_data;
+	std::vector< std::vector<double> > int_data;
+
+	std::vector<double> integral;	
 };
 

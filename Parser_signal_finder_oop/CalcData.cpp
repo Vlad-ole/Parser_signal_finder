@@ -31,21 +31,9 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 	max[0] = *max_element(it_b_0, it_e_0);
 	max[1] = *max_element(it_b_1, it_e_1);
 
-	//min.resize(n_ch);
-	//min[0] = 10;
-	//min[1] = 11;
-
-	//max.resize(n_ch);
-	//max[0] = 20;
-	//max[1] = 21;
-
-
-	cout << "min[0] = " << min[0] << endl;
-	cout << "min[1] = " << min[1] << endl;
-
-	cout << "max[0] = " << max[0] << endl;
-	cout << "max[1] = " << max[1] << endl;
-
+	CalcDer calc_der_ch1(data[1], 41);
+	der_data.resize(n_ch);
+	der_data[1] = calc_der_ch1.GetDer();
 }
 
 
@@ -70,7 +58,12 @@ std::vector<double>& CalcData::GetBaseline()
 
 std::vector<std::vector<double>>& CalcData::GetDer()
 {
-	return der;
+	return der_data;
+}
+
+std::vector<std::vector<double>>& CalcData::GetInt()
+{
+	return int_data;
 }
 
 std::vector<double>& CalcData::GetMax()

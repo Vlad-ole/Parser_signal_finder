@@ -35,6 +35,14 @@ FillCanv::FillCanv(CalcData& calc_data) : canv("c", "c", 0, 0, 1900, 1000)
 	tf1_baseline_cd2 = new TF1("tf1_baseline_cd2", "[0]", 0, max_time);
 	tf1_baseline_cd2->SetParameter(0, 0);
 	tf1_baseline_cd2->Draw("same");
+
+	canv.cd(4);
+	graph_4 = new TGraph(calc_data.GetDer()[1].size(), &calc_data.GetTime()[0], &calc_data.GetDer()[1][0]);
+	graph_4->SetTitle("Der CAEN");
+	graph_4->GetXaxis()->SetTitle("Time [ns]");
+	graph_4->GetYaxis()->SetTitle("Derivative [mV / ns]");
+	graph_4->Draw("apl");
+
 }
 
 
@@ -42,6 +50,7 @@ FillCanv::~FillCanv()
 {
 	delete graph_1;
 	delete graph_2;
+	delete graph_3;
 	delete tf1_baseline_cd1;
 	delete tf1_baseline_cd2;
 }

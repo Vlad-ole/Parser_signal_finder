@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Parser_signal_finder", "Parser_signal_finder.vcxproj", "{D8280F0A-59E7-4B4C-8001-39C0AEEA4EDF}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_ditionary", "test_ditionary\test_ditionary.vcxproj", "{7B6F8873-0651-4D4F-9054-F59166E0296C}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_iterator", "test_iterator\test_iterator.vcxproj", "{B2502C6A-B829-4881-9C9E-BCDA00E7AAE5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_tree_io", "test_tree_io\test_tree_io.vcxproj", "{D9DC2721-509A-4EE6-8F5B-DE0143A9DF64}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +89,14 @@ Global
 		{B2502C6A-B829-4881-9C9E-BCDA00E7AAE5}.Release|Win32.Build.0 = Release|Win32
 		{B2502C6A-B829-4881-9C9E-BCDA00E7AAE5}.Release|x64.ActiveCfg = Release|x64
 		{B2502C6A-B829-4881-9C9E-BCDA00E7AAE5}.Release|x64.Build.0 = Release|x64
+		{D9DC2721-509A-4EE6-8F5B-DE0143A9DF64}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D9DC2721-509A-4EE6-8F5B-DE0143A9DF64}.Debug|Win32.Build.0 = Debug|Win32
+		{D9DC2721-509A-4EE6-8F5B-DE0143A9DF64}.Debug|x64.ActiveCfg = Debug|x64
+		{D9DC2721-509A-4EE6-8F5B-DE0143A9DF64}.Debug|x64.Build.0 = Debug|x64
+		{D9DC2721-509A-4EE6-8F5B-DE0143A9DF64}.Release|Win32.ActiveCfg = Release|Win32
+		{D9DC2721-509A-4EE6-8F5B-DE0143A9DF64}.Release|Win32.Build.0 = Release|Win32
+		{D9DC2721-509A-4EE6-8F5B-DE0143A9DF64}.Release|x64.ActiveCfg = Release|x64
+		{D9DC2721-509A-4EE6-8F5B-DE0143A9DF64}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

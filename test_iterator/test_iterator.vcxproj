@@ -154,11 +154,15 @@
   <ItemGroup>
     <ClCompile Include="A.cpp" />
     <ClCompile Include="B.cpp" />
+    <ClCompile Include="Canv.cpp" />
+    <ClCompile Include="D.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="A.h" />
     <ClInclude Include="B.h" />
+    <ClInclude Include="Canv.h" />
+    <ClInclude Include="D.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

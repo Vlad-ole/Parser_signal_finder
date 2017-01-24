@@ -21,5 +21,13 @@
     <ClCompile Include="Overlapping.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Chain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Chain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

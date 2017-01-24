@@ -24,12 +24,24 @@
     <ClCompile Include="B.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Canv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="A.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="B.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Canv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
