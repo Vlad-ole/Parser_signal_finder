@@ -91,10 +91,13 @@
     <ClCompile Include="CalcData.cpp" />
     <ClCompile Include="CalcDer.cpp" />
     <ClCompile Include="CalcIntegral.cpp" />
+    <ClCompile Include="CalcIntegralS1.cpp" />
     <ClCompile Include="FillCanv.cpp" />
+    <ClCompile Include="FindS2.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PeakFinder.cpp" />
     <ClCompile Include="ReadData.cpp" />
+    <ClCompile Include="TypeConvertion.cpp" />
     <ClCompile Include="WriteTree.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -102,9 +105,12 @@
     <ClInclude Include="CalcData.h" />
     <ClInclude Include="CalcDer.h" />
     <ClInclude Include="CalcIntegral.h" />
+    <ClInclude Include="CalcIntegralS1.h" />
     <ClInclude Include="FillCanv.h" />
+    <ClInclude Include="FindS2.h" />
     <ClInclude Include="PeakFinder.h" />
     <ClInclude Include="ReadData.h" />
+    <ClInclude Include="TypeConvertion.h" />
     <ClInclude Include="WriteTree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

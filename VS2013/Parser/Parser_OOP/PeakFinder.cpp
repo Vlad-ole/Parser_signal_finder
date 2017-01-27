@@ -40,7 +40,7 @@ PeakFinder::~PeakFinder()
 {
 }
 
-std::vector<double>& PeakFinder::GetPeakPosition()
+std::vector<int>& PeakFinder::GetPeakPosition()
 {
 	return peak_position;
 }

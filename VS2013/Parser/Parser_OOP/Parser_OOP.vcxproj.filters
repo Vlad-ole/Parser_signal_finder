@@ -48,6 +48,15 @@
     <ClCompile Include="PeakFinder.cpp">
       <Filter>Source Files\CalcData</Filter>
     </ClCompile>
+    <ClCompile Include="TypeConvertion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FindS2.cpp">
+      <Filter>Source Files\CalcData</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcIntegralS1.cpp">
+      <Filter>Source Files\CalcData</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FillCanv.h">
@@ -72,6 +81,15 @@
       <Filter>Header Files\CalcData</Filter>
     </ClInclude>
     <ClInclude Include="PeakFinder.h">
+      <Filter>Header Files\CalcData</Filter>
+    </ClInclude>
+    <ClInclude Include="TypeConvertion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FindS2.h">
+      <Filter>Header Files\CalcData</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcIntegralS1.h">
       <Filter>Header Files\CalcData</Filter>
     </ClInclude>
   </ItemGroup>

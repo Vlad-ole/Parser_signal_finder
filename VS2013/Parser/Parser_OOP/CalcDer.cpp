@@ -4,16 +4,19 @@ using namespace std;
 
 bool CalcDer::is_first_obj = true;
 std::vector<double> CalcDer::C_i_der(0);
+//std::vector<double> CalcDer::C_i_smooth(0);
 
 CalcDer::CalcDer(std::vector<double> yv, const int param_n_points)
 {
 	const int n_points = yv.size();
 	yv_der.resize(n_points);
+	//yv_smooth.resize(n_points);
 
 	if (is_first_obj)
 	{
 		is_first_obj = false;
-		CalculateFilterCoeff(param_n_points);
+		CalculateCoeffDer(param_n_points);
+		//CalculateCoeffSmooth(param_n_points * 5);
 	}
 
 	const int point_half = (param_n_points - 1) / 2.0;
@@ -35,6 +38,14 @@ CalcDer::CalcDer(std::vector<double> yv, const int param_n_points)
 			}
 			yv_der[i] = value;
 
+			//value = 0;
+			//for (int j = 0; j < C_i_smooth.size(); j++)
+			//{
+			//	value += C_i_smooth[j] * yv[i - point_half + j];
+			//}
+			//yv_smooth[i] = value;
+
+
 		}
 
 	}
@@ -51,7 +62,12 @@ std::vector<double> CalcDer::GetDer()
 	return yv_der;
 }
 
-void CalcDer::CalculateFilterCoeff(int points)
+//std::vector<double> CalcDer::GetSmooth()
+//{
+//	return yv_smooth;
+//}
+
+void CalcDer::CalculateCoeffDer(int points)
 {
 	//cout << endl << "start Calculate filter coefficients" << endl;
 
@@ -70,3 +86,16 @@ void CalcDer::CalculateFilterCoeff(int points)
 	}
 	//cout << endl << "stop Calculate filter coefficients" << endl;
 }
+
+//void CalcDer::CalculateCoeffSmooth(int points)
+//{
+//	int m = points;//
+//
+//	//посчитать коэффициенты  C_i
+//	for (int i = (1 - m) / 2.0; i <= (m - 1) / 2.0; i++)
+//	{
+//		double numerator = (3 * pow(m, 2.0) - 7 - 20 * pow(i, 2.0)) / 4.0;
+//		double denominator = m * (pow(m, 2.0) - 4) / 3.0;
+//		C_i_smooth.push_back(numerator / denominator);
+//	}
+//}

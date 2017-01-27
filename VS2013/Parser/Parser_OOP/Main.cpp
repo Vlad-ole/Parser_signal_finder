@@ -82,6 +82,14 @@ int main(int argc, char *argv[])
 	tree.Branch("max_ch0", &max_ch0, "max_ch0/D");
 	tree.Branch("max_ch1", &max_ch1, "max_ch1/D");
 
+
+	double n_peaks_caen;
+	tree.Branch("n_peaks_caen", &n_peaks_caen, "n_peaks_caen/D");
+
+	int point_s2_left_caen, point_s2_right_caen;
+	tree.Branch("point_s2_left_caen", &point_s2_left_caen, "point_s2_left_caen/I");
+	tree.Branch("point_s2_right_caen", &point_s2_right_caen, "point_s2_right_caen/I");
+
 	//time
 	vector<double> time;
 	tree.Branch("time", &time);
@@ -104,11 +112,24 @@ int main(int argc, char *argv[])
 	vector<double> data_der_caen;
 	tree.Branch("data_der_caen", &data_der_caen);
 
+	vector<double> data_smooth_caen;
+	tree.Branch("data_smooth_caen", &data_smooth_caen);
+
 	vector<double> data_int_caen;
 	tree.Branch("data_int_caen", &data_int_caen);
 
-	vector<double> peak_position_caen;
+	vector<int> peak_position_caen;
 	tree.Branch("peak_position_caen", &peak_position_caen);
+
+	vector<double> baseline_vec_caen;
+	tree.Branch("baseline_vec_caen", &baseline_vec_caen);
+
+	double integral_s1_caen;
+	tree.Branch("integral_s1_caen", &integral_s1_caen);
+
+	double integral_s2_caen;
+	tree.Branch("integral_s2_caen", &integral_s2_caen);
+
 
 	//TCanvas canv;
 	//tree.Branch("canvas", "TCanvas", &canv);
@@ -133,6 +154,7 @@ int main(int argc, char *argv[])
 
 		baseline_ch0 = calc_data.GetBaseline()[0];
 		baseline_ch1 = calc_data.GetBaseline()[1];
+		baseline_vec_caen = calc_data.GetBaselineVec()[1];
 
 		min_ch0 = calc_data.GetMin()[0];
 		min_ch1 = calc_data.GetMin()[1];
@@ -140,16 +162,24 @@ int main(int argc, char *argv[])
 		max_ch0 = calc_data.GetMax()[0];
 		max_ch1 = calc_data.GetMax()[1];
 
+		n_peaks_caen = (calc_data.GetPeakPosition()[1]).size();
+		point_s2_left_caen = calc_data.GetPointS2Left();
+		point_s2_right_caen = calc_data.GetPointS2Right();
+
 		time = calc_data.GetTime();
 
 		data_raw_caen = calc_data.GetData()[1];
 		data_der_caen = calc_data.GetDer()[1];
+		data_smooth_caen = calc_data.GetSmooth()[1];
 		data_int_caen = calc_data.GetInt()[1];
 		peak_position_caen = calc_data.GetPeakPosition()[1];
 
 		data_raw_ortec = calc_data.GetData()[0];
 		data_der_ortec = calc_data.GetDer()[0];
 		data_int_ortec = calc_data.GetInt()[0];
+
+		integral_s1_caen = calc_data.GetIntegralS1()[1];
+		integral_s2_caen = calc_data.GetIntegralS2()[1];
 
 		//canv = &(fill_canv.GetCanv()).Copy;
 		//tree.Branch("canvas", "TCanvas", &( fill_canv.GetCanv() ) );//this work incorect
