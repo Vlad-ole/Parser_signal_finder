@@ -40,8 +40,13 @@ int main(int argc, char *argv[])
 
 	//Chain chain;
 	TChain chain("t1");
-	string str_chain = path_name + "trees\\Block0000000.root";
-	chain.Add(str_chain.c_str());
+	for (int i = 0; i < 228; i++)
+	{
+		ostringstream f_tree_name;
+		f_tree_name << path_name << "trees\\" << "Block" << setfill('0') << setw(7) << i << ".root";
+		chain.Add(f_tree_name.str().c_str());
+	}
+	
 
 	double baseline_ch0, baseline_ch1;
 	double min_ch0, min_ch1;
@@ -80,7 +85,7 @@ int main(int argc, char *argv[])
 	chain.SetBranchAddress("data_der_ortec", &data_der_ortec);
 	chain.SetBranchAddress("data_der_caen", &data_der_caen);
 
-	chain.SetBranchAddress("data_smooth_caen", &data_smooth_caen);
+	//chain.SetBranchAddress("data_smooth_caen", &data_smooth_caen);
 
 	chain.SetBranchAddress("data_int_ortec", &data_int_ortec);
 	chain.SetBranchAddress("data_int_caen", &data_int_caen);
@@ -96,15 +101,22 @@ int main(int argc, char *argv[])
 
 	const int n_events = chain.GetEntries();
 	int pass_counter = 0;
-	//const int n_events = 10;
+	//const int n_events = 5000;
 	cout << "chain.GetEntries() = " << chain.GetEntries() << endl;
 
 	if (1)
 	{
 		gROOT->SetBatch(kFALSE);
 		TCut cut1 = "min_ch1 > -1000 && max_ch1 < 4000";
-		TCut cut_s2 = "n_peaks_caen > 15";
-		chain.Draw("integral_s1_caen:integral_s2_caen", cut1 && cut_s2);
+		TCut cut_s2 = "n_peaks_caen > 30 && n_peaks_caen < 70";
+		TCut cut_s1 = "integral_s1_caen > 0";
+		TCut cut_point_s2_right = "point_s2_right_caen < 9600";
+		TCut total_cut = cut1 && cut_s2 && cut_s1 && cut_point_s2_right;
+		
+
+		//chain.Draw("n_peaks_caen", cut1 && "n_peaks_caen > 80");
+		//chain.Draw("integral_s1_caen:integral_s2_caen", total_cut);
+		chain.Draw("log10(integral_s2_caen / integral_s1_caen) : integral_s2_caen", total_cut);
 	}
 
 	
@@ -135,7 +147,7 @@ int main(int argc, char *argv[])
 			data.data_int_caen = *data_int_caen;
 			data.peak_position_caen = *peak_position_caen;
 			data.baseline_vec_caen = *baseline_vec_caen;
-			data.data_smooth_caen = *data_smooth_caen;
+			//data.data_smooth_caen = *data_smooth_caen;
 			data.point_s2_left_caen = point_s2_left_caen;
 			data.point_s2_right_caen = point_s2_right_caen;
 			data.integral_s1_caen = integral_s1_caen;
@@ -148,8 +160,9 @@ int main(int argc, char *argv[])
 			//run7
 			bool cut_s2_caen_run7 = n_peaks_caen > 15;
 			bool cut1_caen_run7 = min_ch1 > -1000 && max_ch1 < 4000;
+			bool cut_s1 = (integral_s1_caen > 0);
 
-			if (cut1_caen_run7 && cut_s2_caen_run7)
+			if (cut1_caen_run7 && (n_peaks_caen > 30 && n_peaks_caen < 70) && cut_s1 && (point_s2_right_caen * HORIZ_INTERVAL < 48000))
 			{
 				pass_counter++;
 				cout << "passed event: " << i << endl;
@@ -185,7 +198,7 @@ int main(int argc, char *argv[])
 	}
 	
 	cout << "all is ok" << endl;
-	system("pause");
+	//system("pause");
 	//theApp.Terminate();
 	//theApp.Run();
 	return 0;

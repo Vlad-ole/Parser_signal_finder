@@ -40,9 +40,9 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 	der_data[0] = calc_der_ortec.GetDer();
 	der_data[1] = calc_der_caen.GetDer();
 
-	smooth_data.resize(n_ch);
-	smooth_data[0].resize(der_data[0].size());//dummy
-	smooth_data[1].resize(der_data[0].size());//dummy
+	//smooth_data.resize(n_ch);
+	//smooth_data[0].resize(der_data[0].size());//dummy
+	//smooth_data[1].resize(der_data[0].size());//dummy
 	//smooth_data[1] = calc_der_caen.GetSmooth();
 
 	PeakFinder pk_fndr_caen(calc_der_caen.GetDer(), time, HORIZ_INTERVAL);

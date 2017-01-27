@@ -28,7 +28,7 @@ struct Data
 	std::vector<double> data_int_caen;
 	std::vector<int> peak_position_caen;
 	std::vector<double> baseline_vec_caen;
-	std::vector<double> data_smooth_caen;
+	//std::vector<double> data_smooth_caen;
 
 	double integral_s1_caen;
 	double integral_s2_caen;

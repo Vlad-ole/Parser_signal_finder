@@ -25,7 +25,7 @@ CalcBaseline::CalcBaseline(std::vector<double> yv, const int point_s2_left, cons
 	//var2
 	s = new TSpectrum();
 	std::vector<float> yv_float = TypeConvertion::GetVectorFloat(yv);
-	s->Background(&yv_float[0], yv_size, 50, TSpectrum::kBackDecreasingWindow, TSpectrum::kBackOrder2, kTRUE, TSpectrum::kBackSmoothing15, kFALSE);
+	s->Background(&yv_float[0], yv_size, 50, TSpectrum::kBackDecreasingWindow, TSpectrum::kBackOrder2, kFALSE, TSpectrum::kBackSmoothing15, kFALSE);
 
 	baseline_vec = TypeConvertion::GetVectorDouble(yv_float);
 
