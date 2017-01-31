@@ -33,22 +33,37 @@ int main(int argc, char *argv[])
 	const string path_name = "D:\\Data_work\\161026\\run7\\";
 	vector<ch_info> ch_list;
 	ch_list.resize(2);
+	comm_info str_comm;
 
 	ch_list[0].id = 1;
-	ch_list[0].VERTICAL_OFFSET = -0.400000005960464;
-	ch_list[0].VERTICAL_GAIN = 0.0000249887998506892;
+	ch_list[0].VERTICAL_OFFSET = 0;
+	ch_list[0].VERTICAL_GAIN = 0;
 
+	//run 7
+	//------------------------
 	ch_list[1].id = 3;
-	ch_list[1].VERTICAL_OFFSET = -3;
+	ch_list[1].VERTICAL_OFFSET = -3.04999995231628;
 	ch_list[1].VERTICAL_GAIN = 0.000124943995615467;
-
-	comm_info str_comm;
+	
 	str_comm.write_type = 4096;
-	str_comm.time_offset = 5;//us
+	str_comm.time_offset = 40;//us
 	str_comm.HORIZ_INTERVAL = 5;//ns per point;
 	str_comm.WAVE_ARRAY_COUNT = 10002;//Total number of points
+	//------------------------
 
-	//WriteTree *wrt = NULL;
+	////run 6
+	////------------------------
+	//ch_list[1].id = 3;
+	//ch_list[1].VERTICAL_OFFSET = -3.04999995231628;
+	//ch_list[1].VERTICAL_GAIN = 0.000124943995615467;
+
+	//str_comm.write_type = 4096;
+	//str_comm.time_offset = 50;//us
+	//str_comm.HORIZ_INTERVAL = 5;//ns per point;
+	//str_comm.WAVE_ARRAY_COUNT = 20002;//Total number of points
+	////------------------------
+
+
 
 	TTree tree_common_info("common_info", "Parser tree 2");
 	double HORIZ_INTERVAL = str_comm.HORIZ_INTERVAL;
@@ -62,7 +77,7 @@ int main(int argc, char *argv[])
 
 	const int events_per_file = 100;
 	const int start_event_number = 1;
-	const int stop_event_number = 22730;
+	const int stop_event_number = 22000;
 	const int n_events = stop_event_number;
 	cout << "n_events = " << stop_event_number - start_event_number + 1 << endl;
 
@@ -102,6 +117,7 @@ int main(int argc, char *argv[])
 		vector<double> baseline_vec_caen = calc_data.GetBaselineVec()[1];
 		double integral_s1_caen = calc_data.GetIntegralS1()[1];
 		double integral_s2_caen = calc_data.GetIntegralS2()[1];
+		vector<double> yv_cut_caen = calc_data.GetYvCut();
 		
 		//define tree
 		if ((event_number - start_event_number) % events_per_file == 0)
@@ -136,6 +152,7 @@ int main(int argc, char *argv[])
 			tree->Branch("baseline_vec_caen", &baseline_vec_caen);			
 			tree->Branch("integral_s1_caen", &integral_s1_caen);			
 			tree->Branch("integral_s2_caen", &integral_s2_caen);
+			tree->Branch("yv_cut_caen", &yv_cut_caen);
 		}
 
 		t_before = clock();

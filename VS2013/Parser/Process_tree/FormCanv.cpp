@@ -61,11 +61,11 @@ FormCanv::FormCanv(Data &data) : canv("c", "c", 0, 0, 1900, 900)
 	//graph_2_4->SetLineColor(kMagenta);
 	//graph_2_4->Draw("same l");
 
-	vector<double> data_min_baseline(data.time.size());
-	for (int i = 0; i < data.time.size(); i++)	{ data_min_baseline[i] = data.data_raw_caen[i] - data.baseline_vec_caen[i]; }
-	graph_2_4 = new TGraph(data.time.size(), &data.time[0], &data_min_baseline[0]);
-	graph_2_4->SetLineColor(kMagenta);
-	graph_2_4->Draw("same l");
+	//vector<double> data_min_baseline(data.time.size());
+	//for (int i = 0; i < data.time.size(); i++)	{ data_min_baseline[i] = data.data_raw_caen[i] - data.baseline_vec_caen[i]; }
+	//graph_2_4 = new TGraph(data.time.size(), &data.time[0], &data_min_baseline[0]);
+	//graph_2_4->SetLineColor(kMagenta);
+	//graph_2_4->Draw("same l");
 
 
 	string text_integral_s1 = "integral s1[mV * mS] = " + to_string(data.integral_s1_caen / 1E6);
@@ -74,6 +74,13 @@ FormCanv::FormCanv(Data &data) : canv("c", "c", 0, 0, 1900, 900)
 	pt_cd1->AddText(text_integral_s1.c_str());
 	pt_cd1->AddText(text_integral_s2.c_str());
 	pt_cd1->Draw();
+
+	//graph_1_1 = new TGraph(data.yv_cut_caen.size(), &data.time[0], &data.yv_cut_caen[0]);
+	//graph_1_1->SetLineColor(kRed);
+	//graph_1_1->SetMarkerColor(kBlack);
+	//graph_1_1->SetMarkerStyle(20);
+	//graph_1_1->SetMarkerSize(0.5);
+	//graph_1_1->Draw("same lp");
 
 
 	canv.cd(2);
@@ -136,10 +143,11 @@ FormCanv::FormCanv(Data &data) : canv("c", "c", 0, 0, 1900, 900)
 FormCanv::~FormCanv()
 {
 	delete graph_1;
+	//delete graph_1_1;
 	delete graph_2;
 	delete graph_2_2;
 	delete graph_2_3;
-	delete graph_2_4;
+	//delete graph_2_4;
 	delete graph_3;
 	delete graph_4;
 	delete graph_5;

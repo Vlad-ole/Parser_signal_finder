@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-FindS2::FindS2(std::vector<int>& peak_position, const int n_points_data, double HORIZ_INTERVAL, const double time_th)
+FindS2::FindS2(std::vector<int>& peak_position, const int n_points_data, double HORIZ_INTERVAL, const double time_th_left, const double time_th_right)
 {
 	const double max_time = n_points_data * HORIZ_INTERVAL;
 	const int n_peaks = peak_position.size();
@@ -37,9 +37,13 @@ FindS2::FindS2(std::vector<int>& peak_position, const int n_points_data, double 
 	for (int i = closest_peak_index; i < (n_peaks - 1); i++)
 	{
 		t_right = peak_position[i] * HORIZ_INTERVAL + 1000;
-		if (((peak_position[i + 1] - peak_position[i]) * HORIZ_INTERVAL) > time_th)
-		{
+		if (((peak_position[i + 1] - peak_position[i]) * HORIZ_INTERVAL) > time_th_right)
+		{			
 			break;
+		}
+		if ( i == (n_peaks - 2) )
+		{
+			t_right = peak_position[i+1] * HORIZ_INTERVAL + 1000;;
 		}
 	}
 	if (t_right > max_time){ t_right = max_time; }
@@ -49,10 +53,14 @@ FindS2::FindS2(std::vector<int>& peak_position, const int n_points_data, double 
 	double t_left = 0;
 	for (int i = closest_peak_index; i > 0; i--)
 	{
-		t_left = peak_position[i] * HORIZ_INTERVAL - 1000;
-		if (((peak_position[i] - peak_position[i - 1]) * HORIZ_INTERVAL) > time_th)
+		t_left = peak_position[i] * HORIZ_INTERVAL - 500;
+		if (((peak_position[i] - peak_position[i - 1]) * HORIZ_INTERVAL) > time_th_left)
 		{
 			break;
+		}
+		if (i == 1)
+		{
+			t_left = peak_position[0] * HORIZ_INTERVAL - 500;
 		}
 	}
 	if (t_left < 0){ t_left = 0; }

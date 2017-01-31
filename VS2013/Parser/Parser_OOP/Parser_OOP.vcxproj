@@ -41,13 +41,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\root_v5.34.36\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\root_v5.34.36\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\fftw-3.3.5-dll32;D:\root_cern\root-build\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\fftw-3.3.5-dll32;D:\root_cern\root-build\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\root_v5.34.36\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\root_v5.34.36\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\fftw-3.3.5-dll32;D:\root_cern\root-build\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\fftw-3.3.5-dll32;D:\root_cern\root-build\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -64,7 +64,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>complexDict.lib;dequeDict.lib;freetype.lib;libAfterImage.lib;libASImage.lib;libASImageGui.lib;libCint.lib;libCintex.lib;libCore.lib;libEG.lib;libEGPythia8.lib;libEve.lib;libFitPanel.lib;libFoam.lib;libFTGL.lib;libFumili.lib;libGdml.lib;libGed.lib;libGenetic.lib;libGenVector.lib;libGeom.lib;libGeomBuilder.lib;libGeomPainter.lib;libGLEW.lib;libGpad.lib;libGraf.lib;libGraf3d.lib;libGui.lib;libGuiBld.lib;libGuiHtml.lib;libGviz3d.lib;libHist.lib;libHistPainter.lib;libHtml.lib;libMathCore.lib;libMathMore.lib;libMatrix.lib;libMinuit.lib;libMinuit2.lib;libMLP.lib;libNet.lib;libPhysics.lib;libPostscript.lib;libProof.lib;libProofDraw.lib;libProofPlayer.lib;libPyROOT.lib;libQuadp.lib;libRecorder.lib;libReflex.lib;libReflexDict.lib;libRGL.lib;libRHTTP.lib;libRint.lib;libRIO.lib;libRODBC.lib;libRooFit.lib;libRooFitCore.lib;libRooStats.lib;libRootAuth.lib;libSessionViewer.lib;libSmatrix.lib;libSpectrum.lib;libSpectrumPainter.lib;libSPlot.lib;libSQLIO.lib;libTable.lib;libThread.lib;libTMVA.lib;libTree.lib;libTreePlayer.lib;libTreeViewer.lib;libUnuran.lib;libVMC.lib;libWin32gdk.lib;libXMLIO.lib;listDict.lib;map2Dict.lib;mapDict.lib;mathtext.lib;multimap2Dict.lib;multimapDict.lib;multisetDict.lib;setDict.lib;vectorDict.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libfftw3-3.lib;cint_tmp.lib;climits.lib;complex.lib;complexDict.lib;deque.lib;dequeDict.lib;exception.lib;freetype.lib;gdk-1.3.lib;glib-1.3.lib;iconv-1.3.lib;libAfterImage.lib;libASImage.lib;libASImageGui.lib;libCint.lib;libCintex.lib;libCore.lib;libEG.lib;libEve.lib;libFFTW.lib;libFitPanel.lib;libFoam.lib;libFTGL.lib;libFumili.lib;libGed.lib;libGenetic.lib;libGenVector.lib;libGeom.lib;libGeomBuilder.lib;libGeomPainter.lib;libGLEW.lib;libGpad.lib;libGraf.lib;libGraf3d.lib;libGui.lib;libGuiBld.lib;libGuiHtml.lib;libGviz3d.lib;libHist.lib;libHistPainter.lib;libHtml.lib;libMathCore.lib;libMatrix.lib;libMinuit.lib;libMLP.lib;libNet.lib;libpcre.lib;libPhysics.lib;libPostscript.lib;libProof.lib;libProofDraw.lib;libProofPlayer.lib;libQuadp.lib;libRecorder.lib;libReflex.lib;libReflexDict.lib;libRGL.lib;libRint.lib;libRIO.lib;libRODBC.lib;libRootAuth.lib;libSessionViewer.lib;libSmatrix.lib;libSpectrum.lib;libSpectrumPainter.lib;libSPlot.lib;libSQLIO.lib;libThread.lib;libTMVA.lib;libTree.lib;libTreePlayer.lib;libTreeViewer.lib;libVMC.lib;libWin32gdk.lib;libXMLIO.lib;list.lib;listDict.lib;map.lib;map2.lib;map2Dict.lib;mapDict.lib;mathtext.lib;multimap.lib;multimap2.lib;multimap2Dict.lib;multimapDict.lib;multiset.lib;multisetDict.lib;queue.lib;rootcint_tmp.lib;rsa.lib;set.lib;setDict.lib;stack.lib;stdcxxfunc.lib;stdexcept.lib;stdfunc.lib;vector.lib;vectorbool.lib;vectorDict.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -85,7 +85,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>complexDict.lib;dequeDict.lib;freetype.lib;libAfterImage.lib;libASImage.lib;libASImageGui.lib;libCint.lib;libCintex.lib;libCore.lib;libEG.lib;libEGPythia8.lib;libEve.lib;libFitPanel.lib;libFoam.lib;libFTGL.lib;libFumili.lib;libGdml.lib;libGed.lib;libGenetic.lib;libGenVector.lib;libGeom.lib;libGeomBuilder.lib;libGeomPainter.lib;libGLEW.lib;libGpad.lib;libGraf.lib;libGraf3d.lib;libGui.lib;libGuiBld.lib;libGuiHtml.lib;libGviz3d.lib;libHist.lib;libHistPainter.lib;libHtml.lib;libMathCore.lib;libMathMore.lib;libMatrix.lib;libMinuit.lib;libMinuit2.lib;libMLP.lib;libNet.lib;libPhysics.lib;libPostscript.lib;libProof.lib;libProofDraw.lib;libProofPlayer.lib;libPyROOT.lib;libQuadp.lib;libRecorder.lib;libReflex.lib;libReflexDict.lib;libRGL.lib;libRHTTP.lib;libRint.lib;libRIO.lib;libRODBC.lib;libRooFit.lib;libRooFitCore.lib;libRooStats.lib;libRootAuth.lib;libSessionViewer.lib;libSmatrix.lib;libSpectrum.lib;libSpectrumPainter.lib;libSPlot.lib;libSQLIO.lib;libTable.lib;libThread.lib;libTMVA.lib;libTree.lib;libTreePlayer.lib;libTreeViewer.lib;libUnuran.lib;libVMC.lib;libWin32gdk.lib;libXMLIO.lib;listDict.lib;map2Dict.lib;mapDict.lib;mathtext.lib;multimap2Dict.lib;multimapDict.lib;multisetDict.lib;setDict.lib;vectorDict.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libfftw3-3.lib;cint_tmp.lib;climits.lib;complex.lib;complexDict.lib;deque.lib;dequeDict.lib;exception.lib;freetype.lib;gdk-1.3.lib;glib-1.3.lib;iconv-1.3.lib;libAfterImage.lib;libASImage.lib;libASImageGui.lib;libCint.lib;libCintex.lib;libCore.lib;libEG.lib;libEve.lib;libFFTW.lib;libFitPanel.lib;libFoam.lib;libFTGL.lib;libFumili.lib;libGed.lib;libGenetic.lib;libGenVector.lib;libGeom.lib;libGeomBuilder.lib;libGeomPainter.lib;libGLEW.lib;libGpad.lib;libGraf.lib;libGraf3d.lib;libGui.lib;libGuiBld.lib;libGuiHtml.lib;libGviz3d.lib;libHist.lib;libHistPainter.lib;libHtml.lib;libMathCore.lib;libMatrix.lib;libMinuit.lib;libMLP.lib;libNet.lib;libpcre.lib;libPhysics.lib;libPostscript.lib;libProof.lib;libProofDraw.lib;libProofPlayer.lib;libQuadp.lib;libRecorder.lib;libReflex.lib;libReflexDict.lib;libRGL.lib;libRint.lib;libRIO.lib;libRODBC.lib;libRootAuth.lib;libSessionViewer.lib;libSmatrix.lib;libSpectrum.lib;libSpectrumPainter.lib;libSPlot.lib;libSQLIO.lib;libThread.lib;libTMVA.lib;libTree.lib;libTreePlayer.lib;libTreeViewer.lib;libVMC.lib;libWin32gdk.lib;libXMLIO.lib;list.lib;listDict.lib;map.lib;map2.lib;map2Dict.lib;mapDict.lib;mathtext.lib;multimap.lib;multimap2.lib;multimap2Dict.lib;multimapDict.lib;multiset.lib;multisetDict.lib;queue.lib;rootcint_tmp.lib;rsa.lib;set.lib;setDict.lib;stack.lib;stdcxxfunc.lib;stdexcept.lib;stdfunc.lib;vector.lib;vectorbool.lib;vectorDict.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -96,6 +96,7 @@
     <ClCompile Include="CalcIntegralS1.cpp" />
     <ClCompile Include="FillCanv.cpp" />
     <ClCompile Include="FindS2.cpp" />
+    <ClCompile Include="FTFilter.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PeakFinder.cpp" />
     <ClCompile Include="ReadData.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="CalcIntegralS1.h" />
     <ClInclude Include="FillCanv.h" />
     <ClInclude Include="FindS2.h" />
+    <ClInclude Include="FTFilter.h" />
     <ClInclude Include="PeakFinder.h" />
     <ClInclude Include="ReadData.h" />
     <ClInclude Include="TypeConvertion.h" />

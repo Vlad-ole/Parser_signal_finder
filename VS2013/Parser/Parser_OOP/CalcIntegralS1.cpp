@@ -37,8 +37,13 @@ CalcIntegralS1::CalcIntegralS1(std::vector<double>& data, double time_trigg_s1, 
 	{
 		for (int i = peak_index_s1_first; i <= peak_index_s1_last; i++)
 		{
-			const int index_start = peak_position[i] - (int)(30.0 / HORIZ_INTERVAL);
+			int index_start = peak_position[i] - (int)(30.0 / HORIZ_INTERVAL);
 			const int index_stop = peak_position[i] + (int)(300.0 / HORIZ_INTERVAL);
+
+			if (index_start < 0 )
+			{
+				index_start = 0;
+			}
 
 			//find baseline
 			int index_stop_baseline = peak_position[i] - (int)(10.0 / HORIZ_INTERVAL);

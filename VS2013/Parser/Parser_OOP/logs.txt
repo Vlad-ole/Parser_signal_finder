@@ -1,0 +1,10 @@
+n_events = 10
+event_number = 10
+t_read_file[ms] = 23.6
+t_calc_data[ms] = 136.6
+t_tree_write[ms] = 19.3
+t_f_tree_close[ms] = 8.6
+t_tree_fill[ms] = 46.8
+t_total[ms] = 370.9
+all is ok
+Для продолжения нажмите любую клавишу . . . 

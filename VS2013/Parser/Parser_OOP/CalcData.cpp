@@ -2,6 +2,7 @@
 #include "CalcIntegral.h"
 #include "FindS2.h"
 #include "CalcIntegralS1.h"
+#include "FTFilter.h"
 
 #include <iostream>
 #include <algorithm>
@@ -33,24 +34,40 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 	max[1] = *max_element(it_b_1, it_e_1);
 
 	
-	CalcDer calc_der_ortec(data[0], 41);
-	CalcDer calc_der_caen(data[1], 41);
+	//run_6
+	//const double n_points_param = 101; //odd number!
+	//const double der_th = 3.5;
+	//const double max_dist_left = 2000;//ns
+	//const double max_dist_right = 5000;//ns
+	//const double trigg_time = 0;//ns
+
+	//run_7
+	const double n_points_param = 41; //odd number!
+	const double der_th = 5;
+	const double max_dist_left = 2000;//ns
+	const double max_dist_right = 5000;//ns
+	const double trigg_time = 0;//ns
+
+	//CalcDer calc_der_ortec(data[0], n_points_param);
+	CalcDer calc_der_caen(data[1], n_points_param);
 	
 	der_data.resize(n_ch);
-	der_data[0] = calc_der_ortec.GetDer();
+	der_data[0].resize(n_points);
+	//der_data[0] = calc_der_ortec.GetDer();
 	der_data[1] = calc_der_caen.GetDer();
 
 	//smooth_data.resize(n_ch);
 	//smooth_data[0].resize(der_data[0].size());//dummy
 	//smooth_data[1].resize(der_data[0].size());//dummy
 	//smooth_data[1] = calc_der_caen.GetSmooth();
+	
 
-	PeakFinder pk_fndr_caen(calc_der_caen.GetDer(), time, HORIZ_INTERVAL);
+	PeakFinder pk_fndr_caen(calc_der_caen.GetDer(), time, der_th);
 	peak_position.resize(n_ch);
 	//peak_position[0].resize(n_points);
 	peak_position[1] = pk_fndr_caen.GetPeakPosition();
 
-	FindS2 fnd_s2_caen(pk_fndr_caen.GetPeakPosition(), n_points, HORIZ_INTERVAL, 3000);
+	FindS2 fnd_s2_caen(pk_fndr_caen.GetPeakPosition(), n_points, HORIZ_INTERVAL, max_dist_left, max_dist_right);
 	point_s2_left = fnd_s2_caen.GetPointS2Left();
 	point_s2_right = fnd_s2_caen.GetPointS2Right();
 
@@ -67,7 +84,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 	CalcIntegral calc_integral_ortec(data[0], calc_baseline_caen.GetBaselineVec(), 0, 0, 5);
 	//CalcIntegral calc_integral_caen(data[1], calc_baseline_caen.GetBaselineVec(), 0, 0, 5);
 	CalcIntegral calc_integral_caen_s2(data[1], calc_baseline_caen.GetBaselineVec(), point_s2_left * HORIZ_INTERVAL, point_s2_right * HORIZ_INTERVAL, HORIZ_INTERVAL);
-	CalcIntegralS1 calc_integral_caen_s1(data[1], 4800, point_s2_left, HORIZ_INTERVAL, peak_position[1]);
+	CalcIntegralS1 calc_integral_caen_s1(data[1], trigg_time, point_s2_left, HORIZ_INTERVAL, peak_position[1]);
 
 	int_data.resize(n_ch);
 	int_data[0] = calc_integral_ortec.GetDataIntegrtal();
@@ -80,11 +97,20 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 	integral_s1[1] = calc_integral_caen_s1.GetIntegrtal();
 	integral_s2[1] = calc_integral_caen_s2.GetIntegrtal();
 
+	const double cut_th_low_MHz = 0;
+	const double cut_th_high_MHz = 1000;
+	FTFilter ft_filter_caen(data[1], cut_th_low_MHz, cut_th_high_MHz, HORIZ_INTERVAL);
+	yv_cut = ft_filter_caen.GetYvCut();
 }
 
 
 CalcData::~CalcData()
 {
+}
+
+std::vector<double>& CalcData::GetYvCut()
+{
+	return yv_cut;
 }
 
 std::vector< std::vector<double> >& CalcData::GetSmooth()

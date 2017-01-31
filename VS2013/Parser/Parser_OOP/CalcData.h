@@ -34,6 +34,8 @@ public:
 	std::vector<double> GetIntegralS1();
 	std::vector<double> GetIntegralS2();
 
+	std::vector<double>& GetYvCut();
+
 private:
 	std::vector< std::vector<double> >& data;
 	std::vector<double>& time;
@@ -57,5 +59,7 @@ private:
 
 	std::vector<double> integral_s1;
 	std::vector<double> integral_s2;
+
+	std::vector<double> yv_cut;
 };
 

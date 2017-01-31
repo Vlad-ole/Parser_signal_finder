@@ -57,6 +57,9 @@
     <ClCompile Include="CalcIntegralS1.cpp">
       <Filter>Source Files\CalcData</Filter>
     </ClCompile>
+    <ClCompile Include="FTFilter.cpp">
+      <Filter>Source Files\CalcData</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FillCanv.h">
@@ -90,6 +93,9 @@
       <Filter>Header Files\CalcData</Filter>
     </ClInclude>
     <ClInclude Include="CalcIntegralS1.h">
+      <Filter>Header Files\CalcData</Filter>
+    </ClInclude>
+    <ClInclude Include="FTFilter.h">
       <Filter>Header Files\CalcData</Filter>
     </ClInclude>
   </ItemGroup>
