@@ -154,14 +154,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CalcBaseline.cpp" />
-    <ClCompile Include="CalcData.cpp" />
-    <ClCompile Include="CalcDer.cpp" />
-    <ClCompile Include="CalcIntegral.cpp" />
-    <ClCompile Include="FillCanv.cpp" />
+    <ClCompile Include="FillCanv.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="ReadData.cpp" />
-    <ClCompile Include="WriteTree.cpp" />
+    <ClCompile Include="ReadData_CAEN.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ReadData_LeCroy.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="WriteTree.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CalcBaseline.h" />
@@ -170,6 +176,12 @@
     <ClInclude Include="CalcIntegral.h" />
     <ClInclude Include="FillCanv.h" />
     <ClInclude Include="ReadData.h" />
+    <ClInclude Include="ReadData_CAEN.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="ReadData_LeCroy.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="WriteTree.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -6,7 +6,7 @@
 class CalcIntegralS1
 {
 public:
-	CalcIntegralS1(std::vector<double>& data, double time_trigg_s1, int point_s2_left,
+	CalcIntegralS1(std::vector<double>& data, double time_s1_left, double time_s1_right, int point_s2_left,
 		double HORIZ_INTERVAL, std::vector<int>& peak_position);
 	~CalcIntegralS1();
 

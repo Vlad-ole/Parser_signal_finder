@@ -146,6 +146,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Parser_signal_finder_oop\CalcBaseline.cpp" />
+    <ClCompile Include="..\Parser_signal_finder_oop\CalcData.cpp" />
+    <ClCompile Include="..\Parser_signal_finder_oop\CalcDer.cpp" />
+    <ClCompile Include="..\Parser_signal_finder_oop\CalcIntegral.cpp" />
     <ClCompile Include="Main.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>

@@ -46,7 +46,10 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 	const double der_th = 5;
 	const double max_dist_left = 2000;//ns
 	const double max_dist_right = 5000;//ns
-	const double trigg_time = 0;//ns
+	const double time_s1_left = 4500;//ns
+	const double time_s1_right = 6000;//ns
+	//const double time_s1_left = 6000;//ns
+	//const double time_s1_right = 8000;//ns
 
 	//CalcDer calc_der_ortec(data[0], n_points_param);
 	CalcDer calc_der_caen(data[1], n_points_param);
@@ -84,7 +87,11 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 	CalcIntegral calc_integral_ortec(data[0], calc_baseline_caen.GetBaselineVec(), 0, 0, 5);
 	//CalcIntegral calc_integral_caen(data[1], calc_baseline_caen.GetBaselineVec(), 0, 0, 5);
 	CalcIntegral calc_integral_caen_s2(data[1], calc_baseline_caen.GetBaselineVec(), point_s2_left * HORIZ_INTERVAL, point_s2_right * HORIZ_INTERVAL, HORIZ_INTERVAL);
-	CalcIntegralS1 calc_integral_caen_s1(data[1], trigg_time, point_s2_left, HORIZ_INTERVAL, peak_position[1]);
+	CalcIntegralS1 calc_integral_caen_s1(data[1], time_s1_left, time_s1_right, point_s2_left, HORIZ_INTERVAL, peak_position[1]);
+
+	CalcIntegralS1 calc_integral_caen_s1_left(data[1], 0, 4500, point_s2_left, HORIZ_INTERVAL, peak_position[1]);
+	CalcIntegralS1 calc_integral_caen_s1_right(data[1], 6000, point_s2_left * HORIZ_INTERVAL, point_s2_left, HORIZ_INTERVAL, peak_position[1]);
+	integral_s1_caen_outside_the_trigger = calc_integral_caen_s1_left.GetIntegrtal() + calc_integral_caen_s1_right.GetIntegrtal();
 
 	int_data.resize(n_ch);
 	int_data[0] = calc_integral_ortec.GetDataIntegrtal();
@@ -95,12 +102,14 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 	integral_s1[0] = 0;
 	integral_s2[0] = 0;
 	integral_s1[1] = calc_integral_caen_s1.GetIntegrtal();
+	//integral_s1[1] = calc_integral_caen_s1_left.GetIntegrtal() + calc_integral_caen_s1_right.GetIntegrtal();
 	integral_s2[1] = calc_integral_caen_s2.GetIntegrtal();
 
 	const double cut_th_low_MHz = 0;
 	const double cut_th_high_MHz = 1000;
 	FTFilter ft_filter_caen(data[1], cut_th_low_MHz, cut_th_high_MHz, HORIZ_INTERVAL);
 	yv_cut = ft_filter_caen.GetYvCut();
+
 }
 
 
@@ -182,4 +191,9 @@ vector<double> CalcData::GetIntegralS1()
 vector<double> CalcData::GetIntegralS2()
 {
 	return integral_s2;
+}
+
+double CalcData::GetIntegral_s1_caen_outside_the_trigger()
+{
+	return integral_s1_caen_outside_the_trigger;
 }

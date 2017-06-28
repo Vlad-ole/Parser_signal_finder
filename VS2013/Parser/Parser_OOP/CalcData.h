@@ -36,6 +36,8 @@ public:
 
 	std::vector<double>& GetYvCut();
 
+	double GetIntegral_s1_caen_outside_the_trigger();
+
 private:
 	std::vector< std::vector<double> >& data;
 	std::vector<double>& time;
@@ -59,6 +61,8 @@ private:
 
 	std::vector<double> integral_s1;
 	std::vector<double> integral_s2;
+
+	double integral_s1_caen_outside_the_trigger;
 
 	std::vector<double> yv_cut;
 };

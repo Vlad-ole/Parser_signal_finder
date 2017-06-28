@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
 
 	const int events_per_file = 100;
 	const int start_event_number = 1;
-	const int stop_event_number = 22000;
+	const int stop_event_number = 22734;
 	const int n_events = stop_event_number;
 	cout << "n_events = " << stop_event_number - start_event_number + 1 << endl;
 
@@ -118,6 +118,7 @@ int main(int argc, char *argv[])
 		double integral_s1_caen = calc_data.GetIntegralS1()[1];
 		double integral_s2_caen = calc_data.GetIntegralS2()[1];
 		vector<double> yv_cut_caen = calc_data.GetYvCut();
+		double integral_s1_caen_outside_the_trigger = calc_data.GetIntegral_s1_caen_outside_the_trigger();
 		
 		//define tree
 		if ((event_number - start_event_number) % events_per_file == 0)
@@ -153,6 +154,7 @@ int main(int argc, char *argv[])
 			tree->Branch("integral_s1_caen", &integral_s1_caen);			
 			tree->Branch("integral_s2_caen", &integral_s2_caen);
 			tree->Branch("yv_cut_caen", &yv_cut_caen);
+			tree->Branch("integral_s1_caen_outside_the_trigger", &integral_s1_caen_outside_the_trigger);
 		}
 
 		t_before = clock();

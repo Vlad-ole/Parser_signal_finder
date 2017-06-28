@@ -16,40 +16,34 @@
     <Filter Include="Header Files\CalcData">
       <UniqueIdentifier>{266ab470-e69d-42ee-9fee-005e930cc616}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\CalcData">
-      <UniqueIdentifier>{7185680f-a1a7-4376-ac8b-11e556a9b948}</UniqueIdentifier>
+    <Filter Include="Source Files\ReadData">
+      <UniqueIdentifier>{35a5e658-3f94-4e29-825e-ebc4a467cd02}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\ReadData">
+      <UniqueIdentifier>{0cdc5212-a650-41d5-9531-f9e25772aae5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ReadData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="WriteTree.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CalcData.cpp">
-      <Filter>Source Files\CalcData</Filter>
-    </ClCompile>
-    <ClCompile Include="CalcBaseline.cpp">
-      <Filter>Source Files\CalcData</Filter>
     </ClCompile>
     <ClCompile Include="FillCanv.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CalcDer.cpp">
-      <Filter>Source Files\CalcData</Filter>
+    <ClCompile Include="ReadData.cpp">
+      <Filter>Source Files\ReadData</Filter>
     </ClCompile>
-    <ClCompile Include="CalcIntegral.cpp">
-      <Filter>Source Files\CalcData</Filter>
+    <ClCompile Include="ReadData_CAEN.cpp">
+      <Filter>Source Files\ReadData</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadData_LeCroy.cpp">
+      <Filter>Source Files\ReadData</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ReadData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="WriteTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -67,6 +61,15 @@
     </ClInclude>
     <ClInclude Include="CalcIntegral.h">
       <Filter>Header Files\CalcData</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadData.h">
+      <Filter>Header Files\ReadData</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadData_CAEN.h">
+      <Filter>Header Files\ReadData</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadData_LeCroy.h">
+      <Filter>Header Files\ReadData</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

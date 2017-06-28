@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
 	vector<double> *yv_cut_caen = 0;
 	double integral_s1_caen;
 	double integral_s2_caen;
+	double integral_s1_caen_outside_the_trigger;
 
 	chain.SetBranchAddress("baseline_ch0", &baseline_ch0);
 	chain.SetBranchAddress("baseline_ch1", &baseline_ch1);
@@ -102,36 +103,44 @@ int main(int argc, char *argv[])
 	chain.SetBranchAddress("integral_s1_caen", &integral_s1_caen);
 	chain.SetBranchAddress("integral_s2_caen", &integral_s2_caen);
 
+	chain.SetBranchAddress("integral_s1_caen_outside_the_trigger", &integral_s1_caen_outside_the_trigger);
+
 	const int n_events = chain.GetEntries();
 	int pass_counter = 0;
 	//const int n_events = 5000;
 	cout << "chain.GetEntries() = " << chain.GetEntries() << endl;
 
-	if (1)
+	const bool simple_analysis = 1;
+
+	if (simple_analysis)
 	{
 		gROOT->SetBatch(kFALSE);
 		TCut cut1 = "min_ch1 > -1000 && max_ch1 < 4000";
 		TCut cut_s2 = "n_peaks_caen > 30 && n_peaks_caen < 70";
 		TCut cut_s1 = "integral_s1_caen > 0";
 		TCut cut_point_s2_right = "point_s2_right_caen < 9600";
-		TCut cut_first_third = "point_s2_left_caen*5 < 100000";
-		TCut total_cut = cut1 && cut_s2 && cut_s1 && cut_point_s2_right && cut_first_third;
+		TCut cut_point_s2_left = "point_s2_left_caen*5 > 8000";
+		TCut cut_first_third = "point_s2_left_caen*5 < 15000";
+		TCut cut_integral_s1_caen_outside_the_trigger = "integral_s1_caen_outside_the_trigger == 0";
+		TCut total_cut = cut1 && cut_s2 && cut_s1 && cut_point_s2_right && cut_point_s2_left && cut_first_third && cut_integral_s1_caen_outside_the_trigger;
 		
 		chain.SetMarkerStyle(20);
 		chain.SetMarkerSize(1);
 
 		//chain.Draw("n_peaks_caen >> h(100, 0, 100)", cut1 && cut_s1);
-		//chain.Draw("integral_s1_caen:integral_s2_caen", total_cut);
+		chain.Draw("(integral_s1_caen/40E3):(integral_s2_caen/40E3)", total_cut);
+		//chain.Draw("integral_s2_caen >> h(100, 0, 20E6)", total_cut);
+		//chain.Draw("integral_s1_caen >> h(100, 0, 200E3)", total_cut);
 		//chain.Draw("log10(integral_s2_caen / integral_s1_caen) : integral_s2_caen ", cut1 && cut_s1 && "n_peaks_caen > 15");
 		//chain.Draw("peak_position_caen * 5", total_cut);
 		//chain.Draw("integral_s2_caen", total_cut);
-		chain.Draw("(peak_position_caen * 5 - 5000)", cut1 && cut_s2 && cut_s1 && cut_first_third && "peak_position_caen < point_s2_left_caen");
+		//chain.Draw("(peak_position_caen * 5 - 5000)", cut1 && cut_s2 && cut_s1 && cut_first_third && "peak_position_caen < point_s2_left_caen");
 		//chain.Draw("point_s2_left_caen * 5 - 5000", cut1 && cut_s2 && cut_s1 && cut_first_third);
 		
 	}
 
 	
-	if (0)
+	if (!simple_analysis)
 	{
 		//string str_file_out = path_name + "run6_n_s1_s2.txt";
 		//ofstream file_out(str_file_out.c_str());
@@ -176,11 +185,12 @@ int main(int argc, char *argv[])
 			bool cut1 = min_ch1 > -1000 && max_ch1 < 4000;
 			bool cut_s2 = n_peaks_caen > 30 && n_peaks_caen < 70;
 			bool cut_s1 = integral_s1_caen > 0;
+			bool cut_point_s2_left = point_s2_left_caen*5 > 8000;
 			bool cut_point_s2_right = point_s2_right_caen < 9600;
-			bool cut_first_third = point_s2_left_caen*5 < 10000;
-			bool total_cut = cut1 && cut_s2 && cut_s1 && cut_point_s2_right && cut_first_third;
+			bool cut_first_third = point_s2_left_caen*5 < 15000;
+			bool total_cut = cut1 && cut_s2 && cut_s1 && cut_point_s2_right && cut_point_s2_left && cut_first_third;
 
-			if (total_cut)
+			if (total_cut && (integral_s1_caen < 100E3) && (integral_s2_caen > 9E6) && (integral_s2_caen < 15E6))
 			{
 				pass_counter++;
 				cout << "passed event: " << i << endl;

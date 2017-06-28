@@ -3,6 +3,14 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <sstream>
+
+//struct path_info
+//{
+//	std::string path_name;
+//	int event_number;
+//};
+
 
 struct ch_info
 {
@@ -18,15 +26,15 @@ struct comm_info
 	double time_offset;
 };
 
-///read data from .trc files (LeCroy oscilloscope)
+
 class ReadData
 {
 public:
-	ReadData(const std::string path_name, const int file_number, const std::vector<ch_info> ch_list, struct comm_info str_comm);
-	~ReadData();
-	std::vector< std::vector<double> >& GetDataDouble();
-	std::vector<double>& GetTimeArray();
-private:
+	ReadData();
+	virtual ~ReadData() = 0;
+	virtual std::vector< std::vector<double> >& GetDataDouble();
+	virtual std::vector<double>& GetTimeArray();
+protected:
 	std::vector< std::vector<short int> > data;
 	std::vector< std::vector<double> > data_double;
 	std::vector<double> time;

@@ -5,6 +5,8 @@
 #include <fstream>
 
 #include "ReadData.h"
+#include "ReadData_LeCroy.h"
+
 #include "WriteTree.h"
 #include "CalcData.h"
 
@@ -31,23 +33,26 @@ int main(int argc, char *argv[])
 
 	
 
-	const string path_name = "D:\\Data_work\\161026\\run3\\";
-	vector<ch_info> ch_list;
-	ch_list.resize(2);
+	//const string path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_18_small_2\\";
+	
+	//-------------------------------------------------
+	//For LeCroy
+	//vector<ch_info> ch_list;
+	//ch_list.resize(2);
 
-	ch_list[0].id = 1;
-	ch_list[0].VERTICAL_OFFSET = -0.294999986886978;
-	ch_list[0].VERTICAL_GAIN = 0.0000124943999253446;
+	//ch_list[0].id = 1;
+	//ch_list[0].VERTICAL_OFFSET = -0.294999986886978;
+	//ch_list[0].VERTICAL_GAIN = 0.0000124943999253446;
 
-	ch_list[1].id = 3;
-	ch_list[1].VERTICAL_OFFSET = -3.04999995231628;
-	ch_list[1].VERTICAL_GAIN = 0.000124943995615467;
+	//ch_list[1].id = 3;
+	//ch_list[1].VERTICAL_OFFSET = -3.04999995231628;
+	//ch_list[1].VERTICAL_GAIN = 0.000124943995615467;
 
-	comm_info str_comm;
-	str_comm.write_type = 4096;
-	str_comm.time_offset = 40;//us
-	str_comm.HORIZ_INTERVAL = 5;//ns per point;
-
+	//comm_info str_comm;
+	//str_comm.write_type = 4096;
+	//str_comm.time_offset = 40;//us
+	//str_comm.HORIZ_INTERVAL = 5;//ns per point;
+	//-------------------------------------------------
 
 	//WriteTree *wrt = NULL;
 
@@ -57,78 +62,85 @@ int main(int argc, char *argv[])
 	const int n_events = stop_event_number;
 	cout << "n_events = " << n_events << endl;
 
-	TFile *f_tree = new TFile("D:\\Data_work\\161026\\run3\\trees\\Block0000000.root", "RECREATE");
-	TTree tree("t1", "Parser tree");
+	//path_info PathInfo;
+	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_18_small_2\\";
 
-	double baseline_ch0, baseline_ch1;
-	tree.Branch("baseline_ch0", &baseline_ch0, "baseline_ch0/D");
-	tree.Branch("baseline_ch1", &baseline_ch1, "baseline_ch1/D");
+	//TFile *f_tree = new TFile("D:\\Data_work\\161026\\run3\\trees\\Block0000000.root", "RECREATE");
+	//TTree tree("t1", "Parser tree");
 
-	double min_ch0, min_ch1;
-	tree.Branch("min_ch0", &min_ch0, "min_ch0/D");
-	tree.Branch("min_ch1", &min_ch1, "min_ch1/D");
+	//double baseline_ch0, baseline_ch1;
+	//tree.Branch("baseline_ch0", &baseline_ch0, "baseline_ch0/D");
+	//tree.Branch("baseline_ch1", &baseline_ch1, "baseline_ch1/D");
 
-	double max_ch0, max_ch1;
-	tree.Branch("max_ch0", &max_ch0, "max_ch0/D");
-	tree.Branch("max_ch1", &max_ch1, "max_ch1/D");
+	//double min_ch0, min_ch1;
+	//tree.Branch("min_ch0", &min_ch0, "min_ch0/D");
+	//tree.Branch("min_ch1", &min_ch1, "min_ch1/D");
+
+	//double max_ch0, max_ch1;
+	//tree.Branch("max_ch0", &max_ch0, "max_ch0/D");
+	//tree.Branch("max_ch1", &max_ch1, "max_ch1/D");
 
 	//TCanvas canv;
 	//tree.Branch("canvas", "TCanvas", &canv);
 
+	
+
 
 	for (int event_number = start_event_number; event_number <= stop_event_number; event_number++)
 	{
-		t_before = clock();
-		ReadData rdt(path_name, event_number, ch_list, str_comm);
-		t_after = clock();
-		t_read_file += t_after - t_before;
+		//PathInfo.event_number = event_number;
+		
+		//	t_before = clock();
+	//  ReadData rdt(path_name, event_number, ch_list, str_comm);
+	//	t_after = clock();
+	//	t_read_file += t_after - t_before;
 
-		t_before = clock();
-		CalcData calc_data(rdt.GetDataDouble(), rdt.GetTimeArray());
-		t_after = clock();
-		t_calc_data += t_after - t_before;
+	//	t_before = clock();
+	//	CalcData calc_data(rdt.GetDataDouble(), rdt.GetTimeArray());
+	//	t_after = clock();
+	//	t_calc_data += t_after - t_before;
 
-		t_before = clock();
-		FillCanv fill_canv(calc_data);
-		t_after = clock();
-		t_fill_canv += t_after - t_before;
+	//	t_before = clock();
+	//	FillCanv fill_canv(calc_data);
+	//	t_after = clock();
+	//	t_fill_canv += t_after - t_before;
 
-		baseline_ch0 = calc_data.GetBaseline()[0];
-		baseline_ch1 = calc_data.GetBaseline()[1];
+	//	baseline_ch0 = calc_data.GetBaseline()[0];
+	//	baseline_ch1 = calc_data.GetBaseline()[1];
 
-		min_ch0 = calc_data.GetMin()[0];
-		min_ch1 = calc_data.GetMin()[1];
+	//	min_ch0 = calc_data.GetMin()[0];
+	//	min_ch1 = calc_data.GetMin()[1];
 
-		max_ch0 = calc_data.GetMax()[0];
-		max_ch1 = calc_data.GetMax()[1];
+	//	max_ch0 = calc_data.GetMax()[0];
+	//	max_ch1 = calc_data.GetMax()[1];
 
-		//canv = &(fill_canv.GetCanv()).Copy;
-		//tree.Branch("canvas", "TCanvas", &( fill_canv.GetCanv() ) );//this work incorect
+	//	//canv = &(fill_canv.GetCanv()).Copy;
+	//	//tree.Branch("canvas", "TCanvas", &( fill_canv.GetCanv() ) );//this work incorect
 
-		t_before = clock();
-		tree.Fill();
-		t_after = clock();
-		t_tree_fill += t_after - t_before;
+	//	t_before = clock();
+	//	tree.Fill();
+	//	t_after = clock();
+	//	t_tree_fill += t_after - t_before;
 
-		//if ( (event_number - start_event_number) % events_per_file == 0)
-		//	wrt = new WriteTree(path_name + "trees\\");
+	//	//if ( (event_number - start_event_number) % events_per_file == 0)
+	//	//	wrt = new WriteTree(path_name + "trees\\");
 
-		//wrt->Fill(calc_data, fill_canv);
+	//	//wrt->Fill(calc_data, fill_canv);
 
-		//if ( ((event_number - start_event_number) % events_per_file == events_per_file - 1) || (event_number == stop_event_number) )
-		//	delete wrt;
+	//	//if ( ((event_number - start_event_number) % events_per_file == events_per_file - 1) || (event_number == stop_event_number) )
+	//	//	delete wrt;
 
-		if(event_number % 10 == 0)
-			cout << "event_number = " << event_number << endl;
+	//	if(event_number % 10 == 0)
+	//		cout << "event_number = " << event_number << endl;
 	}
 
 	t_before = clock();
-	tree.Write();
+	//tree.Write();
 	t_after = clock();
 	t_tree_write += t_after - t_before;
 
 	t_before = clock();
-	f_tree->Close();
+	//f_tree->Close();
 	t_after = clock();
 	t_f_tree_close += t_after - t_before;
 
