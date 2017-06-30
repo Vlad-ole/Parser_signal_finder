@@ -5,11 +5,11 @@
 #include <fstream>
 #include <sstream>
 
-//struct path_info
-//{
-//	std::string path_name;
-//	int event_number;
-//};
+struct path_info
+{
+	std::string path_name;
+	int event_number;
+};
 
 
 struct ch_info

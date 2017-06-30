@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="CalcData">
-      <UniqueIdentifier>{90640f2e-a34d-4d3c-b764-f6dffb9bb2b4}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -23,18 +20,6 @@
     </ClCompile>
     <ClCompile Include="Main_real.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Parser_signal_finder_oop\CalcBaseline.cpp">
-      <Filter>CalcData</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Parser_signal_finder_oop\CalcData.cpp">
-      <Filter>CalcData</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Parser_signal_finder_oop\CalcDer.cpp">
-      <Filter>CalcData</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Parser_signal_finder_oop\CalcIntegral.cpp">
-      <Filter>CalcData</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

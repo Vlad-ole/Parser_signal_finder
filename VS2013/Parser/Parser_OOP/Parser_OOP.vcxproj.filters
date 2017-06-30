@@ -19,15 +19,18 @@
     <Filter Include="Source Files\CalcData">
       <UniqueIdentifier>{4fc3657e-3dc4-4198-a108-85b4ed0f59eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\ReadData">
+      <UniqueIdentifier>{dc40c212-89a7-41ce-8f75-4f67c2c97f9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ReadData">
+      <UniqueIdentifier>{92587e16-7123-4a45-aedc-f7f7b7d1eb6c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FillCanv.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ReadData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="WriteTree.cpp">
@@ -60,12 +63,18 @@
     <ClCompile Include="FTFilter.cpp">
       <Filter>Source Files\CalcData</Filter>
     </ClCompile>
+    <ClCompile Include="ReadData_CAEN.cpp">
+      <Filter>Source Files\ReadData</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadData_LeCroy.cpp">
+      <Filter>Source Files\ReadData</Filter>
+    </ClCompile>
+    <ClCompile Include="ReadData.cpp">
+      <Filter>Source Files\ReadData</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FillCanv.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ReadData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="WriteTree.h">
@@ -97,6 +106,15 @@
     </ClInclude>
     <ClInclude Include="FTFilter.h">
       <Filter>Header Files\CalcData</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadData_CAEN.h">
+      <Filter>Header Files\ReadData</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadData_LeCroy.h">
+      <Filter>Header Files\ReadData</Filter>
+    </ClInclude>
+    <ClInclude Include="ReadData.h">
+      <Filter>Header Files\ReadData</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

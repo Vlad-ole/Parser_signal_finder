@@ -100,6 +100,10 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="PeakFinder.cpp" />
     <ClCompile Include="ReadData.cpp" />
+    <ClCompile Include="ReadData_CAEN.cpp" />
+    <ClCompile Include="ReadData_LeCroy.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="TypeConvertion.cpp" />
     <ClCompile Include="WriteTree.cpp" />
   </ItemGroup>
@@ -114,6 +118,10 @@
     <ClInclude Include="FTFilter.h" />
     <ClInclude Include="PeakFinder.h" />
     <ClInclude Include="ReadData.h" />
+    <ClInclude Include="ReadData_CAEN.h" />
+    <ClInclude Include="ReadData_LeCroy.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="TypeConvertion.h" />
     <ClInclude Include="WriteTree.h" />
   </ItemGroup>

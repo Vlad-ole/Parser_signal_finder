@@ -6,6 +6,7 @@
 
 #include "ReadData.h"
 #include "ReadData_LeCroy.h"
+#include "ReadData_CAEN.h"
 
 #include "WriteTree.h"
 #include "CalcData.h"
@@ -54,16 +55,34 @@ int main(int argc, char *argv[])
 	//str_comm.HORIZ_INTERVAL = 5;//ns per point;
 	//-------------------------------------------------
 
+
+	//-------------------------------------------------
+	//For CAEN
+	vector<ch_info> ch_list;
+	const int n_ch = 40;
+	ch_list.resize(n_ch);
+
+	for (int i = 0; i < n_ch; i++)
+	{
+		if(i < 8) ch_list[i].id = i;
+		else ch_list[i].id = i + 24;
+	}
+
+
+	comm_info str_comm;
+	str_comm.HORIZ_INTERVAL = 16;//ns per point;
+	//-------------------------------------------------
+
 	//WriteTree *wrt = NULL;
 
-	const int events_per_file = 1000;
-	const int start_event_number = 1;
-	const int stop_event_number = 10;
-	const int n_events = stop_event_number;
+	//const int events_per_file = 1000;
+	const int start_event_number = 2721;
+	const int stop_event_number = 2721;
+	const int n_events = stop_event_number - start_event_number + 1;
 	cout << "n_events = " << n_events << endl;
 
-	//path_info PathInfo;
-	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_18_small_2\\";
+	path_info PathInfo;
+	PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_18_small_2\\";
 
 	//TFile *f_tree = new TFile("D:\\Data_work\\161026\\run3\\trees\\Block0000000.root", "RECREATE");
 	//TTree tree("t1", "Parser tree");
@@ -82,37 +101,35 @@ int main(int argc, char *argv[])
 
 	//TCanvas canv;
 	//tree.Branch("canvas", "TCanvas", &canv);
-
 	
-
-
 	for (int event_number = start_event_number; event_number <= stop_event_number; event_number++)
 	{
-		//PathInfo.event_number = event_number;
+		PathInfo.event_number = event_number;
 		
-		//	t_before = clock();
+		t_before = clock();
+		ReadData_CAEN rdt(PathInfo, ch_list, str_comm);
 	//  ReadData rdt(path_name, event_number, ch_list, str_comm);
-	//	t_after = clock();
-	//	t_read_file += t_after - t_before;
+		t_after = clock();
+		t_read_file += t_after - t_before;
 
-	//	t_before = clock();
-	//	CalcData calc_data(rdt.GetDataDouble(), rdt.GetTimeArray());
-	//	t_after = clock();
-	//	t_calc_data += t_after - t_before;
+		t_before = clock();
+		CalcData calc_data(rdt.GetDataDouble(), rdt.GetTimeArray());
+		t_after = clock();
+		t_calc_data += t_after - t_before;
 
-	//	t_before = clock();
-	//	FillCanv fill_canv(calc_data);
-	//	t_after = clock();
-	//	t_fill_canv += t_after - t_before;
+		//t_before = clock();
+		//FillCanv fill_canv(calc_data);
+		//t_after = clock();
+		//t_fill_canv += t_after - t_before;
 
-	//	baseline_ch0 = calc_data.GetBaseline()[0];
-	//	baseline_ch1 = calc_data.GetBaseline()[1];
+		//baseline_ch0 = calc_data.GetBaseline()[0];
+		//baseline_ch1 = calc_data.GetBaseline()[1];
 
-	//	min_ch0 = calc_data.GetMin()[0];
-	//	min_ch1 = calc_data.GetMin()[1];
+		//min_ch0 = calc_data.GetMin()[0];
+		//min_ch1 = calc_data.GetMin()[1];
 
-	//	max_ch0 = calc_data.GetMax()[0];
-	//	max_ch1 = calc_data.GetMax()[1];
+		//max_ch0 = calc_data.GetMax()[0];
+		//max_ch1 = calc_data.GetMax()[1];
 
 	//	//canv = &(fill_canv.GetCanv()).Copy;
 	//	//tree.Branch("canvas", "TCanvas", &( fill_canv.GetCanv() ) );//this work incorect
@@ -130,8 +147,10 @@ int main(int argc, char *argv[])
 	//	//if ( ((event_number - start_event_number) % events_per_file == events_per_file - 1) || (event_number == stop_event_number) )
 	//	//	delete wrt;
 
-	//	if(event_number % 10 == 0)
-	//		cout << "event_number = " << event_number << endl;
+		if( (event_number % 10 == 0) && (n_events >10 ) )
+			cout << "event_number = " << event_number << endl;
+		else
+			cout << "event_number = " << event_number << endl;
 	}
 
 	t_before = clock();

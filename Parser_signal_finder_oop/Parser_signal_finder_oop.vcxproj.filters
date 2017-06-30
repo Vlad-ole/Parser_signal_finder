@@ -22,6 +22,9 @@
     <Filter Include="Header Files\ReadData">
       <UniqueIdentifier>{0cdc5212-a650-41d5-9531-f9e25772aae5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\CalcData">
+      <UniqueIdentifier>{ed9d8320-ae20-44bc-b175-0ba812d85f52}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -41,6 +44,18 @@
     </ClCompile>
     <ClCompile Include="ReadData_LeCroy.cpp">
       <Filter>Source Files\ReadData</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcBaseline.cpp">
+      <Filter>Source Files\CalcData</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcData.cpp">
+      <Filter>Source Files\CalcData</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcDer.cpp">
+      <Filter>Source Files\CalcData</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcIntegral.cpp">
+      <Filter>Source Files\CalcData</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

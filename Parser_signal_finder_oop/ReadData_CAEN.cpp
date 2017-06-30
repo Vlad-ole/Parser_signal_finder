@@ -7,11 +7,11 @@ using namespace std;
 
 
 
-ReadData_CAEN::ReadData_CAEN(const std::string path_name, const int file_number, const std::vector<ch_info> ch_list, struct comm_info str_comm)
+ReadData_CAEN::ReadData_CAEN(path_info PathInfo, const std::vector<ch_info> ch_list, struct comm_info str_comm)
 {
 	data.resize(ch_list.size());
 	data_double.resize(ch_list.size());
-	const int vsize = 10000;
+	const int vsize = 99990;
 
 	time.resize(vsize);
 	for (int i = 0; i < vsize; i++)
@@ -25,7 +25,7 @@ ReadData_CAEN::ReadData_CAEN(const std::string path_name, const int file_number,
 		data_double[i].resize(vsize);
 
 		stringstream file_full_path;
-		file_full_path << path_name << "run_" << setfill('0') << setw(5) << file_number <<  "__ch_" << ch_list[i].id << ".dat";
+		file_full_path << PathInfo.path_name << "run_" << PathInfo.event_number <<  "__ch_" << ch_list[i].id << ".dat";
 
 		//cout << "file_full_path = " << file_full_path.str() << endl;
 		//file.open(file_full_path.str());
@@ -49,7 +49,8 @@ ReadData_CAEN::ReadData_CAEN(const std::string path_name, const int file_number,
 		//y points to volts
 		for (int j = 0; j < vsize; j++)
 		{
-			data_double[i][j] = (ch_list[i].VERTICAL_GAIN * data[i][j] - ch_list[i].VERTICAL_OFFSET) * 1000/*V -> mV */;
+			//data_double[i][j] = (ch_list[i].VERTICAL_GAIN * data[i][j] - ch_list[i].VERTICAL_OFFSET) * 1000/*V -> mV */;
+			data_double[i][j] = ((2 / 4095.0) * data[i][j] - 1) * 1000;
 			//cout << i << " " << j << " " << data[i][j] << " " <<  data_double[i][j] << endl;
 		}
 

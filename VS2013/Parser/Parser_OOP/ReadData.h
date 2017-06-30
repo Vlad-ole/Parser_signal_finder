@@ -3,10 +3,19 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <sstream>
+
+struct path_info
+{
+	std::string path_name;
+	int run_number;
+	int events_per_file;
+};
+
 
 struct ch_info
 {
-	int id;	
+	int id;
 	double VERTICAL_OFFSET;
 	double VERTICAL_GAIN;
 };
@@ -19,17 +28,17 @@ struct comm_info
 	int WAVE_ARRAY_COUNT;
 };
 
-///read data from .trc files (LeCroy oscilloscope)
+
 class ReadData
 {
 public:
-	ReadData(const std::string path_name, const int file_number, const std::vector<ch_info> ch_list, struct comm_info str_comm);
-	~ReadData();
-	std::vector< std::vector<double> >& GetDataDouble();
-	std::vector<double>& GetTimeArray();
-private:
-	std::vector< std::vector<short int> > data;
-	std::vector< std::vector<double> > data_double;
+	ReadData();
+	virtual ~ReadData() = 0;
+	virtual std::vector< std::vector< std::vector<double> > >& GetDataDouble();
+	virtual std::vector<double>& GetTimeArray();
+protected:
+	std::vector< std::vector<short int> > data;//old variant
+	std::vector< std::vector< std::vector<double> > > data_double;//several events in one run; several ch in one run; many data points
 	std::vector<double> time;
 };
 
