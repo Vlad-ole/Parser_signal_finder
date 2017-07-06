@@ -9,7 +9,7 @@ using namespace std;
 
 ReadData_CAEN::ReadData_CAEN(path_info PathInfo, const std::vector<ch_info> ch_list, struct comm_info str_comm)
 {
-	ofstream f_out("D://Data_work//test_folder//test.txt");
+	//ofstream f_out("D://Data_work//test_folder//test.txt");
 	//vectors initialisation
 	//-------------------------------------
 	//data.resize(PathInfo.events_per_file);
@@ -69,13 +69,14 @@ ReadData_CAEN::ReadData_CAEN(path_info PathInfo, const std::vector<ch_info> ch_l
 		{
 			for (int j = 0; j < str_comm.WAVE_ARRAY_COUNT; j++)
 			{
+				const int abs_point = j + temp_event_id*str_comm.WAVE_ARRAY_COUNT;
 				//data_double[i][j] = (ch_list[i].VERTICAL_GAIN * data[i][j] - ch_list[i].VERTICAL_OFFSET) * 1000/*V -> mV */;
-				data_double[temp_event_id][ch][j] = ((2 / 4095.0) * data_tmp[(j + temp_event_id*PathInfo.events_per_file)] - 1) * 1000;
+				data_double[temp_event_id][ch][j] = ((2 / 4095.0) * data_tmp[abs_point] - 1) * 1000;
 				//cout << i << " " << j << " " << data[i][j] << " " <<  data_double[i][j] << endl;
-				if (ch == 0)
-				{
-					f_out << j << "\t" << temp_event_id << "\t" << data_tmp[(j + temp_event_id*PathInfo.events_per_file)] << "\t" << data_double[temp_event_id][ch][j] << endl;
-				}
+				//if (ch == 0)
+				//{
+				//	f_out << j << "\t" << temp_event_id << "\t" << data_tmp[abs_point] << "\t" << data_double[temp_event_id][ch][j] << endl;
+				//}
 			}
 		}		
 

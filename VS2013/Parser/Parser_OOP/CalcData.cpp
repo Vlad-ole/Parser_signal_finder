@@ -4,6 +4,8 @@
 #include "CalcIntegralS1.h"
 #include "FTFilter.h"
 
+#include "CalcBaselineTrivial.h"
+
 #include <iostream>
 #include <algorithm>
 #include <vector>
@@ -20,19 +22,19 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 	
 
 	
-	vector<double>::const_iterator it_b_0 = data[0].begin();
-	vector<double>::const_iterator it_e_0 = data[0].end();
+	
 	//vector<double>::const_iterator it_b_1 = data[1].begin();
 	//vector<double>::const_iterator it_e_1 = data[1].end();
 
 	min.resize(n_ch);
-	min[0] = *min_element(it_b_0, it_e_0);
-	//min[1] = *min_element(it_b_1, it_e_1);
-
 	max.resize(n_ch);
-	max[0] = *max_element(it_b_0, it_e_0);
-	//max[1] = *max_element(it_b_1, it_e_1);
-
+	for (int i = 0; i < n_ch; i++)
+	{
+		vector<double>::const_iterator it_b = data[i].begin();
+		vector<double>::const_iterator it_e = data[i].end();
+		min[i] = *min_element(it_b, it_e);
+		max[i] = *max_element(it_b, it_e);
+	}
 	
 	//run_6
 	//const double n_points_param = 101; //odd number!
@@ -74,6 +76,11 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 	//point_s2_left = fnd_s2_caen.GetPointS2Left();
 	//point_s2_right = fnd_s2_caen.GetPointS2Right();
 
+	for (int i = 0; i < n_ch; i++)
+	{
+		CalcBaselineTrivial calc_baseline(data[i], 1875);
+		baseline.push_back(calc_baseline.GetBaseline());
+	}
 
 	////CalcBaseline calc_baseline_ortec(data[0], peak_position[0][point_s2_left], peak_position[0][point_s2_right]);
 	//CalcBaseline calc_baseline_caen(data[1], point_s2_left, point_s2_right);
@@ -116,6 +123,11 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 CalcData::~CalcData()
 {
 }
+
+//CalcData& CalcData::operator=(const CalcData& CD)
+//{
+//
+//}
 
 std::vector<double>& CalcData::GetYvCut()
 {

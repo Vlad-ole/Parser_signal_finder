@@ -35,12 +35,12 @@ int main(int argc, char *argv[])
 	//-------------------------------------------------
 	//For CAEN
 	path_info PathInfo;
-	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_18_small_2\\";
-	PathInfo.path_name = "D:\\Data_work\\test_folder\\";
-	PathInfo.events_per_file = 1;	
+	PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_18_small_2\\";
+	//PathInfo.path_name = "D:\\Data_work\\test_folder\\";
+	PathInfo.events_per_file = 10;	
 	
 	vector<ch_info> ch_list;
-	const int n_ch = 1;
+	const int n_ch = 40;
 	ch_list.resize(n_ch);
 	for (int i = 0; i < n_ch; i++)
 	{
@@ -81,13 +81,18 @@ int main(int argc, char *argv[])
 
 		t_before = clock();
 		vector<CalcData> calc_data_v;
+		//calc_data_v.resize(PathInfo.events_per_file);
 		for (int temp_event_id = 0; temp_event_id < PathInfo.events_per_file; temp_event_id++)
 		{
-			CalcData calc_data(rdt.GetDataDouble()[temp_event_id], rdt.GetTimeArray());
+			//CalcData calc_data(rdt.GetDataDouble()[temp_event_id], rdt.GetTimeArray());
+			//calc_data_v[temp_event_id] = calc_data;
+
+			calc_data_v.push_back( CalcData(rdt.GetDataDouble()[temp_event_id], rdt.GetTimeArray()) );
 		}		
 		t_after = clock();
 		t_calc_data += t_after - t_before;
-		
+
+			
 		//double baseline_ch0 = calc_data.GetBaseline()[0];
 		//double baseline_ch1 = calc_data.GetBaseline()[1];
 		//double min_ch0 = calc_data.GetMin()[0];
@@ -111,8 +116,11 @@ int main(int argc, char *argv[])
 		//vector<double> yv_cut_caen = calc_data.GetYvCut();
 		//double integral_s1_caen_outside_the_trigger = calc_data.GetIntegral_s1_caen_outside_the_trigger();
 
-		int temp_event_id = 0;
-		int ch_id = 0;
+		int temp_event_id;
+		int ch_id;
+		double min_element;
+		double max_element;
+		double baseline;
 		vector<double> data_raw = rdt.GetDataDouble()[0][0];
 		//vector<double> time = rdt.GetTimeArray();
 		
@@ -138,6 +146,10 @@ int main(int argc, char *argv[])
 			tree->Branch("event_id", &temp_event_id);
 			tree->Branch("ch_id", &ch_id);
 
+			tree->Branch("min_element", &min_element);
+			tree->Branch("max_element", &max_element);
+			tree->Branch("baseline", &baseline);
+
 			//raw data			
 			tree->Branch("data_raw", &data_raw);
 			//tree->Branch("data_der_ortec", &data_der_ortec);			
@@ -162,8 +174,16 @@ int main(int argc, char *argv[])
 			for (int ch = 0; ch < n_ch; ch++)
 			{
 				data_raw = rdt.GetDataDouble()[temp_event_id][ch];
+
+				//define physical ch_id
 				if (ch < 8) ch_id = ch;
 				else ch_id = ch + 24;
+
+				//get data from calc_data_v for each event and ch
+				min_element = (calc_data_v[temp_event_id].GetMin())[ch];
+				max_element = (calc_data_v[temp_event_id].GetMax())[ch];
+				baseline = (calc_data_v[temp_event_id].GetBaseline())[ch];
+
 				tree->Fill();
 			}
 		}		

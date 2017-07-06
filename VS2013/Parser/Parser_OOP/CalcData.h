@@ -14,6 +14,8 @@ public:
 	CalcData(std::vector< std::vector<double> >& data, std::vector<double>& time);
 	~CalcData();
 
+	//CalcData& operator=(const CalcData& CD);
+
 	std::vector< std::vector<double> >& GetData();
 	std::vector< std::vector<double> >& GetDataMinBaseline();
 	std::vector<double>& GetTime();

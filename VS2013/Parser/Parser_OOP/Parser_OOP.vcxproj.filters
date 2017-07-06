@@ -25,6 +25,12 @@
     <Filter Include="Source Files\ReadData">
       <UniqueIdentifier>{92587e16-7123-4a45-aedc-f7f7b7d1eb6c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\CalcData\CalcBaseline">
+      <UniqueIdentifier>{5d5c1d58-9cd4-473a-a107-c1125e168fff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CalcData\CalcBaseline">
+      <UniqueIdentifier>{6cc9620e-7a46-4317-9dbf-f2ca82125ccf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FillCanv.cpp">
@@ -35,9 +41,6 @@
     </ClCompile>
     <ClCompile Include="WriteTree.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CalcBaseline.cpp">
-      <Filter>Source Files\CalcData</Filter>
     </ClCompile>
     <ClCompile Include="CalcData.cpp">
       <Filter>Source Files\CalcData</Filter>
@@ -72,6 +75,15 @@
     <ClCompile Include="ReadData.cpp">
       <Filter>Source Files\ReadData</Filter>
     </ClCompile>
+    <ClCompile Include="CalcBaseline.cpp">
+      <Filter>Source Files\CalcData\CalcBaseline</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcBaselineZeroComp.cpp">
+      <Filter>Source Files\CalcData\CalcBaseline</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcBaselineTrivial.cpp">
+      <Filter>Source Files\CalcData\CalcBaseline</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FillCanv.h">
@@ -87,9 +99,6 @@
       <Filter>Header Files\CalcData</Filter>
     </ClInclude>
     <ClInclude Include="CalcData.h">
-      <Filter>Header Files\CalcData</Filter>
-    </ClInclude>
-    <ClInclude Include="CalcBaseline.h">
       <Filter>Header Files\CalcData</Filter>
     </ClInclude>
     <ClInclude Include="PeakFinder.h">
@@ -115,6 +124,15 @@
     </ClInclude>
     <ClInclude Include="ReadData.h">
       <Filter>Header Files\ReadData</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcBaseline.h">
+      <Filter>Header Files\CalcData\CalcBaseline</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcBaselineZeroComp.h">
+      <Filter>Header Files\CalcData\CalcBaseline</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcBaselineTrivial.h">
+      <Filter>Header Files\CalcData\CalcBaseline</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
