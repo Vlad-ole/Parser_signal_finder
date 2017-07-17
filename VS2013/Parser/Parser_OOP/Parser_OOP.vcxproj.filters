@@ -84,6 +84,9 @@
     <ClCompile Include="CalcBaselineTrivial.cpp">
       <Filter>Source Files\CalcData\CalcBaseline</Filter>
     </ClCompile>
+    <ClCompile Include="CalcDoubleIntegral.cpp">
+      <Filter>Source Files\CalcData</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FillCanv.h">
@@ -133,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="CalcBaselineTrivial.h">
       <Filter>Header Files\CalcData\CalcBaseline</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcDoubleIntegral.h">
+      <Filter>Header Files\CalcData</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

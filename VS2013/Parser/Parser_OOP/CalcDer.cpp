@@ -2,21 +2,19 @@
 
 using namespace std;
 
-bool CalcDer::is_first_obj = true;
-std::vector<double> CalcDer::C_i_der(0);
-//std::vector<double> CalcDer::C_i_smooth(0);
+vector<bool> CalcDer::is_first_obj({ true, true });
+vector<vector<double> > CalcDer::C_i_der(2);
 
-CalcDer::CalcDer(std::vector<double> yv, const int param_n_points)
+CalcDer::CalcDer(std::vector<double> yv, const int param_n_points, const int order_of_derivative)
 {
 	const int n_points = yv.size();
 	yv_der.resize(n_points);
-	//yv_smooth.resize(n_points);
 
-	if (is_first_obj)
+
+	if (is_first_obj[order_of_derivative])
 	{
-		is_first_obj = false;
-		CalculateCoeffDer(param_n_points);
-		//CalculateCoeffSmooth(param_n_points * 5);
+		is_first_obj[order_of_derivative] = false;
+		CalculateCoeffDer(param_n_points, order_of_derivative);
 	}
 
 	const int point_half = (param_n_points - 1) / 2.0;
@@ -32,20 +30,11 @@ CalcDer::CalcDer(std::vector<double> yv, const int param_n_points)
 		else
 		{
 			double value = 0;
-			for (int j = 0; j < C_i_der.size(); j++)
+			for (int j = 0; j < C_i_der[order_of_derivative].size(); j++)
 			{
-				value += C_i_der[j] * yv[i - point_half + j];
+				value += C_i_der[order_of_derivative][j] * yv[i - point_half + j];
 			}
 			yv_der[i] = value;
-
-			//value = 0;
-			//for (int j = 0; j < C_i_smooth.size(); j++)
-			//{
-			//	value += C_i_smooth[j] * yv[i - point_half + j];
-			//}
-			//yv_smooth[i] = value;
-
-
 		}
 
 	}
@@ -62,40 +51,46 @@ std::vector<double> CalcDer::GetDer()
 	return yv_der;
 }
 
-//std::vector<double> CalcDer::GetSmooth()
-//{
-//	return yv_smooth;
-//}
-
-void CalcDer::CalculateCoeffDer(int points)
+void CalcDer::CalculateCoeffDer(int points, const int order_of_derivative)
 {
-	//cout << endl << "start Calculate filter coefficients" << endl;
-
 	//SavitzkyЦGolay filter
 	//order = 3
 
-	//vector<double> C_i_der;
-	int m = points;//
+	const int m = points;
 
-				   //посчитать коэффициенты  C_i
-	for (int i = (1 - m) / 2.0; i <= (m - 1) / 2.0; i++)
+	//посчитать коэффициенты  C_i
+	switch (order_of_derivative)
 	{
-		double numerator = 5 * (3 * pow(m, 4.0) - 18 * pow(m, 2.0) + 31)*i - 28 * (3 * pow(m, 2.0) - 7)*pow(i, 3.0);
-		double denominator = m * (pow(m, 2.0) - 1) * (3 * pow(m, 4.0) - 39 * pow(m, 2.0) + 108) / 15.0;
-		C_i_der.push_back(numerator / denominator);
+		case 0:
+		{
+			for (int i = (1 - m) / 2.0; i <= (m - 1) / 2.0; i++)
+			{
+				double numerator = (3 * pow(m, 2.0) - 7 - 20 * pow(i, 2.0)) / 4.0;
+				double denominator = m * (pow(m, 2.0) - 4) / 3.0;
+				C_i_der[order_of_derivative].push_back(numerator / denominator);
+			}
+			//cout << "it was initialized values for 0 order_of_derivative" << endl;
+			break;
+		}
+		case 1:
+		{
+			for (int i = (1 - m) / 2.0; i <= (m - 1) / 2.0; i++)
+			{
+				double numerator = 5 * (3 * pow(m, 4.0) - 18 * pow(m, 2.0) + 31)*i - 28 * (3 * pow(m, 2.0) - 7)*pow(i, 3.0);
+				double denominator = m * (pow(m, 2.0) - 1) * (3 * pow(m, 4.0) - 39 * pow(m, 2.0) + 108) / 15.0;
+				C_i_der[order_of_derivative].push_back(numerator / denominator);
+			}
+			//cout << "it was initialized values for 1 order_of_derivative" << endl;
+			break;
+		}
+		default:
+		{
+			cout << "you should enter the order_of_derivative" << endl;
+			system("pause");
+			exit(1);
+			break;
+		}
 	}
-	//cout << endl << "stop Calculate filter coefficients" << endl;
-}
 
-//void CalcDer::CalculateCoeffSmooth(int points)
-//{
-//	int m = points;//
-//
-//	//посчитать коэффициенты  C_i
-//	for (int i = (1 - m) / 2.0; i <= (m - 1) / 2.0; i++)
-//	{
-//		double numerator = (3 * pow(m, 2.0) - 7 - 20 * pow(i, 2.0)) / 4.0;
-//		double denominator = m * (pow(m, 2.0) - 4) / 3.0;
-//		C_i_smooth.push_back(numerator / denominator);
-//	}
-//}
+
+}

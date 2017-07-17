@@ -6,7 +6,8 @@ class CalcBaselineZeroComp :
 	public CalcBaseline
 {
 public:
-	CalcBaselineZeroComp(std::vector<double> yv, const int point_s2_left, const int point_s2_right);
+	CalcBaselineZeroComp(std::vector<double> yv, const int time_left, const int time_right,
+		const double baseline, const int der_max_position, double HORIZ_INTERVAL);
 	virtual ~CalcBaselineZeroComp();
 protected:
 	TSpectrum *s;

@@ -4,7 +4,7 @@ class CalcBaselineTrivial :
 	public CalcBaseline
 {
 public:
-	CalcBaselineTrivial(std::vector<double> yv, const int n_points);
+	CalcBaselineTrivial(std::vector<double> yv, double time, double HORIZ_INTERVAL);
 	virtual ~CalcBaselineTrivial();
 };
 

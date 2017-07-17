@@ -35,33 +35,98 @@ int main(int argc, char *argv[])
 	//-------------------------------------------------
 	//For CAEN
 	path_info PathInfo;
-	PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_18_small_2\\";
+	
 	//PathInfo.path_name = "D:\\Data_work\\test_folder\\";
 	PathInfo.events_per_file = 10;	
 	
 	vector<ch_info> ch_list;
-	const int n_ch = 40;
+	const int n_ch = 1;
 	ch_list.resize(n_ch);
 	for (int i = 0; i < n_ch; i++)
 	{
-		if (i < 8) ch_list[i].id = i;
-		else ch_list[i].id = i + 24;
+		/*if (i < 8) ch_list[i].id = i;
+		else ch_list[i].id = i + 24;*/
+		ch_list[0].id = 38;
 	}
 	
 	comm_info str_comm;
 	str_comm.HORIZ_INTERVAL = 16;//ns per point;
 	str_comm.WAVE_ARRAY_COUNT = 9999;//number of points in one event
 	//-------------------------------------------------
-
-
+	
 
 	//tree settings
-	const int runs_per_tree_file = 100;
-	string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_18_small_2\\";
+	const int runs_per_tree_file = 1000;
+	
 
-	//which raw files should be processed? 
-	const int start_run_number = 2721;
-	const int stop_run_number = 2721;
+	//which raw files should be processed?
+	
+	string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_20_thmV\\";
+	PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_20_thmV\\";
+	const int start_run_number = 2749;
+	const int stop_run_number = 2782;
+
+	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\";
+	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x_ray_18_2mmColl\\";
+	//const int start_run_number = 3537;
+	//const int stop_run_number = 3955;
+
+	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_18_small_2\\";
+	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_18_small_2\\";
+	//const int start_run_number = 2721;
+	//const int stop_run_number = 2748;
+	
+	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_16_thmV\\";
+	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_16_thmV\\";
+	//const int start_run_number = 2783;
+	//const int stop_run_number = 2853;
+
+	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_14_thmV\\";
+	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_14_thmV\\";
+	//const int start_run_number = 2854;
+	//const int stop_run_number = 2914;
+
+	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_12_thmV\\";
+	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_12_thmV\\";
+	//const int start_run_number = 2915;
+	//const int stop_run_number = 2953;
+
+	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_10_thmV\\";
+	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_10_thmV\\";
+	//const int start_run_number = 2954;
+	//const int stop_run_number = 3033;
+
+	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_10_thmV_recalib\\";
+	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_10_thmV_recalib\\";
+	//const int start_run_number = 3034;
+	//const int stop_run_number = 3067;
+
+	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_9_thmV\\";
+	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_9_thmV\\";
+	//const int start_run_number = 3068;
+	//const int stop_run_number = 3108;
+
+	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_8_thmV\\";
+	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_8_thmV\\";
+	//const int start_run_number = 3109;
+	//const int stop_run_number = 3168;
+
+	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_7_thmV\\";
+	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_7_thmV\\";
+	//const int start_run_number = 3169;
+	//const int stop_run_number = 3226;
+
+	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_5_thmV\\";
+	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_5_thmV\\";
+	//const int start_run_number = 3292;
+	//const int stop_run_number = 3395;
+
+	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_4_thmV\\";
+	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_4_thmV\\";
+	//const int start_run_number = 3396;
+	//const int stop_run_number = 3536;
+	
+
 	const int n_runs = stop_run_number;
 	cout << "n_runs = " << stop_run_number - start_run_number + 1 << endl;
 
@@ -72,6 +137,9 @@ int main(int argc, char *argv[])
 	t_initialisation = clock() - t_total;
 	for (int run_number = start_run_number; run_number <= stop_run_number; run_number++)
 	{
+		if (run_number % 1 == 0)
+			cout << "event_number = " << run_number << endl;
+		
 		PathInfo.run_number = run_number;
 
 		t_before = clock();
@@ -87,7 +155,7 @@ int main(int argc, char *argv[])
 			//CalcData calc_data(rdt.GetDataDouble()[temp_event_id], rdt.GetTimeArray());
 			//calc_data_v[temp_event_id] = calc_data;
 
-			calc_data_v.push_back( CalcData(rdt.GetDataDouble()[temp_event_id], rdt.GetTimeArray()) );
+			calc_data_v.push_back(CalcData(rdt.GetDataDouble()[temp_event_id], rdt.GetTimeArray(), str_comm.HORIZ_INTERVAL));
 		}		
 		t_after = clock();
 		t_calc_data += t_after - t_before;
@@ -120,8 +188,14 @@ int main(int argc, char *argv[])
 		int ch_id;
 		double min_element;
 		double max_element;
+		int der_min_position;
+		int der_max_position;
 		double baseline;
+		double integral;
 		vector<double> data_raw = rdt.GetDataDouble()[0][0];
+		vector<double> data_smooth;
+		vector<double> baseline_v;
+		vector<double> der_v;
 		//vector<double> time = rdt.GetTimeArray();
 		
 		//define tree
@@ -145,27 +219,20 @@ int main(int argc, char *argv[])
 			tree->Branch("run_id", &run_number);
 			tree->Branch("event_id", &temp_event_id);
 			tree->Branch("ch_id", &ch_id);
-
+			
 			tree->Branch("min_element", &min_element);
 			tree->Branch("max_element", &max_element);
 			tree->Branch("baseline", &baseline);
+			tree->Branch("baseline_v", &baseline_v);
+			tree->Branch("integral", &integral);
+			tree->Branch("der_v", &der_v);
+			tree->Branch("der_min_position", &der_min_position);
+			tree->Branch("der_max_position", &der_max_position);
 
-			//raw data			
+			//data			
 			tree->Branch("data_raw", &data_raw);
-			//tree->Branch("data_der_ortec", &data_der_ortec);			
-			//tree->Branch("data_int_ortec", &data_int_ortec);
+			tree->Branch("data_smooth", &data_smooth);
 
-			////caen			
-			//tree->Branch("data_raw_caen", &data_raw_caen);			
-			//tree->Branch("data_der_caen", &data_der_caen);			
-			////tree->Branch("data_smooth_caen", &data_smooth_caen);			
-			//tree->Branch("data_int_caen", &data_int_caen);			
-			//tree->Branch("peak_position_caen", &peak_position_caen);			
-			//tree->Branch("baseline_vec_caen", &baseline_vec_caen);			
-			//tree->Branch("integral_s1_caen", &integral_s1_caen);			
-			//tree->Branch("integral_s2_caen", &integral_s2_caen);
-			//tree->Branch("yv_cut_caen", &yv_cut_caen);
-			//tree->Branch("integral_s1_caen_outside_the_trigger", &integral_s1_caen_outside_the_trigger);
 		}
 
 		t_before = clock();
@@ -176,13 +243,20 @@ int main(int argc, char *argv[])
 				data_raw = rdt.GetDataDouble()[temp_event_id][ch];
 
 				//define physical ch_id
-				if (ch < 8) ch_id = ch;
-				else ch_id = ch + 24;
+				/*if (ch < 8) ch_id = ch;
+				else ch_id = ch + 24;*/
+				ch_id = 38;
 
 				//get data from calc_data_v for each event and ch
 				min_element = (calc_data_v[temp_event_id].GetMin())[ch];
 				max_element = (calc_data_v[temp_event_id].GetMax())[ch];
 				baseline = (calc_data_v[temp_event_id].GetBaseline())[ch];
+				integral = (calc_data_v[temp_event_id].GetIntegral())[ch];
+				baseline_v = (calc_data_v[temp_event_id].GetBaselineVec())[ch];
+				der_v = (calc_data_v[temp_event_id].GetDer())[ch];
+				der_min_position = (calc_data_v[temp_event_id].GetDerMinPosition())[ch];
+				der_max_position = (calc_data_v[temp_event_id].GetDerMaxPosition())[ch];
+				data_smooth = (calc_data_v[temp_event_id].GetSmooth())[ch];
 
 				tree->Fill();
 			}
@@ -210,8 +284,7 @@ int main(int argc, char *argv[])
 			counter_f_tree++;
 		}
 
-		if(run_number % 10 == 0)
-			cout << "event_number = " << run_number << endl;
+
 		
 	}
 

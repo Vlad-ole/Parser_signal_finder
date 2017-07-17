@@ -5,6 +5,7 @@
 #include "FTFilter.h"
 
 #include "CalcBaselineTrivial.h"
+#include "CalcBaselineZeroComp.h"
 
 #include <iostream>
 #include <algorithm>
@@ -12,28 +13,42 @@
 using namespace std;
 
 
-CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double>& time) : data(data_), time(time)
+CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double>& time, double HORIZ_INTERVAL) : data(data_), time(time)
 {
 	const int n_ch = data.size();
 	const int n_points = data[0].size();
-	double HORIZ_INTERVAL = 16;
-	
-	//cout <<  "calc_baseline_ch1.GetBaseline() = " << calc_baseline_ch1.GetBaseline() << endl;
-	
-
-	
-	
-	//vector<double>::const_iterator it_b_1 = data[1].begin();
-	//vector<double>::const_iterator it_e_1 = data[1].end();
 
 	min.resize(n_ch);
 	max.resize(n_ch);
+	der_min_position.resize(n_ch);
+	der_max_position.resize(n_ch);
 	for (int i = 0; i < n_ch; i++)
 	{
 		vector<double>::const_iterator it_b = data[i].begin();
 		vector<double>::const_iterator it_e = data[i].end();
 		min[i] = *min_element(it_b, it_e);
 		max[i] = *max_element(it_b, it_e);
+
+		CalcDer calc_der(data[i], 101, 1);
+		der_data.push_back(calc_der.GetDer());
+
+		der_min_position[i] = distance(der_data[i].begin(), min_element(der_data[i].begin(), der_data[i].end()));
+		der_max_position[i] = distance(der_data[i].begin(), max_element(der_data[i].begin(), der_data[i].end()));
+
+		CalcBaselineTrivial calc_baseline(data[i], 30000, HORIZ_INTERVAL);
+		baseline.push_back(calc_baseline.GetBaseline());
+
+		CalcDer calc_smooth(data[i], 21, 0);
+		smooth_data.push_back(calc_smooth.GetDer());
+
+		CalcBaselineZeroComp calc_baseline_zero_comp(data[i], 40000, 100000, calc_baseline.GetBaseline(), der_max_position[i], HORIZ_INTERVAL);
+		baseline_vec.push_back(calc_baseline_zero_comp.GetBaselineVec());
+
+		//CalcIntegral calc_integral(data[i], baseline[i], 37800, 68300, HORIZ_INTERVAL);
+		//integral.push_back(calc_integral.GetIntegrtal());
+
+		CalcIntegral calc_integral_nontriv_baseline(data[i], baseline[i], baseline_vec[i], 35000, 160000, HORIZ_INTERVAL);
+		integral.push_back(calc_integral_nontriv_baseline.GetIntegrtal());
 	}
 	
 	//run_6
@@ -76,11 +91,6 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 	//point_s2_left = fnd_s2_caen.GetPointS2Left();
 	//point_s2_right = fnd_s2_caen.GetPointS2Right();
 
-	for (int i = 0; i < n_ch; i++)
-	{
-		CalcBaselineTrivial calc_baseline(data[i], 1875);
-		baseline.push_back(calc_baseline.GetBaseline());
-	}
 
 	////CalcBaseline calc_baseline_ortec(data[0], peak_position[0][point_s2_left], peak_position[0][point_s2_right]);
 	//CalcBaseline calc_baseline_caen(data[1], point_s2_left, point_s2_right);
@@ -179,6 +189,16 @@ std::vector<double>& CalcData::GetMin()
 	return min;
 }
 
+std::vector<int>& CalcData::GetDerMaxPosition()
+{
+	return der_max_position;
+}
+
+std::vector<int>& CalcData::GetDerMinPosition()
+{
+	return der_min_position;
+}
+
 std::vector< std::vector<int> >& CalcData::GetPeakPosition()
 {
 	return peak_position;
@@ -195,9 +215,9 @@ int CalcData::GetPointS2Right()
 }
 
 
-vector<double> CalcData::GetIntegralS1()
+vector<double> CalcData::GetIntegral()
 {
-	return integral_s1;
+	return integral;
 }
 
 vector<double> CalcData::GetIntegralS2()

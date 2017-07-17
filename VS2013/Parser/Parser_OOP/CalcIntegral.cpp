@@ -4,20 +4,9 @@
 using namespace std;
 
 CalcIntegral::CalcIntegral(std::vector<double> data, std::vector<double> baseline,
-	const double time_from, const double time_to, const double time_scale)
+	const double time_from, const double time_to, const double time_scale) :
+	point_from(time_from / time_scale), point_to(time_to / time_scale)
 {
-	data_integrtal.resize(data.size());
-	double summ = 0;
-
-	for (int i = 0; i < data.size(); i++)
-	{
-		summ += (data[i] - baseline[i]);
-		data_integrtal[i] = summ * time_scale;
-	}
-
-	const int point_from = time_from / time_scale;
-	const int point_to = time_to / time_scale;
-
 	integral = 0;
 	for (int i = point_from; i < point_to; i++)
 	{
@@ -26,14 +15,35 @@ CalcIntegral::CalcIntegral(std::vector<double> data, std::vector<double> baselin
 	integral *= time_scale;
 }
 
+CalcIntegral::CalcIntegral(std::vector<double> data, double baseline,
+	const double time_from, const double time_to, const double time_scale) :
+	point_from(time_from / time_scale), point_to(time_to / time_scale)
+{
+	integral = 0;
+	for (int i = point_from; i < point_to; i++)
+	{
+		integral += (data[i] - baseline);
+	}
+
+	integral *= time_scale;
+}
+
+
+CalcIntegral::CalcIntegral(std::vector<double> data, double baseline, std::vector<double> baseline_v,
+	const double time_from, const double time_to, const double time_scale) :
+	point_from(time_from / time_scale), point_to(time_to / time_scale)
+{
+	integral = 0;
+	for (int i = point_from; i < point_to; i++)
+	{
+		integral += (-data[i] + 2 * baseline - baseline_v[i]);
+	}
+	integral *= time_scale;
+}
+
 
 CalcIntegral::~CalcIntegral()
 {
-}
-
-std::vector<double> CalcIntegral::GetDataIntegrtal()
-{
-	return data_integrtal;
 }
 
 double CalcIntegral::GetIntegrtal()

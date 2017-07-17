@@ -11,7 +11,7 @@
 class CalcData
 {
 public:
-	CalcData(std::vector< std::vector<double> >& data, std::vector<double>& time);
+	CalcData(std::vector< std::vector<double> >& data, std::vector<double>& time, double HORIZ_INTERVAL);
 	~CalcData();
 
 	//CalcData& operator=(const CalcData& CD);
@@ -27,13 +27,15 @@ public:
 	std::vector< std::vector<double> >& GetSmooth();
 	std::vector<double>& GetMax();
 	std::vector<double>& GetMin();
+	std::vector<int>& GetDerMaxPosition();
+	std::vector<int>& GetDerMinPosition();
 
 	std::vector< std::vector<int> >& GetPeakPosition();
 
 	int GetPointS2Left();
 	int GetPointS2Right();
 
-	std::vector<double> GetIntegralS1();
+	std::vector<double> GetIntegral();
 	std::vector<double> GetIntegralS2();
 
 	std::vector<double>& GetYvCut();
@@ -46,6 +48,9 @@ private:
 
 	std::vector<double> max;
 	std::vector<double> min;
+
+	std::vector<int> der_min_position;
+	std::vector<int> der_max_position;
 	
 	std::vector<double> baseline;
 	std::vector< std::vector<double> > baseline_vec;
@@ -61,7 +66,7 @@ private:
 	int point_s2_left;
 	int point_s2_right;
 
-	std::vector<double> integral_s1;
+	std::vector<double> integral;
 	std::vector<double> integral_s2;
 
 	double integral_s1_caen_outside_the_trigger;

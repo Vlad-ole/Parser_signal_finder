@@ -31,3 +31,14 @@ std::vector<double> TypeConvertion::GetVectorDouble(std::vector<float>& yv_float
 
 	return yv_double;
 }
+
+std::vector<double> TypeConvertion::GetVectorDoubleInvert(std::vector<double> & yv_double)
+{
+	std::vector<double> yv_double_invert(yv_double.size());
+	for (int i = 0; i < yv_double.size(); i++)
+	{
+		yv_double_invert[i] = -yv_double[i];
+	}
+
+	return yv_double_invert;
+}
