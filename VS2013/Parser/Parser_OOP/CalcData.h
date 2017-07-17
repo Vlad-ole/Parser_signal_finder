@@ -42,6 +42,8 @@ public:
 
 	double GetIntegral_s1_caen_outside_the_trigger();
 
+	std::vector<double> GetInvertSignal(std::vector<double> yv, double baseline);
+
 private:
 	std::vector< std::vector<double> >& data;
 	std::vector<double>& time;

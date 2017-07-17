@@ -87,6 +87,9 @@
     <ClCompile Include="CalcDoubleIntegral.cpp">
       <Filter>Source Files\CalcData</Filter>
     </ClCompile>
+    <ClCompile Include="CalcBaselineMedianFilter.cpp">
+      <Filter>Source Files\CalcData\CalcBaseline</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FillCanv.h">
@@ -139,6 +142,9 @@
     </ClInclude>
     <ClInclude Include="CalcDoubleIntegral.h">
       <Filter>Header Files\CalcData</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcBaselineMedianFilter.h">
+      <Filter>Header Files\CalcData\CalcBaseline</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

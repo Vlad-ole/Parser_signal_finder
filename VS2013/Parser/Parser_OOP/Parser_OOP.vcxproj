@@ -90,6 +90,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CalcBaseline.cpp" />
+    <ClCompile Include="CalcBaselineMedianFilter.cpp" />
     <ClCompile Include="CalcBaselineTrivial.cpp" />
     <ClCompile Include="CalcBaselineZeroComp.cpp" />
     <ClCompile Include="CalcData.cpp" />
@@ -113,6 +114,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CalcBaseline.h" />
+    <ClInclude Include="CalcBaselineMedianFilter.h" />
     <ClInclude Include="CalcBaselineTrivial.h" />
     <ClInclude Include="CalcBaselineZeroComp.h" />
     <ClInclude Include="CalcData.h" />

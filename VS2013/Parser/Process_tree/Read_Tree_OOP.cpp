@@ -106,11 +106,13 @@ int main(int argc, char *argv[])
 	//chain.Draw("(-data_raw + 2*baseline - baseline):time_v", total_cut, "same LP");
 
 	chain.Draw("(-data_raw + 2*baseline):time_v", total_cut, "LP");
-	chain.SetLineColor(kGreen);
-	//chain.Draw("baseline:time_v", total_cut, "same L");
-	//chain.SetLineColor(kRed);
-	//chain.Draw("baseline_v:time_v", total_cut, "same L");
-	chain.Draw("(-data_smooth + 2*baseline):time_v", total_cut, "same L");
+	//	//chain.Draw("baseline:time_v", total_cut, "same L");
+	chain.SetLineColor(kRed);
+	chain.Draw("baseline_v:time_v", total_cut, "same L");
+	//chain.SetLineColor(kGreen);
+	//chain.Draw("(-data_smooth + 2*baseline):time_v", total_cut, "same L");
+
+	//chain.Draw("((-data_smooth + 2*baseline) - baseline_v):time_v", total_cut, "LP");
 
 	//chain.Draw("integral:run_id", total_cut);
 	//chain.Draw("integral:event_id", total_cut);

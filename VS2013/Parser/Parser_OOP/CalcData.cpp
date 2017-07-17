@@ -6,6 +6,7 @@
 
 #include "CalcBaselineTrivial.h"
 #include "CalcBaselineZeroComp.h"
+#include "CalcBaselineMedianFilter.h"
 
 #include <iostream>
 #include <algorithm>
@@ -41,8 +42,13 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		CalcDer calc_smooth(data[i], 21, 0);
 		smooth_data.push_back(calc_smooth.GetDer());
 
-		CalcBaselineZeroComp calc_baseline_zero_comp(data[i], 40000, 100000, calc_baseline.GetBaseline(), der_max_position[i], HORIZ_INTERVAL);
-		baseline_vec.push_back(calc_baseline_zero_comp.GetBaselineVec());
+		vector<double> invert_data = GetInvertSignal(data[i], baseline[i]);
+
+		CalcBaselineMedianFilter calc_baseline_median_filter(invert_data, 0, 160000, 11, HORIZ_INTERVAL);
+		baseline_vec.push_back(calc_baseline_median_filter.GetBaselineVec());
+
+		//CalcBaselineZeroComp calc_baseline_zero_comp(data[i]/*smooth_data[i]*/, 40000, 100000, calc_baseline.GetBaseline(), der_max_position[i], HORIZ_INTERVAL);
+		//baseline_vec.push_back(calc_baseline_zero_comp.GetBaselineVec());
 
 		//CalcIntegral calc_integral(data[i], baseline[i], 37800, 68300, HORIZ_INTERVAL);
 		//integral.push_back(calc_integral.GetIntegrtal());
@@ -138,6 +144,16 @@ CalcData::~CalcData()
 //{
 //
 //}
+
+std::vector<double> CalcData::GetInvertSignal(std::vector<double> yv, double baseline)
+{
+	vector<double> yv_double_invert(yv.size());
+	for (int i = 0; i < yv.size(); i++)
+	{
+		yv_double_invert[i] = -yv[i] + 2 * baseline;
+	}
+	return yv_double_invert;
+}
 
 std::vector<double>& CalcData::GetYvCut()
 {
