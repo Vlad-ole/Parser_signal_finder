@@ -7,6 +7,7 @@ class CalcDoubleIntegral
 {
 public:
 	CalcDoubleIntegral(std::vector<double> data, std::vector<double> baseline, const double time_scale);
+	CalcDoubleIntegral(std::vector<double> data, double baseline, const double time_scale);
 	~CalcDoubleIntegral();
 
 	std::vector<double> GetDataIntegrtal();

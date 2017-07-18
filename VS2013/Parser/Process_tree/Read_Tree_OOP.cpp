@@ -23,6 +23,7 @@ int main(int argc, char *argv[])
 {
 	const int n_tree_files = 1;
 	const string path_name = "D:\\Data_work\\170622_caen_trees\\event_x-ray_20_thmV\\";
+	//const string path_name = "D:\\Data_work\\170622_caen_trees\\event_x-ray_4_thmV\\";
 	const double time_scale = 16;
 
 	TObjArray Hlist_gr(0);
@@ -51,6 +52,7 @@ int main(int argc, char *argv[])
 	int der_max_position;
 	vector<double> *data_raw = 0;
 	vector<double> *data_der = 0;
+	vector<double> *data_int = 0;
 	vector<double> *data_smooth = 0;
 	vector<double> *baseline_v = 0;
 
@@ -63,6 +65,7 @@ int main(int argc, char *argv[])
 	chain.SetBranchAddress("der_max_position", &der_max_position);
 
 	chain.SetBranchAddress("data_raw", &data_raw);
+	chain.SetBranchAddress("data_int", &data_raw);
 	chain.SetBranchAddress("data_smooth", &data_smooth);
 	chain.SetBranchAddress("data_der", &data_der);
 
@@ -90,6 +93,7 @@ int main(int argc, char *argv[])
 	//TCut total_cut = "ch_id == 0 && run_id < 3000 && event_id < 10 && integral > 2E6 && integral < 5E6";
 	//TCut total_cut = "ch_id == 38 && run_id < 10000 && event_id < 10 ";
 	TCut total_cut = "ch_id == 38 && run_id == 2756 && event_id == 2 ";
+	//TCut total_cut = "ch_id == 38 && run_id == 3398 && event_id == 3 ";
 
 	chain.SetMarkerStyle(20);
 	chain.SetMarkerSize(1);
@@ -106,7 +110,11 @@ int main(int argc, char *argv[])
 	//chain.Draw("(-data_der + 2*baseline - baseline):time_v", total_cut, "L");
 	chain.SetLineColor(kPink);
 	chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
+	//chain.Draw("(-data_raw - baseline_v):time_v", total_cut, "LP");
 
+	//chain.Draw("(data_int/100.0):time_v", total_cut, "L");
+	//chain.SetLineColor(kGreen);
+	//chain.Draw("(-data_raw + baseline):time_v", total_cut, "same LP");
 
 	//chain.Draw("(-data_raw + 2*baseline):time_v", total_cut, "LP");
 	//	//chain.Draw("baseline:time_v", total_cut, "same L");

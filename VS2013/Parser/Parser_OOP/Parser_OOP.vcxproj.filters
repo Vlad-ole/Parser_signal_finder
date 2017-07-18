@@ -31,6 +31,24 @@
     <Filter Include="Source Files\CalcData\CalcBaseline">
       <UniqueIdentifier>{6cc9620e-7a46-4317-9dbf-f2ca82125ccf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\CalcData\PeakFinder">
+      <UniqueIdentifier>{ba7727c2-e852-4074-8e31-53f1eec59c07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CalcData\CalcIntegral">
+      <UniqueIdentifier>{abb20c68-19e8-43b9-ba9d-b0f86145ba6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\CalcData\Filter">
+      <UniqueIdentifier>{7b91b81d-bac3-4b76-a434-62d9468bcf8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CalcData\CalcIntegral">
+      <UniqueIdentifier>{2d6b6f4e-097d-459c-b243-7c3700288f9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CalcData\Filter">
+      <UniqueIdentifier>{0e008e9a-4347-49cc-b4d1-eb9718a378e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CalcData\PeakFinder">
+      <UniqueIdentifier>{c7519d2c-8361-412e-9797-7c435f199807}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FillCanv.cpp">
@@ -45,26 +63,8 @@
     <ClCompile Include="CalcData.cpp">
       <Filter>Source Files\CalcData</Filter>
     </ClCompile>
-    <ClCompile Include="CalcDer.cpp">
-      <Filter>Source Files\CalcData</Filter>
-    </ClCompile>
-    <ClCompile Include="CalcIntegral.cpp">
-      <Filter>Source Files\CalcData</Filter>
-    </ClCompile>
-    <ClCompile Include="PeakFinder.cpp">
-      <Filter>Source Files\CalcData</Filter>
-    </ClCompile>
     <ClCompile Include="TypeConvertion.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="FindS2.cpp">
-      <Filter>Source Files\CalcData</Filter>
-    </ClCompile>
-    <ClCompile Include="CalcIntegralS1.cpp">
-      <Filter>Source Files\CalcData</Filter>
-    </ClCompile>
-    <ClCompile Include="FTFilter.cpp">
-      <Filter>Source Files\CalcData</Filter>
     </ClCompile>
     <ClCompile Include="ReadData_CAEN.cpp">
       <Filter>Source Files\ReadData</Filter>
@@ -84,11 +84,35 @@
     <ClCompile Include="CalcBaselineTrivial.cpp">
       <Filter>Source Files\CalcData\CalcBaseline</Filter>
     </ClCompile>
-    <ClCompile Include="CalcDoubleIntegral.cpp">
-      <Filter>Source Files\CalcData</Filter>
-    </ClCompile>
     <ClCompile Include="CalcBaselineMedianFilter.cpp">
       <Filter>Source Files\CalcData\CalcBaseline</Filter>
+    </ClCompile>
+    <ClCompile Include="FindS2.cpp">
+      <Filter>Source Files\CalcData\PeakFinder</Filter>
+    </ClCompile>
+    <ClCompile Include="PeakFinder.cpp">
+      <Filter>Source Files\CalcData\PeakFinder</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcIntegral.cpp">
+      <Filter>Source Files\CalcData\CalcIntegral</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcIntegralS1.cpp">
+      <Filter>Source Files\CalcData\CalcIntegral</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcDoubleIntegral.cpp">
+      <Filter>Source Files\CalcData\CalcIntegral</Filter>
+    </ClCompile>
+    <ClCompile Include="CalcDer.cpp">
+      <Filter>Source Files\CalcData\Filter</Filter>
+    </ClCompile>
+    <ClCompile Include="FTFilter.cpp">
+      <Filter>Source Files\CalcData\Filter</Filter>
+    </ClCompile>
+    <ClCompile Include="PeakFinderBase.cpp">
+      <Filter>Source Files\CalcData\PeakFinder</Filter>
+    </ClCompile>
+    <ClCompile Include="PeakFinderFind.cpp">
+      <Filter>Source Files\CalcData\PeakFinder</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -98,29 +122,11 @@
     <ClInclude Include="WriteTree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CalcIntegral.h">
-      <Filter>Header Files\CalcData</Filter>
-    </ClInclude>
-    <ClInclude Include="CalcDer.h">
-      <Filter>Header Files\CalcData</Filter>
-    </ClInclude>
     <ClInclude Include="CalcData.h">
-      <Filter>Header Files\CalcData</Filter>
-    </ClInclude>
-    <ClInclude Include="PeakFinder.h">
       <Filter>Header Files\CalcData</Filter>
     </ClInclude>
     <ClInclude Include="TypeConvertion.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FindS2.h">
-      <Filter>Header Files\CalcData</Filter>
-    </ClInclude>
-    <ClInclude Include="CalcIntegralS1.h">
-      <Filter>Header Files\CalcData</Filter>
-    </ClInclude>
-    <ClInclude Include="FTFilter.h">
-      <Filter>Header Files\CalcData</Filter>
     </ClInclude>
     <ClInclude Include="ReadData_CAEN.h">
       <Filter>Header Files\ReadData</Filter>
@@ -140,11 +146,35 @@
     <ClInclude Include="CalcBaselineTrivial.h">
       <Filter>Header Files\CalcData\CalcBaseline</Filter>
     </ClInclude>
-    <ClInclude Include="CalcDoubleIntegral.h">
-      <Filter>Header Files\CalcData</Filter>
-    </ClInclude>
     <ClInclude Include="CalcBaselineMedianFilter.h">
       <Filter>Header Files\CalcData\CalcBaseline</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcIntegralS1.h">
+      <Filter>Header Files\CalcData\CalcIntegral</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcIntegral.h">
+      <Filter>Header Files\CalcData\CalcIntegral</Filter>
+    </ClInclude>
+    <ClInclude Include="FTFilter.h">
+      <Filter>Header Files\CalcData\Filter</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcDer.h">
+      <Filter>Header Files\CalcData\Filter</Filter>
+    </ClInclude>
+    <ClInclude Include="PeakFinder.h">
+      <Filter>Header Files\CalcData\PeakFinder</Filter>
+    </ClInclude>
+    <ClInclude Include="FindS2.h">
+      <Filter>Header Files\CalcData\PeakFinder</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcDoubleIntegral.h">
+      <Filter>Header Files\CalcData\CalcIntegral</Filter>
+    </ClInclude>
+    <ClInclude Include="PeakFinderBase.h">
+      <Filter>Header Files\CalcData\PeakFinder</Filter>
+    </ClInclude>
+    <ClInclude Include="PeakFinderFind.h">
+      <Filter>Header Files\CalcData\PeakFinder</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

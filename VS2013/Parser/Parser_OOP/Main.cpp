@@ -61,10 +61,10 @@ int main(int argc, char *argv[])
 
 	//which raw files should be processed?
 	
-	string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_20_thmV\\";
-	PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_20_thmV\\";
-	const int start_run_number = 2749;
-	const int stop_run_number = 2782;
+	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_20_thmV\\";
+	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_20_thmV\\";
+	//const int start_run_number = 2749;
+	//const int stop_run_number = 2782;
 
 	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\";
 	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x_ray_18_2mmColl\\";
@@ -121,10 +121,10 @@ int main(int argc, char *argv[])
 	//const int start_run_number = 3292;
 	//const int stop_run_number = 3395;
 
-	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_4_thmV\\";
-	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_4_thmV\\";
-	//const int start_run_number = 3396;
-	//const int stop_run_number = 3536;
+	string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_4_thmV\\";
+	PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_4_thmV\\";
+	const int start_run_number = 3396;
+	const int stop_run_number = 3536;
 	
 
 	const int n_runs = stop_run_number;
@@ -195,6 +195,7 @@ int main(int argc, char *argv[])
 		vector<double> data_raw = rdt.GetDataDouble()[0][0];
 		vector<double> data_smooth;
 		vector<double> data_der;
+		vector<double> data_int;
 		vector<double> baseline_v;
 		
 		//vector<double> time = rdt.GetTimeArray();
@@ -233,6 +234,7 @@ int main(int argc, char *argv[])
 			//data			
 			tree->Branch("data_raw", &data_raw);
 			tree->Branch("data_smooth", &data_smooth);
+			tree->Branch("data_int", &data_int);
 
 		}
 
@@ -258,6 +260,7 @@ int main(int argc, char *argv[])
 				der_min_position = (calc_data_v[temp_event_id].GetDerMinPosition())[ch];
 				der_max_position = (calc_data_v[temp_event_id].GetDerMaxPosition())[ch];
 				data_smooth = (calc_data_v[temp_event_id].GetSmooth())[ch];
+				data_int = (calc_data_v[temp_event_id].GetInt())[ch];
 
 				tree->Fill();
 			}

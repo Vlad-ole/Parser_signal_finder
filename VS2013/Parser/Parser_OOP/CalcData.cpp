@@ -8,6 +8,8 @@
 #include "CalcBaselineZeroComp.h"
 #include "CalcBaselineMedianFilter.h"
 
+#include "CalcDoubleIntegral.h"
+
 #include <iostream>
 #include <algorithm>
 #include <vector>
@@ -27,42 +29,46 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 	der_max_position.resize(n_ch);
 	for (int i = 0; i < n_ch; i++)
 	{
+		//it's nesessry to find trivial baseline. We can use this value for more complex algorithms
+		CalcBaselineTrivial calc_baseline(data[i], 30000, HORIZ_INTERVAL);
+		baseline.push_back(calc_baseline.GetBaseline());
+
+		//it's comfortable to work with invert signal
+		vector<double> invert_data = GetInvertSignal(data[i], baseline[i]);
+
+		CalcDoubleIntegral calc_double_int(invert_data, baseline[i], HORIZ_INTERVAL);
+		int_data.push_back(calc_double_int.GetDataIntegrtal());
+
 		//min and max values will help to avoid signals with saturation
-		vector<double>::const_iterator it_b = data[i].begin();
-		vector<double>::const_iterator it_e = data[i].end();
+		vector<double>::const_iterator it_b = invert_data.begin();
+		vector<double>::const_iterator it_e = invert_data.end();
 		min[i] = *min_element(it_b, it_e);
 		max[i] = *max_element(it_b, it_e);
 
 		//to find extremum in der and change baseline (optional)
-		CalcDer calc_der_tmp(data[i], 101, 1);
+		CalcDer calc_der_tmp(invert_data, 101, 1);
 		der_data_tmp = calc_der_tmp.GetDer();
 		der_min_position[i] = distance(der_data_tmp.begin(), min_element(der_data_tmp.begin(), der_data_tmp.end()));
 		der_max_position[i] = distance(der_data_tmp.begin(), max_element(der_data_tmp.begin(), der_data_tmp.end()));
 
 		//to find nonoverlapped signals
-		CalcDer calc_der(data[i], 21, 1);
+		CalcDer calc_der(invert_data, 21, 1);
 		der_data.push_back(calc_der.GetDer());
 
-		//it's nesessry to find trivial baseline. We can use this value for more complex algorithms
-		CalcBaselineTrivial calc_baseline(data[i], 30000, HORIZ_INTERVAL);
-		baseline.push_back(calc_baseline.GetBaseline());
-
-		CalcDer calc_smooth(data[i], 21, 0);
-		smooth_data.push_back(calc_smooth.GetDer());
-
-		vector<double> invert_data = GetInvertSignal(data[i], baseline[i]);
+		CalcDer calc_smooth(invert_data, 21, 0);
+		smooth_data.push_back(calc_smooth.GetDer());		
 
 		//CalcBaselineMedianFilter calc_baseline_median_filter(invert_data, 0, 160000, 11, HORIZ_INTERVAL);
 		//baseline_vec.push_back(calc_baseline_median_filter.GetBaselineVec());
 
-		CalcBaselineZeroComp calc_baseline_zero_comp(data[i]/*smooth_data[i]*/, 40000, 100000, calc_baseline.GetBaseline(), der_max_position[i], HORIZ_INTERVAL);
+		CalcBaselineZeroComp calc_baseline_zero_comp(invert_data/*smooth_data[i]*/, 40000, 100000, calc_baseline.GetBaseline(), der_max_position[i], HORIZ_INTERVAL);
 		baseline_vec.push_back(calc_baseline_zero_comp.GetBaselineVec());
 
 		//CalcIntegral calc_integral(data[i], baseline[i], 37800, 68300, HORIZ_INTERVAL);
 		//integral.push_back(calc_integral.GetIntegrtal());
 
 		//finaly, we calculate integral of signal
-		CalcIntegral calc_integral_nontriv_baseline(data[i], baseline[i], baseline_vec[i], 35000, 160000, HORIZ_INTERVAL);
+		CalcIntegral calc_integral_nontriv_baseline(invert_data, baseline[i], baseline_vec[i], 35000, 160000, HORIZ_INTERVAL);
 		integral.push_back(calc_integral_nontriv_baseline.GetIntegrtal());
 	}
 	

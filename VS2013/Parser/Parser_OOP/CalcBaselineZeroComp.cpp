@@ -12,12 +12,13 @@ CalcBaselineZeroComp::CalcBaselineZeroComp(std::vector<double> yv, const int tim
 	const int point_left = time_left / HORIZ_INTERVAL;
 	const int point_right = time_right / HORIZ_INTERVAL;
 	
-	vector<double> yv_double_invert(yv_size);
-	for (int i = 0; i < yv_size; i++)
-	{
-		yv_double_invert[i] = -yv[i] + 2 * baseline;
-	}
-	std::vector<float> yv_float = TypeConvertion::GetVectorFloat(yv_double_invert);
+	//vector<double> yv_double_invert(yv_size);
+	//for (int i = 0; i < yv_size; i++)
+	//{
+	//	yv_double_invert[i] = -yv[i] + 2 * baseline;
+	//}
+
+	std::vector<float> yv_float = TypeConvertion::GetVectorFloat(yv);
 	s = new TSpectrum();
 	s->Background(&yv_float[point_left], point_right - point_left, 50, TSpectrum::kBackIncreasingWindow, TSpectrum::kBackOrder2, kTRUE, TSpectrum::kBackSmoothing3, kFALSE);
 
