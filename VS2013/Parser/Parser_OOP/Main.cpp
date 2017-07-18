@@ -194,8 +194,9 @@ int main(int argc, char *argv[])
 		double integral;
 		vector<double> data_raw = rdt.GetDataDouble()[0][0];
 		vector<double> data_smooth;
+		vector<double> data_der;
 		vector<double> baseline_v;
-		vector<double> der_v;
+		
 		//vector<double> time = rdt.GetTimeArray();
 		
 		//define tree
@@ -225,7 +226,7 @@ int main(int argc, char *argv[])
 			tree->Branch("baseline", &baseline);
 			tree->Branch("baseline_v", &baseline_v);
 			tree->Branch("integral", &integral);
-			tree->Branch("der_v", &der_v);
+			tree->Branch("data_der", &data_der);
 			tree->Branch("der_min_position", &der_min_position);
 			tree->Branch("der_max_position", &der_max_position);
 
@@ -253,7 +254,7 @@ int main(int argc, char *argv[])
 				baseline = (calc_data_v[temp_event_id].GetBaseline())[ch];
 				integral = (calc_data_v[temp_event_id].GetIntegral())[ch];
 				baseline_v = (calc_data_v[temp_event_id].GetBaselineVec())[ch];
-				der_v = (calc_data_v[temp_event_id].GetDer())[ch];
+				data_der = (calc_data_v[temp_event_id].GetDer())[ch];
 				der_min_position = (calc_data_v[temp_event_id].GetDerMinPosition())[ch];
 				der_max_position = (calc_data_v[temp_event_id].GetDerMaxPosition())[ch];
 				data_smooth = (calc_data_v[temp_event_id].GetSmooth())[ch];

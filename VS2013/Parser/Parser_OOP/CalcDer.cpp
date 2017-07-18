@@ -10,12 +10,18 @@ CalcDer::CalcDer(std::vector<double> yv, const int param_n_points, const int ord
 	const int n_points = yv.size();
 	yv_der.resize(n_points);
 
+	//well, I do not know  how to write this part correctly
+	//What should I do if I have different param_n_points for the same order_of_derivative?
+	//if (is_first_obj[order_of_derivative])
+	//{
+	//	is_first_obj[order_of_derivative] = false;
+	//	CalculateCoeffDer(param_n_points, order_of_derivative);
+	//}
 
-	if (is_first_obj[order_of_derivative])
-	{
-		is_first_obj[order_of_derivative] = false;
-		CalculateCoeffDer(param_n_points, order_of_derivative);
-	}
+	//simple variant
+	C_i_der[0].clear();
+	C_i_der[1].clear();
+	CalculateCoeffDer(param_n_points, order_of_derivative);
 
 	const int point_half = (param_n_points - 1) / 2.0;
 

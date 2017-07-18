@@ -50,10 +50,10 @@ int main(int argc, char *argv[])
 	int der_min_position;
 	int der_max_position;
 	vector<double> *data_raw = 0;
-	vector<double> *der_v = 0;
-	vector<double> *baseline_v = 0;
+	vector<double> *data_der = 0;
 	vector<double> *data_smooth = 0;
-	
+	vector<double> *baseline_v = 0;
+
 	chain.SetBranchAddress("min_element", &min_element);
 	chain.SetBranchAddress("max_element", &max_element);
 	chain.SetBranchAddress("baseline", &baseline);
@@ -64,6 +64,7 @@ int main(int argc, char *argv[])
 
 	chain.SetBranchAddress("data_raw", &data_raw);
 	chain.SetBranchAddress("data_smooth", &data_smooth);
+	chain.SetBranchAddress("data_der", &data_der);
 
 	chain.SetBranchAddress("run_id", &run_id);
 	chain.SetBranchAddress("ch_id", &ch_id);
@@ -101,14 +102,16 @@ int main(int argc, char *argv[])
 
 	//chain.Draw("der_max_position", total_cut, "L");
 
-	//chain.Draw("der_v:time_v", total_cut, "L");
-	//chain.SetLineColor(kPink);
-	//chain.Draw("(-data_raw + 2*baseline - baseline):time_v", total_cut, "same LP");
+	chain.Draw("data_der*10:time_v", total_cut, "L");
+	//chain.Draw("(-data_der + 2*baseline - baseline):time_v", total_cut, "L");
+	chain.SetLineColor(kPink);
+	chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
 
-	chain.Draw("(-data_raw + 2*baseline):time_v", total_cut, "LP");
+
+	//chain.Draw("(-data_raw + 2*baseline):time_v", total_cut, "LP");
 	//	//chain.Draw("baseline:time_v", total_cut, "same L");
-	chain.SetLineColor(kRed);
-	chain.Draw("baseline_v:time_v", total_cut, "same L");
+	//chain.SetLineColor(kRed);
+	//chain.Draw("baseline_v:time_v", total_cut, "same L");
 	//chain.SetLineColor(kGreen);
 	//chain.Draw("(-data_smooth + 2*baseline):time_v", total_cut, "same L");
 
