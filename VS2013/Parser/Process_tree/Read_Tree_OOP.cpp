@@ -21,6 +21,14 @@ using namespace std;
 
 #define COUT(x) cout << #x " = " << x << endl;
 
+//----------------------------
+//O my God!!! I did it!
+string cut_condition_srt;
+bool cut_condition_bool;
+#define REMEMBER_CUT(x) cut_condition_srt = #x; cut_condition_bool = x;
+
+//----------------------------
+
 int main(int argc, char *argv[])
 {
 	gROOT->SetBatch(kFALSE);
@@ -108,7 +116,8 @@ int main(int argc, char *argv[])
 			cout << "event = " << i << endl;
 		}
 
-		if (ch_id == 38 && run_id == 2752 && event_id == 2)
+		REMEMBER_CUT(ch_id == 38 && run_id == 2752 && event_id == 0);
+		if (cut_condition_bool)
 		{
 			//signals_x_values.clear();
 			//signals_y_values.clear();
@@ -131,6 +140,7 @@ int main(int argc, char *argv[])
 		gr->SetMarkerSize(2);
 		gr->SetMarkerStyle(29);
 		gr->SetMarkerColor(kRed);
+		gr->SetTitle(cut_condition_srt.c_str());
 		gr->Draw("AP");
 	}
 
@@ -138,7 +148,8 @@ int main(int argc, char *argv[])
 
 	//TCut total_cut = "ch_id == 0 && run_id < 3000 && event_id < 10 && integral > 2E6 && integral < 5E6";
 	//TCut total_cut = "ch_id == 38 && run_id < 10000 && event_id < 10 ";
-	TCut total_cut = "ch_id == 38 && run_id == 2752 && event_id == 2";
+	//TCut total_cut = "ch_id == 38 && run_id == 2752 && event_id == 0";
+	TCut total_cut = cut_condition_srt.c_str();
 	//TCut total_cut = "ch_id == 38 && run_id == 3398 && event_id == 3 ";
 
 	chain.SetMarkerStyle(20);
