@@ -1,23 +1,67 @@
 #include "PeakFinderFind.h"
 
+#include <iostream>
+#include <algorithm>
+#include <vector>
+using namespace std;
 
-PeakFinderFind::PeakFinderFind(std::vector<double>& yv, std::vector<double>& yv_der, const double th, const double th_der)
+PeakFinderFind::PeakFinderFind(std::vector<double>& yv, std::vector<double>& yv_der, const double th, const double th_der, const double HORIZ_INTERVAL)
 {
 	bool is_search = true;
 	int position_tmp;
+	double max_el;
+	double local_baseline;
+	pair<int, int> pair_var;
+
+	const double window = 200; //ns
+	const double local_baseline_window = 300; //ns
+	const double local_baseline_window_shift = 100; //ns
+
+	const int half_window_p = window / HORIZ_INTERVAL;
+	const int local_baseline_window_p = local_baseline_window / HORIZ_INTERVAL;
+	const double local_baseline_window_shift_p = 100;
 
 	for (int i = 0; i < yv.size(); i++)
 	{
-		//if ((yv_der[i] < th) && is_search)
-		//{
-		//	is_search = false;
-		//	position_tmp = i;
+		//cout << yv_der[i] << endl;
+		
+		if ((yv_der[i] > th_der) && is_search)
+		{
+			is_search = false;
+			position_tmp = i;
 
-		//	for (int j = i; j < length; j++)
-		//	{
+			local_baseline = 0;
+			const double j_from = (i - local_baseline_window_shift_p - local_baseline_window_p) > 0 ? i - local_baseline_window_shift_p - local_baseline_window_p : 0;
+ 
+			for (int j = j_from; j < i - local_baseline_window_shift_p; j++)
+			{
+				local_baseline += yv[j];
+			}
 
-		//	}
-		//}
+			local_baseline /= (i - local_baseline_window_shift_p - j_from);
+			//cout << "local_baseline = " << local_baseline << endl;
+
+			for (int j = i; j > j_from; j--)
+			{
+				if (yv[j] < local_baseline)
+				{
+					pair_var.first = j;
+					break;
+				}
+			}
+
+		}
+
+		if (!is_search && (i > position_tmp) && (yv_der[i] < th_der) )
+		{
+			if (yv[i] < local_baseline)
+			{
+				is_search = true;
+				pair_var.second = i;
+				pair_v.push_back(pair_var);
+				//cout << pair_var.first << "\t" << pair_var.second << endl;
+			}			
+		}
 
 		//if (!is_search)
 		//{

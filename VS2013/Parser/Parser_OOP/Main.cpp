@@ -61,10 +61,10 @@ int main(int argc, char *argv[])
 
 	//which raw files should be processed?
 	
-	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_20_thmV\\";
-	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_20_thmV\\";
-	//const int start_run_number = 2749;
-	//const int stop_run_number = 2782;
+	string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_20_thmV\\";
+	PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_20_thmV\\";
+	const int start_run_number = 2749;
+	const int stop_run_number = 2782;
 
 	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\";
 	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x_ray_18_2mmColl\\";
@@ -121,11 +121,11 @@ int main(int argc, char *argv[])
 	//const int start_run_number = 3292;
 	//const int stop_run_number = 3395;
 
-	string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_4_thmV\\";
-	PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_4_thmV\\";
-	const int start_run_number = 3396;
-	const int stop_run_number = 3536;
-	
+	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_4_thmV\\";
+	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_4_thmV\\";
+	//const int start_run_number = 3396;
+	//const int stop_run_number = 3536;
+	//
 
 	const int n_runs = stop_run_number;
 	cout << "n_runs = " << stop_run_number - start_run_number + 1 << endl;
@@ -197,7 +197,13 @@ int main(int argc, char *argv[])
 		vector<double> data_der;
 		vector<double> data_int;
 		vector<double> baseline_v;
-		
+		vector<int> signals_x_start;
+		vector<int> signals_x_stop;
+		//vector< pair<int, int> > signals_pair_values;
+		//std::vector< std::vector<int> > signals_position_values;//root does not know how to work with this object ()
+		//vector<double> signals_x_values;
+		//vector<double> signals_y_values;
+
 		//vector<double> time = rdt.GetTimeArray();
 		
 		//define tree
@@ -230,7 +236,14 @@ int main(int argc, char *argv[])
 			tree->Branch("data_der", &data_der);
 			tree->Branch("der_min_position", &der_min_position);
 			tree->Branch("der_max_position", &der_max_position);
-
+			tree->Branch("signals_x_start", &signals_x_start);
+			tree->Branch("signals_x_stop", &signals_x_stop);
+			
+			//tree->Branch("signals_position_values", &signals_position_values);
+			//tree->Branch("signals_pair_values", &signals_pair_values);
+			//tree->Branch("signals_x_values", &signals_x_values);
+			//tree->Branch("signals_y_values", &signals_y_values);
+	
 			//data			
 			tree->Branch("data_raw", &data_raw);
 			tree->Branch("data_smooth", &data_smooth);
@@ -261,6 +274,13 @@ int main(int argc, char *argv[])
 				der_max_position = (calc_data_v[temp_event_id].GetDerMaxPosition())[ch];
 				data_smooth = (calc_data_v[temp_event_id].GetSmooth())[ch];
 				data_int = (calc_data_v[temp_event_id].GetInt())[ch];
+				signals_x_start = (calc_data_v[temp_event_id].GetSignalsXStart())[ch];
+				signals_x_stop = (calc_data_v[temp_event_id].GetSignalsXStop())[ch];
+
+				//cout << signals_x_start[0] << "\t" << signals_x_stop[0] << endl;
+				//signals_pair_values = (calc_data_v[temp_event_id].GetSignalsPairValues())[ch];
+				//signals_x_values = (calc_data_v[temp_event_id].GetSignalsValues().first)[ch];
+				//signals_y_values = (calc_data_v[temp_event_id].GetSignalsValues().second)[ch];
 
 				tree->Fill();
 			}

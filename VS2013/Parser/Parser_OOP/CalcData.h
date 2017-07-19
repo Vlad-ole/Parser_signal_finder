@@ -44,6 +44,12 @@ public:
 
 	std::vector<double> GetInvertSignal(std::vector<double> yv, double baseline);
 
+	//std::pair<std::vector<double>, std::vector<double> >  GetSignalsValues();	
+	//std::vector< std::vector< std::pair<int, int> > > GetSignalsPairValues();
+	//std::vector< std::vector< std::vector<int> > > GetSignalsPositionValues();
+	std::vector< std::vector<int> >& GetSignalsXStart();
+	std::vector< std::vector<int> >& GetSignalsXStop();
+
 private:
 	std::vector< std::vector<double> >& data;
 	std::vector<double>& time;
@@ -64,6 +70,13 @@ private:
 	std::vector< std::vector<int> > peak_position;
 
 	std::vector< std::vector<double> > integral_s1_s2;
+
+	//std::pair<std::vector<double>, std::vector<double> > signals_values_pair;
+	//std::vector< std::vector< std::pair<int, int> > > signals_pair_values;
+
+	//std::vector< std::vector< std::vector<int> > > signals_position_values;
+	std::vector< std::vector<int> > signals_x_start_v;
+	std::vector< std::vector<int> > signals_x_stop_v;
 
 	int point_s2_left;
 	int point_s2_right;

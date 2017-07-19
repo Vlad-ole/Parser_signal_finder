@@ -10,6 +10,8 @@
 
 #include "CalcDoubleIntegral.h"
 
+#include "PeakFinderFind.h"
+
 #include <iostream>
 #include <algorithm>
 #include <vector>
@@ -66,6 +68,40 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 
 		//CalcIntegral calc_integral(data[i], baseline[i], 37800, 68300, HORIZ_INTERVAL);
 		//integral.push_back(calc_integral.GetIntegrtal());
+
+		PeakFinderFind peak_finder_find(invert_data, der_data[i], 0, 1, HORIZ_INTERVAL);
+		//signals_pair_values.push_back(peak_finder_find.GetPeakPositions());
+		vector< pair<int, int> > pair_vec = peak_finder_find.GetPeakPositions();
+		vector<int> signals_values_x_first(pair_vec.size());
+		vector<int> signals_values_x_second(pair_vec.size());
+		for (int j = 0; j < pair_vec.size(); j++)
+		{
+			signals_values_x_first[j] = pair_vec[j].first;
+			signals_values_x_second[j] = pair_vec[j].second;
+			//cout << pair_vec[j].first << "\t" << pair_vec[j].second << endl;
+			//cout << signals_values_x_first[j] << "\t" << signals_values_x_second[j] << endl;
+		}
+		signals_x_start_v.push_back(signals_values_x_first);
+		signals_x_stop_v.push_back(signals_values_x_second);
+		//cout << signals_values_x_first[0] << endl;
+		//vector<vector<int>> tmp_v;
+		//tmp_v.push_back(signals_values_x_first);
+		//tmp_v.push_back(signals_values_x_second);
+		//signals_position_values.push_back(tmp_v);
+
+		//cout << signals_position_values[i][0][0] << endl;
+
+		//vector<double> signals_values_x;
+		//vector<double> signals_values_y;
+		//vector< pair<int, int> > pair_vec = peak_finder_find.GetPeakPositions();
+		//for (int j = 0; j < pair_vec.size(); j++)
+		//{
+		//	for (int k = pair_vec[j].first; k < pair_vec[j].second; k++)
+		//	{
+		//		signals_values_x.push_back(k * HORIZ_INTERVAL);
+		//		signals_values_y.push_back(invert_data[k]);
+		//	}
+		//}
 
 		//finaly, we calculate integral of signal
 		CalcIntegral calc_integral_nontriv_baseline(invert_data, baseline[i], baseline_vec[i], 35000, 160000, HORIZ_INTERVAL);
@@ -153,6 +189,31 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 
 CalcData::~CalcData()
 {
+}
+
+//std::pair<std::vector<double>, std::vector<double> >  CalcData::GetSignalsValues()
+//{
+//	return signals_values_pair;
+//}
+
+//std::vector< std::vector< pair<int, int> > > CalcData::GetSignalsPairValues()
+//{
+//	return signals_pair_values;
+//}
+
+//std::vector< std::vector< std::vector<int> > > CalcData::GetSignalsPositionValues()
+//{
+//	return signals_position_values;
+//}
+
+std::vector< std::vector<int> >& CalcData::GetSignalsXStart()
+{
+	return signals_x_start_v;
+}
+
+std::vector< std::vector<int> >& CalcData::GetSignalsXStop()
+{
+	return signals_x_stop_v;
 }
 
 //CalcData& CalcData::operator=(const CalcData& CD)

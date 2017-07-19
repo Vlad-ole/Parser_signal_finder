@@ -2,8 +2,10 @@
 #include <sstream>
 #include <vector>
 #include <iomanip>
+#include <utility>  
+#include <map>  
 #include <fstream>
-
+#include <algorithm>
 
 #include "TApplication.h"
 #include "TROOT.h"
@@ -21,10 +23,12 @@ using namespace std;
 
 int main(int argc, char *argv[])
 {
+	gROOT->SetBatch(kFALSE);
+	
 	const int n_tree_files = 1;
 	const string path_name = "D:\\Data_work\\170622_caen_trees\\event_x-ray_20_thmV\\";
 	//const string path_name = "D:\\Data_work\\170622_caen_trees\\event_x-ray_4_thmV\\";
-	const double time_scale = 16;
+	const double HORIZ_INTERVAL = 16;
 
 	TObjArray Hlist_gr(0);
 	Hlist_gr.SetOwner(kTRUE);
@@ -55,6 +59,8 @@ int main(int argc, char *argv[])
 	vector<double> *data_int = 0;
 	vector<double> *data_smooth = 0;
 	vector<double> *baseline_v = 0;
+	vector<int> *signals_x_start = 0;
+	vector<int> *signals_x_stop = 0;
 
 	chain.SetBranchAddress("min_element", &min_element);
 	chain.SetBranchAddress("max_element", &max_element);
@@ -63,9 +69,12 @@ int main(int argc, char *argv[])
 	chain.SetBranchAddress("integral", &integral);
 	chain.SetBranchAddress("der_min_position", &der_min_position);
 	chain.SetBranchAddress("der_max_position", &der_max_position);
+	chain.SetBranchAddress("signals_x_start", &signals_x_start);
+	chain.SetBranchAddress("signals_x_stop", &signals_x_stop);
+
 
 	chain.SetBranchAddress("data_raw", &data_raw);
-	chain.SetBranchAddress("data_int", &data_raw);
+	chain.SetBranchAddress("data_int", &data_int);
 	chain.SetBranchAddress("data_smooth", &data_smooth);
 	chain.SetBranchAddress("data_der", &data_der);
 
@@ -84,15 +93,47 @@ int main(int argc, char *argv[])
 	chain.Branch("time_v", &time_v);
 	for (int i = 0; i < time_v.size(); i++)
 	{
-		time_v[i] = i * time_scale;//ns
+		time_v[i] = i * HORIZ_INTERVAL;//ns
 	}
 	chain.Fill();
 
-	gROOT->SetBatch(kFALSE);
+	vector<double> signals_x_values;
+	vector<double> signals_y_values;
+	for (int i = 0; i < n_events; i++)
+	{
+		chain.GetEntry(i);
+
+		if (i % 10 == 0)
+		{
+			cout << "event = " << i << endl;
+		}
+
+		if (ch_id == 38 && run_id == 2756 && event_id == 3)
+		{
+			//signals_x_values.clear();
+			//signals_y_values.clear();
+
+			for (int j = 0; j < (*signals_x_start).size(); j++)
+			{
+				for (int k = (*signals_x_start)[j]; k < (*signals_x_stop)[j]; k++)
+				{
+					signals_x_values.push_back(k * HORIZ_INTERVAL);
+					signals_y_values.push_back(-(*data_raw)[k] + 2 * baseline - (*baseline_v)[k]);
+				}				
+			}
+		}
+	}
+
+	TGraph *gr = new TGraph(signals_x_values.size(), &signals_x_values[0], &signals_y_values[0]);
+	gr->SetMarkerSize(2);
+	gr->SetMarkerStyle(29);
+	gr->SetMarkerColor(kRed);
+	gr->Draw("AP");
+
 
 	//TCut total_cut = "ch_id == 0 && run_id < 3000 && event_id < 10 && integral > 2E6 && integral < 5E6";
 	//TCut total_cut = "ch_id == 38 && run_id < 10000 && event_id < 10 ";
-	TCut total_cut = "ch_id == 38 && run_id == 2756 && event_id == 2 ";
+	TCut total_cut = "ch_id == 38 && run_id == 2756 && event_id == 3 ";
 	//TCut total_cut = "ch_id == 38 && run_id == 3398 && event_id == 3 ";
 
 	chain.SetMarkerStyle(20);
@@ -106,11 +147,13 @@ int main(int argc, char *argv[])
 
 	//chain.Draw("der_max_position", total_cut, "L");
 
-	chain.Draw("data_der*10:time_v", total_cut, "L");
-	//chain.Draw("(-data_der + 2*baseline - baseline):time_v", total_cut, "L");
-	chain.SetLineColor(kPink);
+	//chain.Draw("signals_y_values:signals_x_values", total_cut, "LP");
+
+	//chain.Draw("data_der*10:time_v", total_cut, "L");
+	////chain.Draw("(-data_der + 2*baseline - baseline):time_v", total_cut, "L");
+	//chain.SetLineColor(kPink);
+	//chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
 	chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
-	//chain.Draw("(-data_raw - baseline_v):time_v", total_cut, "LP");
 
 	//chain.Draw("(data_int/100.0):time_v", total_cut, "L");
 	//chain.SetLineColor(kGreen);
@@ -131,6 +174,8 @@ int main(int argc, char *argv[])
 	//chain.Draw("integral", total_cut);
 	//chain.Draw("baseline", total_cut);
 	//chain.Draw("run_id", total_cut);
+
+
 
 	bool is_average = false;
 	if (is_average)
@@ -185,15 +230,15 @@ int main(int argc, char *argv[])
 	//--------------------------------------
 	//const double time_from = 58000;
 	//const double time_to = 76200;
-	//const int point_from = time_from / time_scale;
-	//const int point_to = time_to / time_scale;
+	//const int point_from = time_from / HORIZ_INTERVAL;
+	//const int point_to = time_to / HORIZ_INTERVAL;
 
 	//double integral_tmp = 0;
 	//for (int i = point_from; i < point_to; i++)
 	//{
 	//	integral_tmp += (data_raw_average[i] - baseline_v[i]);
 	//}
-	//integral_tmp *= time_scale;
+	//integral_tmp *= HORIZ_INTERVAL;
 	//
 	//COUT(integral_tmp);
 	//--------------------------------------
