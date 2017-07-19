@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
 	vector<double> *data_int = 0;
 	vector<double> *data_smooth = 0;
 	vector<double> *baseline_v = 0;
+	vector<double> *local_baseline = 0;
 	vector<int> *signals_x_start = 0;
 	vector<int> *signals_x_stop = 0;
 
@@ -77,6 +78,7 @@ int main(int argc, char *argv[])
 	chain.SetBranchAddress("integral", &integral);
 	chain.SetBranchAddress("der_min_position", &der_min_position);
 	chain.SetBranchAddress("der_max_position", &der_max_position);
+	chain.SetBranchAddress("local_baseline", &local_baseline);
 	chain.SetBranchAddress("signals_x_start", &signals_x_start);
 	chain.SetBranchAddress("signals_x_stop", &signals_x_stop);
 
@@ -107,6 +109,7 @@ int main(int argc, char *argv[])
 
 	vector<double> signals_x_values;
 	vector<double> signals_y_values;
+	vector<double> local_baseline_y_values;
 	for (int i = 0; i < n_events; i++)
 	{
 		chain.GetEntry(i);
@@ -116,7 +119,7 @@ int main(int argc, char *argv[])
 			cout << "event = " << i << endl;
 		}
 
-		REMEMBER_CUT(ch_id == 38 && run_id == 2752 && event_id == 0);
+		REMEMBER_CUT(ch_id == 38 && run_id == 2752 && event_id == 5);
 		if (cut_condition_bool)
 		{
 			//signals_x_values.clear();
@@ -124,16 +127,19 @@ int main(int argc, char *argv[])
 
 			for (int j = 0; j < (*signals_x_start).size(); j++)
 			{
+				//COUT((*local_baseline)[j]);
 				for (int k = (*signals_x_start)[j]; k < (*signals_x_stop)[j]; k++)
 				{
 					signals_x_values.push_back(k * HORIZ_INTERVAL);
 					signals_y_values.push_back(-(*data_raw)[k] + 2 * baseline - (*baseline_v)[k]);
+					local_baseline_y_values.push_back( (*local_baseline)[j] );
 				}				
 			}
 		}
 	}
 
 	COUT(signals_x_values.size());
+	COUT(local_baseline_y_values.size());
 	if (signals_x_values.size() > 0)
 	{
 		TGraph *gr = new TGraph(signals_x_values.size(), &signals_x_values[0], &signals_y_values[0]);
@@ -142,6 +148,12 @@ int main(int argc, char *argv[])
 		gr->SetMarkerColor(kRed);
 		gr->SetTitle(cut_condition_srt.c_str());
 		gr->Draw("AP");
+
+		TGraph *gr_local_baseline = new TGraph(signals_x_values.size(), &signals_x_values[0], &local_baseline_y_values[0]);
+		gr_local_baseline->SetMarkerSize(1);
+		gr_local_baseline->SetMarkerStyle(20);
+		gr_local_baseline->SetMarkerColor(kGreen);
+		gr_local_baseline->Draw("same P");
 	}
 
 
@@ -165,6 +177,7 @@ int main(int argc, char *argv[])
 
 	//chain.Draw("signals_y_values:signals_x_values", total_cut, "LP");
 
+	
 	chain.SetLineColor(kBlue);
 	chain.Draw("(abs(data_der)*10):time_v", total_cut, "same L");
 	////chain.Draw("(-data_der + 2*baseline - baseline):time_v", total_cut, "L");

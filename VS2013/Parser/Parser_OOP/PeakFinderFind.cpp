@@ -41,6 +41,7 @@ PeakFinderFind::PeakFinderFind(std::vector<double>& yv, std::vector<double>& yv_
 			}
 
 			local_baseline /= (i - local_baseline_window_shift_p - j_from);
+			local_baseline_v.push_back(local_baseline);
 			//cout << "local_baseline = " << local_baseline << endl;
 
 			for (int j = i; j > j_from; j--)
