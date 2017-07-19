@@ -65,6 +65,8 @@ int main(int argc, char *argv[])
 	PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_20_thmV\\";
 	const int start_run_number = 2749;
 	const int stop_run_number = 2782;
+	//const int start_run_number = 2752;
+	//const int stop_run_number = 2752;
 
 	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\";
 	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x_ray_18_2mmColl\\";
@@ -154,7 +156,7 @@ int main(int argc, char *argv[])
 		{
 			//CalcData calc_data(rdt.GetDataDouble()[temp_event_id], rdt.GetTimeArray());
 			//calc_data_v[temp_event_id] = calc_data;
-
+			//cout << "temp_event_id = " << temp_event_id << endl;
 			calc_data_v.push_back(CalcData(rdt.GetDataDouble()[temp_event_id], rdt.GetTimeArray(), str_comm.HORIZ_INTERVAL));
 		}		
 		t_after = clock();

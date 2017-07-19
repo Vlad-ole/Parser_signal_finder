@@ -12,6 +12,8 @@
 
 #include "PeakFinderFind.h"
 
+#include "TypeConvertion.h"
+
 #include <iostream>
 #include <algorithm>
 #include <vector>
@@ -69,7 +71,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		//CalcIntegral calc_integral(data[i], baseline[i], 37800, 68300, HORIZ_INTERVAL);
 		//integral.push_back(calc_integral.GetIntegrtal());
 
-		PeakFinderFind peak_finder_find(invert_data, der_data[i], 0, 1, HORIZ_INTERVAL);
+		PeakFinderFind peak_finder_find(TypeConvertion::GetDifference(invert_data, baseline_vec[i]) /*invert_data*/, der_data[i], 0, 1, HORIZ_INTERVAL);
 		//signals_pair_values.push_back(peak_finder_find.GetPeakPositions());
 		vector< pair<int, int> > pair_vec = peak_finder_find.GetPeakPositions();
 		vector<int> signals_values_x_first(pair_vec.size());

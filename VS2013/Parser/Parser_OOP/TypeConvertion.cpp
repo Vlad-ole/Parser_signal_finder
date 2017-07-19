@@ -1,5 +1,5 @@
 #include "TypeConvertion.h"
-
+#include <assert.h> 
 
 TypeConvertion::TypeConvertion()
 {
@@ -41,4 +41,16 @@ std::vector<double> TypeConvertion::GetVectorDoubleInvert(std::vector<double> & 
 	}
 
 	return yv_double_invert;
+}
+
+std::vector<double> TypeConvertion::GetDifference(std::vector<double> yv_minuend, std::vector<double> yv_subtrahend)
+{
+	//assert(yv_minuend.size() != yv_subtrahend.size() && "Error! yv_minuend.size() == yv_subtrahend.size()");
+	std::vector<double> result(yv_minuend.size());
+	for (int i = 0; i < yv_minuend.size(); i++)
+	{
+		result[i] = yv_minuend[i] - yv_subtrahend[i];
+	}
+
+	return result;
 }
