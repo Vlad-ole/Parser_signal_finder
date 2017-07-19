@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
 			cout << "event = " << i << endl;
 		}
 
-		if (ch_id == 38 && run_id == 2756 && event_id == 3)
+		if (ch_id == 38 && run_id == 2752 && event_id == 2)
 		{
 			//signals_x_values.clear();
 			//signals_y_values.clear();
@@ -124,16 +124,21 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	TGraph *gr = new TGraph(signals_x_values.size(), &signals_x_values[0], &signals_y_values[0]);
-	gr->SetMarkerSize(2);
-	gr->SetMarkerStyle(29);
-	gr->SetMarkerColor(kRed);
-	gr->Draw("AP");
+	COUT(signals_x_values.size());
+	if (signals_x_values.size() > 0)
+	{
+		TGraph *gr = new TGraph(signals_x_values.size(), &signals_x_values[0], &signals_y_values[0]);
+		gr->SetMarkerSize(2);
+		gr->SetMarkerStyle(29);
+		gr->SetMarkerColor(kRed);
+		gr->Draw("AP");
+	}
+
 
 
 	//TCut total_cut = "ch_id == 0 && run_id < 3000 && event_id < 10 && integral > 2E6 && integral < 5E6";
 	//TCut total_cut = "ch_id == 38 && run_id < 10000 && event_id < 10 ";
-	TCut total_cut = "ch_id == 38 && run_id == 2756 && event_id == 3 ";
+	TCut total_cut = "ch_id == 38 && run_id == 2752 && event_id == 2";
 	//TCut total_cut = "ch_id == 38 && run_id == 3398 && event_id == 3 ";
 
 	chain.SetMarkerStyle(20);
@@ -149,9 +154,10 @@ int main(int argc, char *argv[])
 
 	//chain.Draw("signals_y_values:signals_x_values", total_cut, "LP");
 
-	//chain.Draw("data_der*10:time_v", total_cut, "L");
+	chain.SetLineColor(kBlue);
+	chain.Draw("(abs(data_der)*10):time_v", total_cut, "same L");
 	////chain.Draw("(-data_der + 2*baseline - baseline):time_v", total_cut, "L");
-	//chain.SetLineColor(kPink);
+	chain.SetLineColor(kPink);
 	//chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
 	chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
 
