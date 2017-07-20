@@ -200,6 +200,7 @@ int main(int argc, char *argv[])
 		vector<double> data_int;
 		vector<double> baseline_v;
 		vector<double> local_baseline;
+		vector<double> integral_one_peak;
 		vector<int> signals_x_start;
 		vector<int> signals_x_stop;
 		//vector< pair<int, int> > signals_pair_values;
@@ -233,15 +234,21 @@ int main(int argc, char *argv[])
 			
 			tree->Branch("min_element", &min_element);
 			tree->Branch("max_element", &max_element);
+
 			tree->Branch("baseline", &baseline);
 			tree->Branch("baseline_v", &baseline_v);
+
 			tree->Branch("integral", &integral);
+
 			tree->Branch("data_der", &data_der);
 			tree->Branch("der_min_position", &der_min_position);
 			tree->Branch("der_max_position", &der_max_position);
+
 			tree->Branch("local_baseline", &local_baseline);
 			tree->Branch("signals_x_start", &signals_x_start);
 			tree->Branch("signals_x_stop", &signals_x_stop);
+			
+			tree->Branch("integral_one_peak", &integral_one_peak);
 			
 			//tree->Branch("signals_position_values", &signals_position_values);
 			//tree->Branch("signals_pair_values", &signals_pair_values);
@@ -281,6 +288,7 @@ int main(int argc, char *argv[])
 				signals_x_start = (calc_data_v[temp_event_id].GetSignalsXStart())[ch];
 				signals_x_stop = (calc_data_v[temp_event_id].GetSignalsXStop())[ch];
 				local_baseline = (calc_data_v[temp_event_id].GetLocalBaselineV())[ch];
+				integral_one_peak = (calc_data_v[temp_event_id].GetIntegralOnePeak())[ch];
 
 				//cout << signals_x_start[0] << "\t" << signals_x_stop[0] << endl;
 				//signals_pair_values = (calc_data_v[temp_event_id].GetSignalsPairValues())[ch];

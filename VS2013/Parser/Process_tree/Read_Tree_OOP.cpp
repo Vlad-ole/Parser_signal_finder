@@ -70,7 +70,8 @@ int main(int argc, char *argv[])
 	vector<double> *local_baseline = 0;
 	vector<int> *signals_x_start = 0;
 	vector<int> *signals_x_stop = 0;
-
+	vector<double> *integral_one_peak = 0;
+	
 	chain.SetBranchAddress("min_element", &min_element);
 	chain.SetBranchAddress("max_element", &max_element);
 	chain.SetBranchAddress("baseline", &baseline);
@@ -81,7 +82,7 @@ int main(int argc, char *argv[])
 	chain.SetBranchAddress("local_baseline", &local_baseline);
 	chain.SetBranchAddress("signals_x_start", &signals_x_start);
 	chain.SetBranchAddress("signals_x_stop", &signals_x_stop);
-
+	chain.SetBranchAddress("integral_one_peak", &integral_one_peak);
 
 	chain.SetBranchAddress("data_raw", &data_raw);
 	chain.SetBranchAddress("data_int", &data_int);
@@ -107,65 +108,67 @@ int main(int argc, char *argv[])
 	}
 	chain.Fill();
 
-	vector<double> signals_x_values;
-	vector<double> signals_y_values;
-	vector<double> local_baseline_y_values;
-	for (int i = 0; i < n_events; i++)
-	{
-		chain.GetEntry(i);
+	//vector<double> signals_x_values;
+	//vector<double> signals_y_values;
+	//vector<double> local_baseline_y_values;
+	//for (int i = 0; i < n_events; i++)
+	//{
+	//	chain.GetEntry(i);
 
-		if (i % 10 == 0)
-		{
-			cout << "event = " << i << endl;
-		}
+	//	if (i % 10 == 0)
+	//	{
+	//		cout << "event = " << i << endl;
+	//	}
 
-		REMEMBER_CUT(ch_id == 38 && run_id == 2752 && event_id == 5);
-		if (cut_condition_bool)
-		{
-			//signals_x_values.clear();
-			//signals_y_values.clear();
+	//	REMEMBER_CUT(ch_id == 38 && run_id == 2752 && event_id == 6);
+	//	if (cut_condition_bool)
+	//	{
+	//		//signals_x_values.clear();
+	//		//signals_y_values.clear();
 
-			for (int j = 0; j < (*signals_x_start).size(); j++)
-			{
-				//COUT((*local_baseline)[j]);
-				for (int k = (*signals_x_start)[j]; k < (*signals_x_stop)[j]; k++)
-				{
-					signals_x_values.push_back(k * HORIZ_INTERVAL);
-					signals_y_values.push_back(-(*data_raw)[k] + 2 * baseline - (*baseline_v)[k]);
-					local_baseline_y_values.push_back( (*local_baseline)[j] );
-				}				
-			}
-		}
-	}
+	//		for (int j = 0; j < (*signals_x_start).size(); j++)
+	//		{
+	//			//COUT((*local_baseline)[j]);
+	//			for (int k = (*signals_x_start)[j]; k < (*signals_x_stop)[j]; k++)
+	//			{
+	//				signals_x_values.push_back(k * HORIZ_INTERVAL);
+	//				signals_y_values.push_back(-(*data_raw)[k] + 2 * baseline - (*baseline_v)[k]);
+	//				local_baseline_y_values.push_back( (*local_baseline)[j] );
+	//			}				
+	//		}
+	//	}
+	//}
 
-	COUT(signals_x_values.size());
-	COUT(local_baseline_y_values.size());
-	if (signals_x_values.size() > 0)
-	{
-		TGraph *gr = new TGraph(signals_x_values.size(), &signals_x_values[0], &signals_y_values[0]);
-		gr->SetMarkerSize(2);
-		gr->SetMarkerStyle(29);
-		gr->SetMarkerColor(kRed);
-		gr->SetTitle(cut_condition_srt.c_str());
-		gr->Draw("AP");
+	//COUT(signals_x_values.size());
+	//COUT(local_baseline_y_values.size());
+	//if (signals_x_values.size() > 0)
+	//{
+	//	TGraph *gr = new TGraph(signals_x_values.size(), &signals_x_values[0], &signals_y_values[0]);
+	//	gr->SetMarkerSize(2);
+	//	gr->SetMarkerStyle(29);
+	//	gr->SetMarkerColor(kRed);
+	//	gr->SetTitle(cut_condition_srt.c_str());
+	//	gr->Draw("AP");
 
-		TGraph *gr_local_baseline = new TGraph(signals_x_values.size(), &signals_x_values[0], &local_baseline_y_values[0]);
-		gr_local_baseline->SetMarkerSize(1);
-		gr_local_baseline->SetMarkerStyle(20);
-		gr_local_baseline->SetMarkerColor(kGreen);
-		gr_local_baseline->Draw("same P");
-	}
+	//	TGraph *gr_local_baseline = new TGraph(signals_x_values.size(), &signals_x_values[0], &local_baseline_y_values[0]);
+	//	gr_local_baseline->SetMarkerSize(1);
+	//	gr_local_baseline->SetMarkerStyle(20);
+	//	gr_local_baseline->SetMarkerColor(kGreen);
+	//	gr_local_baseline->Draw("same P");
+	//}
 
 
 
 	//TCut total_cut = "ch_id == 0 && run_id < 3000 && event_id < 10 && integral > 2E6 && integral < 5E6";
-	//TCut total_cut = "ch_id == 38 && run_id < 10000 && event_id < 10 ";
-	//TCut total_cut = "ch_id == 38 && run_id == 2752 && event_id == 0";
-	TCut total_cut = cut_condition_srt.c_str();
+	TCut total_cut = "ch_id == 38 && run_id < 10000 && event_id < 10 ";
+	//TCut total_cut = "ch_id == 38 && run_id == 2752 && event_id == 3";
+	//TCut total_cut = cut_condition_srt.c_str();
 	//TCut total_cut = "ch_id == 38 && run_id == 3398 && event_id == 3 ";
 
 	chain.SetMarkerStyle(20);
 	chain.SetMarkerSize(1);
+
+	chain.Draw("integral_one_peak >> h(200, -2000, 10000)", total_cut, "L");
 
 	//chain.Draw("data_raw:time_v", total_cut, "L");
 	//chain.SetLineColor(kGreen);
@@ -178,12 +181,13 @@ int main(int argc, char *argv[])
 	//chain.Draw("signals_y_values:signals_x_values", total_cut, "LP");
 
 	
-	chain.SetLineColor(kBlue);
-	chain.Draw("(abs(data_der)*10):time_v", total_cut, "same L");
-	////chain.Draw("(-data_der + 2*baseline - baseline):time_v", total_cut, "L");
-	chain.SetLineColor(kPink);
+	//chain.SetLineColor(kBlue);
+	//chain.Draw("(data_int/5000.0):time_v", total_cut, "L same");
+	////chain.Draw("(abs(data_der)*10):time_v", total_cut, "same L");
+	//////chain.Draw("(-data_der + 2*baseline - baseline):time_v", total_cut, "L");
+	//chain.SetLineColor(kPink);
+	////chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
 	//chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
-	chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
 
 	//chain.Draw("(data_int/100.0):time_v", total_cut, "L");
 	//chain.SetLineColor(kGreen);

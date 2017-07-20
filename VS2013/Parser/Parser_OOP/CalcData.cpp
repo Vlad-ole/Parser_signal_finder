@@ -26,6 +26,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 	const int n_points = data[0].size();
 
 	vector<double> der_data_tmp(n_points);
+	integral_one_peak.resize(n_ch);
 
 	min.resize(n_ch);
 	max.resize(n_ch);
@@ -71,7 +72,8 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		//CalcIntegral calc_integral(data[i], baseline[i], 37800, 68300, HORIZ_INTERVAL);
 		//integral.push_back(calc_integral.GetIntegrtal());
 
-		PeakFinderFind peak_finder_find(TypeConvertion::GetDifference(invert_data, baseline_vec[i]) /*invert_data*/, der_data[i], 0, 1 /*this parameter is very important*/, HORIZ_INTERVAL);
+		vector<double> data_without_slope = TypeConvertion::GetDifference(invert_data, baseline_vec[i]);
+		PeakFinderFind peak_finder_find(data_without_slope/*invert_data*/, der_data[i], 0, 1 /*this parameter is very important*/, HORIZ_INTERVAL);
 		local_baseline_v.push_back(peak_finder_find.GetLocalBaselineV());
 		vector< pair<int, int> > pair_vec = peak_finder_find.GetPeakPositions();
 		vector<int> signals_values_x_first(pair_vec.size());
@@ -84,82 +86,26 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		signals_x_start_v.push_back(signals_values_x_first);
 		signals_x_stop_v.push_back(signals_values_x_second);
 
+		//caclulate intergal of individual peaks
+		for (int j = 0; j < pair_vec.size(); j++)
+		{			
+			//choose region before signal 
+			if ( (signals_values_x_second[j] * HORIZ_INTERVAL) < 30000)
+			{
+				double integral_tmp = 0;
+				for (int k = signals_values_x_first[j]; k < signals_values_x_second[j]; k++)
+				{
+					integral_tmp += (data_without_slope[k] - local_baseline_v[i][j]) * HORIZ_INTERVAL;
+				}
+				integral_one_peak[i].push_back(integral_tmp);
+			}			
+		}
+
 		//finaly, we calculate integral of signal
 		CalcIntegral calc_integral_nontriv_baseline(invert_data, baseline[i], baseline_vec[i], 35000, 160000, HORIZ_INTERVAL);
 		integral.push_back(calc_integral_nontriv_baseline.GetIntegrtal());
 	}
 	
-	//run_6
-	//const double n_points_param = 101; //odd number!
-	//const double der_th = 3.5;
-	//const double max_dist_left = 2000;//ns
-	//const double max_dist_right = 5000;//ns
-	//const double trigg_time = 0;//ns
-
-	////run_7
-	//const double n_points_param = 41; //odd number!
-	//const double der_th = 5;
-	//const double max_dist_left = 2000;//ns
-	//const double max_dist_right = 5000;//ns
-	//const double time_s1_left = 4500;//ns
-	//const double time_s1_right = 6000;//ns
-	////const double time_s1_left = 6000;//ns
-	////const double time_s1_right = 8000;//ns
-
-	////CalcDer calc_der_ortec(data[0], n_points_param);
-	//CalcDer calc_der_caen(data[1], n_points_param);
-	
-	//der_data.resize(n_ch);
-	//der_data[0].resize(n_points);
-	////der_data[0] = calc_der_ortec.GetDer();
-	//der_data[1] = calc_der_caen.GetDer();
-
-	//smooth_data.resize(n_ch);
-	//smooth_data[0].resize(der_data[0].size());//dummy
-	//smooth_data[1].resize(der_data[0].size());//dummy
-	//smooth_data[1] = calc_der_caen.GetSmooth();
-	
-
-	//PeakFinder pk_fndr_caen(calc_der_caen.GetDer(), time, der_th);
-	//peak_position.resize(n_ch);
-	////peak_position[0].resize(n_points);
-	//peak_position[1] = pk_fndr_caen.GetPeakPosition();
-
-	//FindS2 fnd_s2_caen(pk_fndr_caen.GetPeakPosition(), n_points, HORIZ_INTERVAL, max_dist_left, max_dist_right);
-	//point_s2_left = fnd_s2_caen.GetPointS2Left();
-	//point_s2_right = fnd_s2_caen.GetPointS2Right();
-
-
-	////CalcBaseline calc_baseline_ortec(data[0], peak_position[0][point_s2_left], peak_position[0][point_s2_right]);
-	//CalcBaseline calc_baseline_caen(data[1], point_s2_left, point_s2_right);
-	//baseline.resize(n_ch);
-	////baseline[0] = calc_baseline_ortec.GetBaseline();
-	//baseline[1] = calc_baseline_caen.GetBaseline();
-	//baseline_vec.resize(n_ch);
-	//baseline_vec[1] = calc_baseline_caen.GetBaselineVec();
-
-	//vector<double> tmp(der_data[1].size());
-	//CalcIntegral calc_integral_ortec(data[0], calc_baseline_caen.GetBaselineVec(), 0, 0, 5);
-	////CalcIntegral calc_integral_caen(data[1], calc_baseline_caen.GetBaselineVec(), 0, 0, 5);
-	//CalcIntegral calc_integral_caen_s2(data[1], calc_baseline_caen.GetBaselineVec(), point_s2_left * HORIZ_INTERVAL, point_s2_right * HORIZ_INTERVAL, HORIZ_INTERVAL);
-	//CalcIntegralS1 calc_integral_caen_s1(data[1], time_s1_left, time_s1_right, point_s2_left, HORIZ_INTERVAL, peak_position[1]);
-
-	//CalcIntegralS1 calc_integral_caen_s1_left(data[1], 0, 4500, point_s2_left, HORIZ_INTERVAL, peak_position[1]);
-	//CalcIntegralS1 calc_integral_caen_s1_right(data[1], 6000, point_s2_left * HORIZ_INTERVAL, point_s2_left, HORIZ_INTERVAL, peak_position[1]);
-	//integral_s1_caen_outside_the_trigger = calc_integral_caen_s1_left.GetIntegrtal() + calc_integral_caen_s1_right.GetIntegrtal();
-
-	//int_data.resize(n_ch);
-	//int_data[0] = calc_integral_ortec.GetDataIntegrtal();
-	//int_data[1] = calc_integral_caen_s2.GetDataIntegrtal();
-
-	//integral_s1.resize(n_ch);
-	//integral_s2.resize(n_ch);
-	//integral_s1[0] = 0;
-	//integral_s2[0] = 0;
-	//integral_s1[1] = calc_integral_caen_s1.GetIntegrtal();
-	////integral_s1[1] = calc_integral_caen_s1_left.GetIntegrtal() + calc_integral_caen_s1_right.GetIntegrtal();
-	//integral_s2[1] = calc_integral_caen_s2.GetIntegrtal();
-
 	//const double cut_th_low_MHz = 0;
 	//const double cut_th_high_MHz = 1000;
 	//FTFilter ft_filter_caen(data[1], cut_th_low_MHz, cut_th_high_MHz, HORIZ_INTERVAL);
@@ -191,6 +137,11 @@ std::vector< std::vector<int> >& CalcData::GetSignalsXStop()
 //{
 //
 //}
+
+std::vector< std::vector<double> >& CalcData::GetIntegralOnePeak()
+{
+	return integral_one_peak;
+}
 
 std::vector<double> CalcData::GetInvertSignal(std::vector<double> yv, double baseline)
 {
