@@ -37,8 +37,8 @@ int main(int argc, char *argv[])
 	//-------------------------------------------------
 	//For CAEN
 	path_info PathInfo;
-	//PathInfo.events_per_file = 10;	
-	PathInfo.events_per_file = 1000;
+	PathInfo.events_per_file = 10;	
+	//PathInfo.events_per_file = 1000;
 	
 	vector<ch_info> ch_list;
 	const int n_ch = 1;
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 	const int runs_per_tree_file = 1000;
 	
 	//which raw files should be processed?
-	//this information in RunDescription.h
+	//this information in RunDescription.cpp
 	PathInfo.path_name = PathInfo_path_name;
 	
 	const int n_runs = stop_run_number;

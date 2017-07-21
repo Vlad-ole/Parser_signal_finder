@@ -36,6 +36,7 @@ int main(int argc, char *argv[])
 	const int n_tree_files = 1;
 	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_20_thmV\\";
 	std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\Cd\\event_2200dVGEM_18kV_Cd\\";
+	//std::string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_Cd_18_th190mV\\";
 	//const string path_name = "D:\\Data_work\\170622_caen_trees\\event_x-ray_4_thmV\\";
 	const double HORIZ_INTERVAL = 16;
 
