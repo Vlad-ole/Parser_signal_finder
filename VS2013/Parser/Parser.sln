@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DataGenerator", "DataGenerator\DataGenerator.vcxproj", "{F5F688CE-00AC-46E8-82A5-AAB0ABC6F014}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test", "Test\Test.vcxproj", "{C705D1EF-677A-475F-A134-98FFEED5CFC0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -50,6 +52,10 @@ Global
 		{F5F688CE-00AC-46E8-82A5-AAB0ABC6F014}.Debug|Win32.Build.0 = Debug|Win32
 		{F5F688CE-00AC-46E8-82A5-AAB0ABC6F014}.Release|Win32.ActiveCfg = Release|Win32
 		{F5F688CE-00AC-46E8-82A5-AAB0ABC6F014}.Release|Win32.Build.0 = Release|Win32
+		{C705D1EF-677A-475F-A134-98FFEED5CFC0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C705D1EF-677A-475F-A134-98FFEED5CFC0}.Debug|Win32.Build.0 = Debug|Win32
+		{C705D1EF-677A-475F-A134-98FFEED5CFC0}.Release|Win32.ActiveCfg = Release|Win32
+		{C705D1EF-677A-475F-A134-98FFEED5CFC0}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -11,6 +11,8 @@
 #include "WriteTree.h"
 #include "CalcData.h"
 
+#include "RunDescription.h"
+
 #include "TApplication.h"
 #include "TROOT.h"
 
@@ -35,9 +37,8 @@ int main(int argc, char *argv[])
 	//-------------------------------------------------
 	//For CAEN
 	path_info PathInfo;
-	
-	//PathInfo.path_name = "D:\\Data_work\\test_folder\\";
-	PathInfo.events_per_file = 10;	
+	//PathInfo.events_per_file = 10;	
+	PathInfo.events_per_file = 1000;
 	
 	vector<ch_info> ch_list;
 	const int n_ch = 1;
@@ -58,77 +59,10 @@ int main(int argc, char *argv[])
 	//tree settings
 	const int runs_per_tree_file = 1000;
 	
-
 	//which raw files should be processed?
+	//this information in RunDescription.h
+	PathInfo.path_name = PathInfo_path_name;
 	
-	string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_20_thmV\\";
-	PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_20_thmV\\";
-	const int start_run_number = 2749;
-	const int stop_run_number = 2782;
-	//const int start_run_number = 2752;
-	//const int stop_run_number = 2752;
-
-	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\";
-	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x_ray_18_2mmColl\\";
-	//const int start_run_number = 3537;
-	//const int stop_run_number = 3955;
-
-	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_18_small_2\\";
-	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_18_small_2\\";
-	//const int start_run_number = 2721;
-	//const int stop_run_number = 2748;
-	
-	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_16_thmV\\";
-	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_16_thmV\\";
-	//const int start_run_number = 2783;
-	//const int stop_run_number = 2853;
-
-	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_14_thmV\\";
-	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_14_thmV\\";
-	//const int start_run_number = 2854;
-	//const int stop_run_number = 2914;
-
-	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_12_thmV\\";
-	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_12_thmV\\";
-	//const int start_run_number = 2915;
-	//const int stop_run_number = 2953;
-
-	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_10_thmV\\";
-	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_10_thmV\\";
-	//const int start_run_number = 2954;
-	//const int stop_run_number = 3033;
-
-	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_10_thmV_recalib\\";
-	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_10_thmV_recalib\\";
-	//const int start_run_number = 3034;
-	//const int stop_run_number = 3067;
-
-	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_9_thmV\\";
-	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_9_thmV\\";
-	//const int start_run_number = 3068;
-	//const int stop_run_number = 3108;
-
-	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_8_thmV\\";
-	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_8_thmV\\";
-	//const int start_run_number = 3109;
-	//const int stop_run_number = 3168;
-
-	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_7_thmV\\";
-	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_7_thmV\\";
-	//const int start_run_number = 3169;
-	//const int stop_run_number = 3226;
-
-	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_5_thmV\\";
-	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_5_thmV\\";
-	//const int start_run_number = 3292;
-	//const int stop_run_number = 3395;
-
-	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_4_thmV\\";
-	//PathInfo.path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_4_thmV\\";
-	//const int start_run_number = 3396;
-	//const int stop_run_number = 3536;
-	//
-
 	const int n_runs = stop_run_number;
 	cout << "n_runs = " << stop_run_number - start_run_number + 1 << endl;
 
@@ -156,36 +90,16 @@ int main(int argc, char *argv[])
 		{
 			//CalcData calc_data(rdt.GetDataDouble()[temp_event_id], rdt.GetTimeArray());
 			//calc_data_v[temp_event_id] = calc_data;
-			//cout << "temp_event_id = " << temp_event_id << endl;
+			if (temp_event_id % 10 == 0)
+			{
+				cout << "temp_event_id = " << temp_event_id << endl;
+			}			
 			calc_data_v.push_back(CalcData(rdt.GetDataDouble()[temp_event_id], rdt.GetTimeArray(), str_comm.HORIZ_INTERVAL));
 		}		
 		t_after = clock();
 		t_calc_data += t_after - t_before;
 
 			
-		//double baseline_ch0 = calc_data.GetBaseline()[0];
-		//double baseline_ch1 = calc_data.GetBaseline()[1];
-		//double min_ch0 = calc_data.GetMin()[0];
-		//double min_ch1 = calc_data.GetMin()[1];
-		//double max_ch0 = calc_data.GetMax()[0];
-		//double max_ch1 = calc_data.GetMax()[1];
-		//double n_peaks_caen = (calc_data.GetPeakPosition()[1]).size();
-		//int point_s2_left_caen = calc_data.GetPointS2Left();
-		//int point_s2_right_caen = calc_data.GetPointS2Right();
-		//vector<double> data_raw_ortec = calc_data.GetData()[0];
-		//vector<double> data_der_ortec = calc_data.GetDer()[0];
-		//vector<double> data_int_ortec = calc_data.GetInt()[0];
-		//vector<double> data_raw_caen = calc_data.GetData()[1];
-		//vector<double> data_der_caen = calc_data.GetDer()[1];
-		////vector<double> data_smooth_caen = calc_data.GetSmooth()[1];
-		//vector<double> data_int_caen = calc_data.GetInt()[1];
-		//vector<int> peak_position_caen = calc_data.GetPeakPosition()[1];
-		//vector<double> baseline_vec_caen = calc_data.GetBaselineVec()[1];
-		//double integral_s1_caen = calc_data.GetIntegralS1()[1];
-		//double integral_s2_caen = calc_data.GetIntegralS2()[1];
-		//vector<double> yv_cut_caen = calc_data.GetYvCut();
-		//double integral_s1_caen_outside_the_trigger = calc_data.GetIntegral_s1_caen_outside_the_trigger();
-
 		int temp_event_id;
 		int ch_id;
 		double min_element;
@@ -203,12 +117,6 @@ int main(int argc, char *argv[])
 		vector<double> integral_one_peak;
 		vector<int> signals_x_start;
 		vector<int> signals_x_stop;
-		//vector< pair<int, int> > signals_pair_values;
-		//std::vector< std::vector<int> > signals_position_values;//root does not know how to work with this object ()
-		//vector<double> signals_x_values;
-		//vector<double> signals_y_values;
-
-		//vector<double> time = rdt.GetTimeArray();
 		
 		//define tree
 		if ((run_number - start_run_number) % runs_per_tree_file == 0)
@@ -218,16 +126,6 @@ int main(int argc, char *argv[])
 			f_tree = TFile::Open(f_tree_name.str().c_str(), "RECREATE");
 			tree = new TTree("t1", "Parser tree");
 			
-			//tree->Branch("baseline_ch0", &baseline_ch0, "baseline_ch0/D");
-			//tree->Branch("baseline_ch1", &baseline_ch1, "baseline_ch1/D");			
-			//tree->Branch("min_ch0", &min_ch0, "min_ch0/D");
-			//tree->Branch("min_ch1", &min_ch1, "min_ch1/D");			
-			//tree->Branch("max_ch0", &max_ch0, "max_ch0/D");
-			//tree->Branch("max_ch1", &max_ch1, "max_ch1/D");
-			//tree->Branch("n_peaks_caen", &n_peaks_caen, "n_peaks_caen/D");			
-			//tree->Branch("point_s2_left_caen", &point_s2_left_caen, "point_s2_left_caen/I");
-			//tree->Branch("point_s2_right_caen", &point_s2_right_caen, "point_s2_right_caen/I");
-			//tree->Branch("time", &time);
 			tree->Branch("run_id", &run_number);
 			tree->Branch("event_id", &temp_event_id);
 			tree->Branch("ch_id", &ch_id);
@@ -250,11 +148,6 @@ int main(int argc, char *argv[])
 			
 			tree->Branch("integral_one_peak", &integral_one_peak);
 			
-			//tree->Branch("signals_position_values", &signals_position_values);
-			//tree->Branch("signals_pair_values", &signals_pair_values);
-			//tree->Branch("signals_x_values", &signals_x_values);
-			//tree->Branch("signals_y_values", &signals_y_values);
-	
 			//data			
 			tree->Branch("data_raw", &data_raw);
 			tree->Branch("data_smooth", &data_smooth);

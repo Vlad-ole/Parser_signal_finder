@@ -10,6 +10,7 @@ struct path_info
 	std::string path_name;
 	int run_number;
 	int events_per_file;
+	//path_info();
 };
 
 

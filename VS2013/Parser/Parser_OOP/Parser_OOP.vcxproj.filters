@@ -114,6 +114,9 @@
     <ClCompile Include="PeakFinderFind.cpp">
       <Filter>Source Files\CalcData\PeakFinder</Filter>
     </ClCompile>
+    <ClCompile Include="RunDescription.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FillCanv.h">
@@ -175,6 +178,9 @@
     </ClInclude>
     <ClInclude Include="PeakFinderFind.h">
       <Filter>Header Files\CalcData\PeakFinder</Filter>
+    </ClInclude>
+    <ClInclude Include="RunDescription.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

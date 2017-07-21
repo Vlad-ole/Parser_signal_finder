@@ -34,7 +34,8 @@ int main(int argc, char *argv[])
 	gROOT->SetBatch(kFALSE);
 	
 	const int n_tree_files = 1;
-	const string path_name = "D:\\Data_work\\170622_caen_trees\\event_x-ray_20_thmV\\";
+	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_20_thmV\\";
+	std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\Cd\\event_2200dVGEM_18kV_Cd\\";
 	//const string path_name = "D:\\Data_work\\170622_caen_trees\\event_x-ray_4_thmV\\";
 	const double HORIZ_INTERVAL = 16;
 
@@ -46,7 +47,7 @@ int main(int argc, char *argv[])
 	for (int i = 0; i < n_tree_files; i++)
 	{
 		ostringstream f_tree_name;
-		f_tree_name << path_name << "Block" << setfill('0') << setw(7) << i << ".root";
+		f_tree_name << path_name_tree << "Block" << setfill('0') << setw(7) << i << ".root";
 		chain.Add(f_tree_name.str().c_str());
 	}
 
@@ -120,7 +121,7 @@ int main(int argc, char *argv[])
 	//		cout << "event = " << i << endl;
 	//	}
 
-	//	REMEMBER_CUT(ch_id == 38 && run_id == 2752 && event_id == 6);
+	//	REMEMBER_CUT(ch_id == 38 && run_id == 77 && event_id == 0);
 	//	if (cut_condition_bool)
 	//	{
 	//		//signals_x_values.clear();
@@ -160,15 +161,15 @@ int main(int argc, char *argv[])
 
 
 	//TCut total_cut = "ch_id == 0 && run_id < 3000 && event_id < 10 && integral > 2E6 && integral < 5E6";
-	TCut total_cut = "ch_id == 38 && run_id < 10000 && event_id < 10 ";
-	//TCut total_cut = "ch_id == 38 && run_id == 2752 && event_id == 3";
+	//TCut total_cut = "ch_id == 38 && run_id < 10000 && event_id < 10 ";
+	TCut total_cut = "ch_id == 38 && run_id == 77 && event_id == 500";
 	//TCut total_cut = cut_condition_srt.c_str();
 	//TCut total_cut = "ch_id == 38 && run_id == 3398 && event_id == 3 ";
 
 	chain.SetMarkerStyle(20);
 	chain.SetMarkerSize(1);
 
-	chain.Draw("integral_one_peak >> h(200, -2000, 10000)", total_cut, "L");
+	//chain.Draw("integral_one_peak >> h(200, -2000, 10000)", total_cut, "L");
 
 	//chain.Draw("data_raw:time_v", total_cut, "L");
 	//chain.SetLineColor(kGreen);
@@ -185,9 +186,10 @@ int main(int argc, char *argv[])
 	//chain.Draw("(data_int/5000.0):time_v", total_cut, "L same");
 	////chain.Draw("(abs(data_der)*10):time_v", total_cut, "same L");
 	//////chain.Draw("(-data_der + 2*baseline - baseline):time_v", total_cut, "L");
-	//chain.SetLineColor(kPink);
+	chain.SetLineColor(kPink);
 	////chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
-	//chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
+	//chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "LP");
+	chain.Draw("(-data_raw + baseline):time_v", total_cut, "LP");
 
 	//chain.Draw("(data_int/100.0):time_v", total_cut, "L");
 	//chain.SetLineColor(kGreen);

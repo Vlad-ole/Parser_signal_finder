@@ -111,6 +111,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="RunDescription.cpp" />
     <ClCompile Include="TypeConvertion.cpp" />
     <ClCompile Include="WriteTree.cpp" />
   </ItemGroup>
@@ -135,6 +136,7 @@
     <ClInclude Include="ReadData_LeCroy.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="RunDescription.h" />
     <ClInclude Include="TypeConvertion.h" />
     <ClInclude Include="WriteTree.h" />
   </ItemGroup>
