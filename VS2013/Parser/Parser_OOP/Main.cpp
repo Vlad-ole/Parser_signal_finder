@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
 
 	//-------------------------------------------------
 	//For CAEN
-	path_info PathInfo;
-	PathInfo.events_per_file = 10;	
+	//path_info PathInfo;
+	//PathInfo.events_per_file = 10;	
 	//PathInfo.events_per_file = 1000;
 	
 	vector<ch_info> ch_list;
