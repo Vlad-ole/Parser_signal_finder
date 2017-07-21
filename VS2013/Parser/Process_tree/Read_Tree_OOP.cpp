@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
 	
 	const int n_tree_files = 1;
 	//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_20_thmV\\";
-	std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\Cd\\event_2200dVGEM_18kV_Cd\\";
+	//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\Cd\\event_2200dVGEM_18kV_Cd\\";
 	//std::string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_Cd_18_th190mV\\";
 	//const string path_name = "D:\\Data_work\\170622_caen_trees\\event_x-ray_4_thmV\\";
 	const double HORIZ_INTERVAL = 16;
@@ -110,60 +110,60 @@ int main(int argc, char *argv[])
 	}
 	chain.Fill();
 
-	//vector<double> signals_x_values;
-	//vector<double> signals_y_values;
-	//vector<double> local_baseline_y_values;
-	//for (int i = 0; i < n_events; i++)
-	//{
-	//	chain.GetEntry(i);
+	vector<double> signals_x_values;
+	vector<double> signals_y_values;
+	vector<double> local_baseline_y_values;
+	for (int i = 0; i < n_events; i++)
+	{
+		chain.GetEntry(i);
 
-	//	if (i % 10 == 0)
-	//	{
-	//		cout << "event = " << i << endl;
-	//	}
+		if (i % 10 == 0)
+		{
+			cout << "event = " << i << endl;
+		}
 
-	//	REMEMBER_CUT(ch_id == 38 && run_id == 77 && event_id == 0);
-	//	if (cut_condition_bool)
-	//	{
-	//		//signals_x_values.clear();
-	//		//signals_y_values.clear();
+		REMEMBER_CUT(ch_id == 38 && run_id == 77 && event_id == 0);
+		if (cut_condition_bool)
+		{
+			//signals_x_values.clear();
+			//signals_y_values.clear();
 
-	//		for (int j = 0; j < (*signals_x_start).size(); j++)
-	//		{
-	//			//COUT((*local_baseline)[j]);
-	//			for (int k = (*signals_x_start)[j]; k < (*signals_x_stop)[j]; k++)
-	//			{
-	//				signals_x_values.push_back(k * HORIZ_INTERVAL);
-	//				signals_y_values.push_back(-(*data_raw)[k] + 2 * baseline - (*baseline_v)[k]);
-	//				local_baseline_y_values.push_back( (*local_baseline)[j] );
-	//			}				
-	//		}
-	//	}
-	//}
+			for (int j = 0; j < (*signals_x_start).size(); j++)
+			{
+				//COUT((*local_baseline)[j]);
+				for (int k = (*signals_x_start)[j]; k < (*signals_x_stop)[j]; k++)
+				{
+					signals_x_values.push_back(k * HORIZ_INTERVAL);
+					signals_y_values.push_back(-(*data_raw)[k] + 2 * baseline - (*baseline_v)[k]);
+					local_baseline_y_values.push_back( (*local_baseline)[j] );
+				}				
+			}
+		}
+	}
 
-	//COUT(signals_x_values.size());
-	//COUT(local_baseline_y_values.size());
-	//if (signals_x_values.size() > 0)
-	//{
-	//	TGraph *gr = new TGraph(signals_x_values.size(), &signals_x_values[0], &signals_y_values[0]);
-	//	gr->SetMarkerSize(2);
-	//	gr->SetMarkerStyle(29);
-	//	gr->SetMarkerColor(kRed);
-	//	gr->SetTitle(cut_condition_srt.c_str());
-	//	gr->Draw("AP");
+	COUT(signals_x_values.size());
+	COUT(local_baseline_y_values.size());
+	if (signals_x_values.size() > 0)
+	{
+		TGraph *gr = new TGraph(signals_x_values.size(), &signals_x_values[0], &signals_y_values[0]);
+		gr->SetMarkerSize(2);
+		gr->SetMarkerStyle(29);
+		gr->SetMarkerColor(kRed);
+		gr->SetTitle(cut_condition_srt.c_str());
+		gr->Draw("AP");
 
-	//	TGraph *gr_local_baseline = new TGraph(signals_x_values.size(), &signals_x_values[0], &local_baseline_y_values[0]);
-	//	gr_local_baseline->SetMarkerSize(1);
-	//	gr_local_baseline->SetMarkerStyle(20);
-	//	gr_local_baseline->SetMarkerColor(kGreen);
-	//	gr_local_baseline->Draw("same P");
-	//}
+		TGraph *gr_local_baseline = new TGraph(signals_x_values.size(), &signals_x_values[0], &local_baseline_y_values[0]);
+		gr_local_baseline->SetMarkerSize(1);
+		gr_local_baseline->SetMarkerStyle(20);
+		gr_local_baseline->SetMarkerColor(kGreen);
+		gr_local_baseline->Draw("same P");
+	}
 
 
 
 	//TCut total_cut = "ch_id == 0 && run_id < 3000 && event_id < 10 && integral > 2E6 && integral < 5E6";
 	//TCut total_cut = "ch_id == 38 && run_id < 10000 && event_id < 10 ";
-	TCut total_cut = "ch_id == 38 && run_id == 77 && event_id == 500";
+	//TCut total_cut = "ch_id == 38 && run_id == 3398 && event_id == 0";
 	//TCut total_cut = cut_condition_srt.c_str();
 	//TCut total_cut = "ch_id == 38 && run_id == 3398 && event_id == 3 ";
 
