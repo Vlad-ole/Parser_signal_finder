@@ -89,8 +89,8 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		//caclulate intergal of individual peaks
 		for (int j = 0; j < pair_vec.size(); j++)
 		{			
-			//choose region before signal 
-			if ( (signals_values_x_second[j] * HORIZ_INTERVAL) < 30000)
+			//choose region  
+			//if ( (signals_values_x_second[j] * HORIZ_INTERVAL) < 30000)
 			{
 				double integral_tmp = 0;
 				for (int k = signals_values_x_first[j]; k < signals_values_x_second[j]; k++)

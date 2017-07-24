@@ -41,13 +41,15 @@ int main(int argc, char *argv[])
 	//PathInfo.events_per_file = 1000;
 	
 	vector<ch_info> ch_list;
-	const int n_ch = 1;
+	const int n_ch = 32;
 	ch_list.resize(n_ch);
 	for (int i = 0; i < n_ch; i++)
 	{
 		/*if (i < 8) ch_list[i].id = i;
 		else ch_list[i].id = i + 24;*/
-		ch_list[0].id = 38;
+		
+		//ch_list[0].id = 38;
+		ch_list[i].id = i + 32;
 	}
 	
 	comm_info str_comm;
@@ -57,7 +59,7 @@ int main(int argc, char *argv[])
 	
 
 	//tree settings
-	const int runs_per_tree_file = 1000;
+	const int runs_per_tree_file = 10;
 	
 	//which raw files should be processed?
 	//this information in RunDescription.cpp
@@ -165,7 +167,8 @@ int main(int argc, char *argv[])
 				//define physical ch_id
 				/*if (ch < 8) ch_id = ch;
 				else ch_id = ch + 24;*/
-				ch_id = 38;
+				//ch_id = 38;
+				ch_id = ch + 32;
 
 				//get data from calc_data_v for each event and ch
 				min_element = (calc_data_v[temp_event_id].GetMin())[ch];
