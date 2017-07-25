@@ -286,7 +286,7 @@ path_info PathInfo = { "", 0, 10};
 //const int start_run_number = 3034;
 //const int stop_run_number = 3067;
 //
-//400 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V
+//400 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V, LOW ELECTRONIC NOISE
 //string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_9_thmV\\";
 //std::string PathInfo_path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_9_thmV\\";
 //const int start_run_number = 3068;
@@ -304,7 +304,7 @@ path_info PathInfo = { "", 0, 10};
 //const int start_run_number = 3169;
 //const int stop_run_number = 3226;
 //
-//640 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V
+//640 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V, LOW ELECTRONIC NOISE
 //std::string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_6_thmV\\";
 //std::string PathInfo_path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_6_thmV\\";
 //const int start_run_number = 3227;
@@ -316,7 +316,7 @@ path_info PathInfo = { "", 0, 10};
 //const int start_run_number = 3292;
 //const int stop_run_number = 3395;
 //
-//1400 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V
+//1400 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V, LOW ELECTRONIC NOISE
 string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_4_thmV\\";
 std::string PathInfo_path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_4_thmV\\";
 const int start_run_number = 3396;

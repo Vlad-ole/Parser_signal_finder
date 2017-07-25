@@ -14,6 +14,9 @@
 
 #include "TypeConvertion.h"
 
+#include "CalcDoubleIntegralCalib.h"
+
+
 #include <iostream>
 #include <algorithm>
 #include <vector>
@@ -101,6 +104,9 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 			}			
 		}
 
+		//double integral calib
+		CalcDoubleIntegralCalib calc_double_intergral_calib(invert_data, pair_vec, HORIZ_INTERVAL);
+		
 		//finaly, we calculate integral of signal
 		CalcIntegral calc_integral_nontriv_baseline(invert_data, baseline[i], baseline_vec[i], 35000, 160000, HORIZ_INTERVAL);
 		integral.push_back(calc_integral_nontriv_baseline.GetIntegrtal());

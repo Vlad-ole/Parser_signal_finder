@@ -96,6 +96,7 @@
     <ClCompile Include="CalcData.cpp" />
     <ClCompile Include="CalcDer.cpp" />
     <ClCompile Include="CalcDoubleIntegral.cpp" />
+    <ClCompile Include="CalcDoubleIntegralCalib.cpp" />
     <ClCompile Include="CalcIntegral.cpp" />
     <ClCompile Include="CalcIntegralS1.cpp" />
     <ClCompile Include="FillCanv.cpp" />
@@ -123,6 +124,7 @@
     <ClInclude Include="CalcData.h" />
     <ClInclude Include="CalcDer.h" />
     <ClInclude Include="CalcDoubleIntegral.h" />
+    <ClInclude Include="CalcDoubleIntegralCalib.h" />
     <ClInclude Include="CalcIntegral.h" />
     <ClInclude Include="CalcIntegralS1.h" />
     <ClInclude Include="FillCanv.h" />

@@ -117,6 +117,9 @@
     <ClCompile Include="RunDescription.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CalcDoubleIntegralCalib.cpp">
+      <Filter>Source Files\CalcData\CalcIntegral</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FillCanv.h">
@@ -181,6 +184,9 @@
     </ClInclude>
     <ClInclude Include="RunDescription.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CalcDoubleIntegralCalib.h">
+      <Filter>Header Files\CalcData\CalcIntegral</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
