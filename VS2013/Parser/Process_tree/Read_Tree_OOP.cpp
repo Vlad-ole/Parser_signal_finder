@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
 	tree_tmp.Fill();
 	chain.AddFriend("tree_tmp");
 
-	const bool is_show_individual_signals = false;
+	const bool is_show_individual_signals = true;
 	if (is_show_individual_signals)
 	{
 
@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
 				cout << "event = " << i << endl;
 			}
 
-			REMEMBER_CUT(ch_id == 38 && run_id == 3396 && event_id == 4);
+			REMEMBER_CUT(ch_id == 38 && run_id == 3396 && event_id == 0);
 			if (cut_condition_bool)
 			{
 				//signals_x_values.clear();
@@ -200,7 +200,7 @@ int main(int argc, char *argv[])
 	
 
 	//total_cut = "ch_id == 0 && run_id < 3000 && event_id < 10 && integral > 2E6 && integral < 5E6";
-	total_cut = "ch_id == 38 && run_id < 10000 && event_id < 10 ";
+	//total_cut = "ch_id == 38 && run_id < 10000 && event_id < 10 ";
 	//total_cut = "ch_id == 38 && run_id == 3396 && event_id == 0";	
 	//total_cut = "ch_id == 36 && run_id == 3396 && event_id == 2 ";
 	//COUT(total_cut.GetName());
@@ -215,7 +215,7 @@ int main(int argc, char *argv[])
 	//chain.Draw("signals_x_stop", total_cut, "L");
 	//chain.Draw("local_baseline", total_cut, "L");
 	
-	chain.Draw("double_integral_one_peak", total_cut, "L");
+	//chain.Draw("double_integral_one_peak", total_cut, "L");
 	
 	//chain.Draw("integral_one_peak >> h(250, -2000, 10000)", total_cut, "L");
 	//chain.Draw("integral_one_peak >> h(150, -2000, 10000)", total_cut, "L");

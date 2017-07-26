@@ -22,7 +22,12 @@ CalcDoubleIntegralCalib::CalcDoubleIntegralCalib(std::vector<double> data, std::
 	for (int j = 0; j < pair_vec.size(); j++)
 	{
 		bool is_allow_calc = false;
-		if ( (signals_values_x_first[j] - veto_window_p) > 0 && (signals_values_x_second[j] + veto_window_p) < 9999 )
+		bool is_left_cond = (signals_values_x_first[j] - veto_window_p) > 0;
+		bool is_right_cond = (signals_values_x_second[j] + veto_window_p) < 9999;
+		bool is_electronical_noise = (signals_values_x_first[j] > (30000 / HORIZ_INTERVAL)) &&
+			(signals_values_x_second[j] < (35000 / HORIZ_INTERVAL));
+
+		if (is_left_cond && is_right_cond && !is_electronical_noise)
 		{
 			if (pair_vec.size() == 1)
 			{
@@ -59,7 +64,7 @@ CalcDoubleIntegralCalib::CalcDoubleIntegralCalib(std::vector<double> data, std::
 				local_baseline += data[k];
 			}
 			local_baseline /= (signals_values_x_first[j] - k_to);
-
+			
 
 			//calc integral func
 			double summ = 0;
