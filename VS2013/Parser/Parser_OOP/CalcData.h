@@ -50,6 +50,7 @@ public:
 	std::vector< std::vector<int> >& GetSignalsXStop();
 
 	std::vector< std::vector<double> >& GetDoubleIntegralVec();
+	std::vector< std::vector<double> >& GetDoubleIntegralVecY();
 
 private:
 	std::vector< std::vector<double> >& data;
@@ -78,6 +79,7 @@ private:
 	std::vector< std::vector<int> > signals_x_stop_v;
 
 	std::vector< std::vector<double> > double_integral_vec;
+	std::vector< std::vector<double> > double_integral_vec_y;
 
 	int point_s2_left;
 	int point_s2_right;

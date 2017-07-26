@@ -10,7 +10,9 @@ public:
 	~CalcDoubleIntegralCalib();
 
 	std::vector<double> GetDoubleIntegralVec();
+	std::vector<double> GetDoubleIntegralVecVy();
 private:
 	std::vector<double> double_integral_vec;
+	std::vector<double> double_integral_vec_vy;
 };
 

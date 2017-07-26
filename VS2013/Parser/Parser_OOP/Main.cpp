@@ -131,6 +131,7 @@ int main(int argc, char *argv[])
 		vector<int> signals_x_start;
 		vector<int> signals_x_stop;
 		vector<double> double_integral_one_peak;
+		vector<double> double_integral_one_peak_vec_y;
 		
 		//define tree
 		if ((run_number - start_run_number) % runs_per_tree_file == 0)
@@ -162,6 +163,7 @@ int main(int argc, char *argv[])
 			
 			tree->Branch("integral_one_peak", &integral_one_peak);
 			tree->Branch("double_integral_one_peak", &double_integral_one_peak);
+			tree->Branch("double_integral_one_peak_vec_y", &double_integral_one_peak_vec_y);
 			
 			//data			
 			tree->Branch("data_raw", &data_raw);
@@ -203,6 +205,7 @@ int main(int argc, char *argv[])
 				local_baseline = (calc_data_v[temp_event_id].GetLocalBaselineV())[ch];
 				integral_one_peak = (calc_data_v[temp_event_id].GetIntegralOnePeak())[ch];
 				double_integral_one_peak = (calc_data_v[temp_event_id].GetDoubleIntegralVec())[ch];
+				double_integral_one_peak_vec_y = (calc_data_v[temp_event_id].GetDoubleIntegralVecY())[ch];
 
 				//cout << signals_x_start[0] << "\t" << signals_x_stop[0] << endl;
 				//signals_pair_values = (calc_data_v[temp_event_id].GetSignalsPairValues())[ch];

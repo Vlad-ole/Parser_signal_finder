@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
 {
 	gROOT->SetBatch(kFALSE);
 
-	const int n_tree_files = 1;
+	const int n_tree_files = 15;
 	const double HORIZ_INTERVAL = 16;
 
 	TObjArray Hlist_gr(0);
@@ -71,6 +71,7 @@ int main(int argc, char *argv[])
 	vector<int> *signals_x_stop = 0;
 	vector<double> *integral_one_peak = 0;
 	vector<double> *double_integral_one_peak = 0;
+	vector<double> *double_integral_one_peak_vec_y = 0;
 
 	chain.SetBranchAddress("min_element", &min_element);
 	chain.SetBranchAddress("max_element", &max_element);
@@ -84,6 +85,7 @@ int main(int argc, char *argv[])
 	chain.SetBranchAddress("signals_x_stop", &signals_x_stop);
 	chain.SetBranchAddress("integral_one_peak", &integral_one_peak);
 	chain.SetBranchAddress("double_integral_one_peak", &double_integral_one_peak);
+	chain.SetBranchAddress("double_integral_one_peak_vec_y", &double_integral_one_peak_vec_y);
 
 	chain.SetBranchAddress("data_raw", &data_raw);
 	chain.SetBranchAddress("data_int", &data_int);
@@ -111,7 +113,7 @@ int main(int argc, char *argv[])
 	tree_tmp.Fill();
 	chain.AddFriend("tree_tmp");
 
-	const bool is_show_individual_signals = true;
+	const bool is_show_individual_signals = false;
 	if (is_show_individual_signals)
 	{
 
@@ -128,7 +130,7 @@ int main(int argc, char *argv[])
 				cout << "event = " << i << endl;
 			}
 
-			REMEMBER_CUT(ch_id == 38 && run_id == 3396 && event_id == 0);
+			REMEMBER_CUT(ch_id == 38 && run_id == 3396 && event_id == 4);
 			if (cut_condition_bool)
 			{
 				//signals_x_values.clear();
@@ -165,7 +167,7 @@ int main(int argc, char *argv[])
 			TGraph *gr = new TGraph(signals_x_values.size(), &signals_x_values[0], &signals_y_values[0]);
 			gr->SetMarkerSize(2);
 			gr->SetMarkerStyle(29);
-			gr->SetMarkerColor(kRed);
+			gr->SetMarkerColor(kOrange);
 			gr->SetTitle(cut_condition_srt.c_str());
 			//gr->Draw("AP");
 			//gr->GetXaxis()->SetRangeUser(-300E3, 300E3);
@@ -185,7 +187,8 @@ int main(int argc, char *argv[])
 			chain.SetLineColor(kPink);
 			chain.Draw("(-data_raw + baseline):time_v", total_cut, "same LP");
 			chain.SetLineColor(kBlue);
-			chain.Draw("(data_int/500.0):time_v", total_cut, "same L");
+			//chain.Draw("(data_int/500.0):time_v", total_cut, "same L");
+			chain.Draw("(double_integral_one_peak_vec_y/500.0):time_v", total_cut, "same L");
 		}
 		else
 		{
@@ -197,8 +200,8 @@ int main(int argc, char *argv[])
 	
 
 	//total_cut = "ch_id == 0 && run_id < 3000 && event_id < 10 && integral > 2E6 && integral < 5E6";
-	//total_cut = "ch_id == 38 && run_id < 10000 && event_id < 10 ";
-	//total_cut = "ch_id == 38 && run_id == 3396 && event_id == 1";	
+	total_cut = "ch_id == 38 && run_id < 10000 && event_id < 10 ";
+	//total_cut = "ch_id == 38 && run_id == 3396 && event_id == 0";	
 	//total_cut = "ch_id == 36 && run_id == 3396 && event_id == 2 ";
 	//COUT(total_cut.GetName());
 	//COUT(total_cut.GetTitle());
@@ -206,11 +209,13 @@ int main(int argc, char *argv[])
 	chain.SetMarkerStyle(20);
 	chain.SetMarkerSize(1);
 
+	//chain.Draw("(double_integral_one_peak_vec_y/5000.0):time_v", total_cut, "LP same");
+
 	//chain.Draw("signals_x_start", total_cut, "L");
 	//chain.Draw("signals_x_stop", total_cut, "L");
 	//chain.Draw("local_baseline", total_cut, "L");
 	
-	//chain.Draw("double_integral_one_peak", total_cut, "L");
+	chain.Draw("double_integral_one_peak", total_cut, "L");
 	
 	//chain.Draw("integral_one_peak >> h(250, -2000, 10000)", total_cut, "L");
 	//chain.Draw("integral_one_peak >> h(150, -2000, 10000)", total_cut, "L");

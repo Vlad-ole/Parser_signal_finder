@@ -109,6 +109,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		//double integral calib
 		CalcDoubleIntegralCalib calc_double_intergral_calib(invert_data, pair_vec, HORIZ_INTERVAL);
 		double_integral_vec.push_back(calc_double_intergral_calib.GetDoubleIntegralVec());
+		double_integral_vec_y.push_back(calc_double_intergral_calib.GetDoubleIntegralVecVy());
 		
 		//finaly, we calculate integral of signal
 		CalcIntegral calc_integral_nontriv_baseline(invert_data, baseline[i], baseline_vec[i], 35000, 160000, HORIZ_INTERVAL);
@@ -165,6 +166,11 @@ std::vector<double> CalcData::GetInvertSignal(std::vector<double> yv, double bas
 std::vector< std::vector<double> >& CalcData::GetDoubleIntegralVec()
 {
 	return double_integral_vec;
+}
+
+std::vector< std::vector<double> >& CalcData::GetDoubleIntegralVecY()
+{
+	return double_integral_vec_y;
 }
 
 std::vector<double>& CalcData::GetYvCut()
