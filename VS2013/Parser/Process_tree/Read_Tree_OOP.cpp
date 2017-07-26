@@ -70,6 +70,7 @@ int main(int argc, char *argv[])
 	vector<int> *signals_x_start = 0;
 	vector<int> *signals_x_stop = 0;
 	vector<double> *integral_one_peak = 0;
+	vector<double> *double_integral_one_peak = 0;
 
 	chain.SetBranchAddress("min_element", &min_element);
 	chain.SetBranchAddress("max_element", &max_element);
@@ -82,6 +83,7 @@ int main(int argc, char *argv[])
 	chain.SetBranchAddress("signals_x_start", &signals_x_start);
 	chain.SetBranchAddress("signals_x_stop", &signals_x_stop);
 	chain.SetBranchAddress("integral_one_peak", &integral_one_peak);
+	chain.SetBranchAddress("double_integral_one_peak", &double_integral_one_peak);
 
 	chain.SetBranchAddress("data_raw", &data_raw);
 	chain.SetBranchAddress("data_int", &data_int);
@@ -126,7 +128,7 @@ int main(int argc, char *argv[])
 				cout << "event = " << i << endl;
 			}
 
-			REMEMBER_CUT(ch_id == 38 && run_id == 3396 && event_id == 2);
+			REMEMBER_CUT(ch_id == 38 && run_id == 3396 && event_id == 0);
 			if (cut_condition_bool)
 			{
 				//signals_x_values.clear();
@@ -208,6 +210,7 @@ int main(int argc, char *argv[])
 	//chain.Draw("signals_x_stop", total_cut, "L");
 	//chain.Draw("local_baseline", total_cut, "L");
 	
+	//chain.Draw("double_integral_one_peak", total_cut, "L");
 	
 	//chain.Draw("integral_one_peak >> h(250, -2000, 10000)", total_cut, "L");
 	//chain.Draw("integral_one_peak >> h(150, -2000, 10000)", total_cut, "L");

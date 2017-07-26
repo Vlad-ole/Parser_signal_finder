@@ -49,6 +49,8 @@ public:
 	std::vector< std::vector<int> >& GetSignalsXStart();
 	std::vector< std::vector<int> >& GetSignalsXStop();
 
+	std::vector< std::vector<double> >& GetDoubleIntegralVec();
+
 private:
 	std::vector< std::vector<double> >& data;
 	std::vector<double>& time;
@@ -74,6 +76,8 @@ private:
 	std::vector< std::vector<double> > local_baseline_v;
 	std::vector< std::vector<int> > signals_x_start_v;
 	std::vector< std::vector<int> > signals_x_stop_v;
+
+	std::vector< std::vector<double> > double_integral_vec;
 
 	int point_s2_left;
 	int point_s2_right;

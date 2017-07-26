@@ -1,5 +1,4 @@
 #include "CalcDoubleIntegralCalib.h"
-#include "CalcDoubleIntegralCalib.h"
 
 using namespace std;
 
@@ -35,7 +34,7 @@ CalcDoubleIntegralCalib::CalcDoubleIntegralCalib(std::vector<double> data, std::
 					//calc local baseline
 					double local_baseline = 0;
 					const int k_to = (signals_values_x_first[j] - local_baseline_window_p) > 0 ? (signals_values_x_first[j] - local_baseline_window_p) : 0;
-					for (int k = (signals_values_x_first[j]); k > k_to; k++)
+					for (int k = (signals_values_x_first[j]); k > k_to; k--)
 					{
 						local_baseline += data[k];
 					}
@@ -69,4 +68,9 @@ CalcDoubleIntegralCalib::CalcDoubleIntegralCalib(std::vector<double> data, std::
 
 CalcDoubleIntegralCalib::~CalcDoubleIntegralCalib()
 {
+}
+
+std::vector<double> CalcDoubleIntegralCalib::GetDoubleIntegralVec()
+{
+	return double_integral_vec;
 }

@@ -37,6 +37,8 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 	der_max_position.resize(n_ch);
 	for (int i = 0; i < n_ch; i++)
 	{
+		//cout << "ch = " << i << endl;
+		
 		//it's nesessry to find trivial baseline. We can use this value for more complex algorithms
 		CalcBaselineTrivial calc_baseline(data[i], 30000, HORIZ_INTERVAL);
 		baseline.push_back(calc_baseline.GetBaseline());
@@ -106,6 +108,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 
 		//double integral calib
 		CalcDoubleIntegralCalib calc_double_intergral_calib(invert_data, pair_vec, HORIZ_INTERVAL);
+		double_integral_vec.push_back(calc_double_intergral_calib.GetDoubleIntegralVec());
 		
 		//finaly, we calculate integral of signal
 		CalcIntegral calc_integral_nontriv_baseline(invert_data, baseline[i], baseline_vec[i], 35000, 160000, HORIZ_INTERVAL);
@@ -157,6 +160,11 @@ std::vector<double> CalcData::GetInvertSignal(std::vector<double> yv, double bas
 		yv_double_invert[i] = -yv[i] + 2 * baseline;
 	}
 	return yv_double_invert;
+}
+
+std::vector< std::vector<double> >& CalcData::GetDoubleIntegralVec()
+{
+	return double_integral_vec;
 }
 
 std::vector<double>& CalcData::GetYvCut()

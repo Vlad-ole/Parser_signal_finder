@@ -41,16 +41,27 @@ int main(int argc, char *argv[])
 	//PathInfo.events_per_file = 1000;
 	
 	vector<ch_info> ch_list;
-	const int n_ch = 32;
+	//var1
+	//const int n_ch = 32;
+	//ch_list.resize(n_ch);
+	//for (int i = 0; i < n_ch; i++)
+	//{
+	//	/*if (i < 8) ch_list[i].id = i;
+	//	else ch_list[i].id = i + 24;*/
+	//	
+	//	//ch_list[0].id = 38;
+	//	ch_list[i].id = i + 32;
+	//}
+	//
+
+	//var2
+	const int n_ch = 1;
 	ch_list.resize(n_ch);
 	for (int i = 0; i < n_ch; i++)
 	{
-		/*if (i < 8) ch_list[i].id = i;
-		else ch_list[i].id = i + 24;*/
-		
-		//ch_list[0].id = 38;
-		ch_list[i].id = i + 32;
+		ch_list[0].id = 38;
 	}
+	//
 	
 	comm_info str_comm;
 	str_comm.HORIZ_INTERVAL = 16;//ns per point;
@@ -119,6 +130,7 @@ int main(int argc, char *argv[])
 		vector<double> integral_one_peak;
 		vector<int> signals_x_start;
 		vector<int> signals_x_stop;
+		vector<double> double_integral_one_peak;
 		
 		//define tree
 		if ((run_number - start_run_number) % runs_per_tree_file == 0)
@@ -149,6 +161,7 @@ int main(int argc, char *argv[])
 			tree->Branch("signals_x_stop", &signals_x_stop);
 			
 			tree->Branch("integral_one_peak", &integral_one_peak);
+			tree->Branch("double_integral_one_peak", &double_integral_one_peak);
 			
 			//data			
 			tree->Branch("data_raw", &data_raw);
@@ -167,9 +180,13 @@ int main(int argc, char *argv[])
 				//define physical ch_id
 				/*if (ch < 8) ch_id = ch;
 				else ch_id = ch + 24;*/
-				//ch_id = 38;
-				ch_id = ch + 32;
+				
+				//var1
+				//ch_id = ch + 32;
 
+				//var2
+				ch_id = 38;
+				
 				//get data from calc_data_v for each event and ch
 				min_element = (calc_data_v[temp_event_id].GetMin())[ch];
 				max_element = (calc_data_v[temp_event_id].GetMax())[ch];
@@ -185,6 +202,7 @@ int main(int argc, char *argv[])
 				signals_x_stop = (calc_data_v[temp_event_id].GetSignalsXStop())[ch];
 				local_baseline = (calc_data_v[temp_event_id].GetLocalBaselineV())[ch];
 				integral_one_peak = (calc_data_v[temp_event_id].GetIntegralOnePeak())[ch];
+				double_integral_one_peak = (calc_data_v[temp_event_id].GetDoubleIntegralVec())[ch];
 
 				//cout << signals_x_start[0] << "\t" << signals_x_stop[0] << endl;
 				//signals_pair_values = (calc_data_v[temp_event_id].GetSignalsPairValues())[ch];
