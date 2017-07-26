@@ -6,6 +6,7 @@
 #include <map>  
 #include <fstream>
 #include <algorithm>
+#include <sstream>
 
 #include "TApplication.h"
 #include "TROOT.h"
@@ -168,12 +169,20 @@ int main(int argc, char *argv[])
 			gr->SetMarkerSize(2);
 			gr->SetMarkerStyle(29);
 			gr->SetMarkerColor(kOrange);
-			gr->SetTitle(cut_condition_srt.c_str());
-			//gr->Draw("AP");
-			//gr->GetXaxis()->SetRangeUser(-300E3, 300E3);
+			//gr->SetTitle(cut_condition_srt.c_str()); //var0 default
 			gr->GetXaxis()->SetLimits(0, 160E3);
 			gr->Draw("AP");
 			//c1->Update();
+
+			//var2
+			std::ostringstream gr_title_oss;
+			gr_title_oss << "#splitline{" << cut_condition_srt << "}{integral values: ";
+			for (int k = 0; k < (*double_integral_one_peak).size(); k++)
+			{
+				gr_title_oss << (*double_integral_one_peak)[k] << "\t";
+			}
+			gr_title_oss << "}";
+			gr->SetTitle(gr_title_oss.str().c_str());
 
 			TGraph *gr_local_baseline = new TGraph(signals_x_values.size(), &signals_x_values[0], &local_baseline_y_values[0]);
 			gr_local_baseline->SetMarkerSize(1);
@@ -196,13 +205,9 @@ int main(int argc, char *argv[])
 		}
 		
 	}
-
 	
-
-	//total_cut = "ch_id == 0 && run_id < 3000 && event_id < 10 && integral > 2E6 && integral < 5E6";
 	//total_cut = "ch_id == 38 && run_id < 10000 && event_id < 10 ";
 	//total_cut = "ch_id == 38 && run_id == 3396 && event_id == 0";	
-	//total_cut = "ch_id == 36 && run_id == 3396 && event_id == 2 ";
 	//COUT(total_cut.GetName());
 	//COUT(total_cut.GetTitle());
 
@@ -248,24 +253,6 @@ int main(int argc, char *argv[])
 	//chain.Draw("(data_int/100.0):time_v", total_cut, "L");
 	//chain.SetLineColor(kGreen);
 	//chain.Draw("(-data_raw + baseline):time_v", total_cut, "LP");
-
-	//chain.Draw("(-data_raw + 2*baseline):time_v", total_cut, "LP");
-	//	//chain.Draw("baseline:time_v", total_cut, "same L");
-	//chain.SetLineColor(kRed);
-	//chain.Draw("baseline_v:time_v", total_cut, "same L");
-	//chain.SetLineColor(kGreen);
-	//chain.Draw("(-data_smooth + 2*baseline):time_v", total_cut, "same L");
-
-	//chain.Draw("((-data_smooth + 2*baseline) - baseline_v):time_v", total_cut, "LP");
-
-	//chain.Draw("integral:run_id", total_cut);
-	//chain.Draw("integral:event_id", total_cut);
-	//chain.Draw("integral:ch_id", total_cut);
-	//chain.Draw("integral >> h(120, -350E3, 350E3)", total_cut);
-	//chain.Draw("integral", total_cut);
-	//chain.Draw("baseline", total_cut);
-	//chain.Draw("run_id", total_cut);
-
 
 
 	bool is_average = false;
