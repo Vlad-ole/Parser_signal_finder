@@ -197,7 +197,7 @@ int main(int argc, char *argv[])
 			chain.Draw("(-data_raw + baseline):time_v", total_cut, "same LP");
 			chain.SetLineColor(kBlue);
 			//chain.Draw("(data_int/500.0):time_v", total_cut, "same L");
-			chain.Draw("(double_integral_one_peak_vec_y/500.0):time_v", total_cut, "same L");
+			chain.Draw("(double_integral_one_peak_vec_y/500):time_v", total_cut, "same L");
 		}
 		else
 		{

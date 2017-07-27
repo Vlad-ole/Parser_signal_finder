@@ -79,7 +79,7 @@ CalcDoubleIntegralCalib::CalcDoubleIntegralCalib(std::vector<double> data, std::
 			double double_integral = 0;
 			for (int k = 0; k < integral_window; k++)
 			{
-				double_integral += data_integrtal[k];
+				double_integral += data_integrtal[k] * HORIZ_INTERVAL;
 			}
 
 
