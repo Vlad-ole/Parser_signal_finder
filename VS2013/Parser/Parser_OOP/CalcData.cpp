@@ -92,10 +92,11 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		signals_x_stop_v.push_back(signals_values_x_second);
 
 		//caclulate intergal of individual peaks
+		double integral_one_event_tmp = 0;
 		for (int j = 0; j < pair_vec.size(); j++)
 		{			
 			//choose region  
-			//if ( (signals_values_x_second[j] * HORIZ_INTERVAL) < 30000)
+			//if ( (signals_values_x_second[j] * HORIZ_INTERVAL) < 30000)			
 			{
 				double integral_tmp = 0;
 				for (int k = signals_values_x_first[j]; k < signals_values_x_second[j]; k++)
@@ -103,8 +104,15 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 					integral_tmp += (data_without_slope[k] - local_baseline_v[i][j]) * HORIZ_INTERVAL;
 				}
 				integral_one_peak[i].push_back(integral_tmp);
+
+				//if (true)//algorithm is not ideal, so I should add some cuts (depend from ch_id and experimental conditions)
+				//{
+				//	integral_one_event_tmp += integral_tmp;
+				//}
+				
 			}			
 		}
+		//integral_one_event.push_back(integral_one_event_tmp);
 
 		//double integral calib
 		CalcDoubleIntegralCalib calc_double_intergral_calib(invert_data, pair_vec, HORIZ_INTERVAL);
@@ -151,6 +159,11 @@ std::vector< std::vector<int> >& CalcData::GetSignalsXStop()
 std::vector< std::vector<double> >& CalcData::GetIntegralOnePeak()
 {
 	return integral_one_peak;
+}
+
+std::vector<double>& CalcData::GetIntegralOneEvent()
+{
+	return integral_one_event;
 }
 
 std::vector<double> CalcData::GetInvertSignal(std::vector<double> yv, double baseline)

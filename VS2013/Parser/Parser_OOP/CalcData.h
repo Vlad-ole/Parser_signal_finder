@@ -45,6 +45,7 @@ public:
 	std::vector<double> GetInvertSignal(std::vector<double> yv, double baseline);
 
 	std::vector< std::vector<double> >& GetIntegralOnePeak();
+	std::vector<double>& GetIntegralOneEvent();
 	std::vector< std::vector<double> >& GetLocalBaselineV();
 	std::vector< std::vector<int> >& GetSignalsXStart();
 	std::vector< std::vector<int> >& GetSignalsXStop();
@@ -74,6 +75,7 @@ private:
 	std::vector< std::vector<double> > integral_s1_s2;
 
 	std::vector< std::vector<double> > integral_one_peak;
+	std::vector<double> integral_one_event;
 	std::vector< std::vector<double> > local_baseline_v;
 	std::vector< std::vector<int> > signals_x_start_v;
 	std::vector< std::vector<int> > signals_x_stop_v;

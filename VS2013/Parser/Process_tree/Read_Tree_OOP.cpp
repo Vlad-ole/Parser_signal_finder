@@ -114,7 +114,13 @@ int main(int argc, char *argv[])
 	tree_tmp.Fill();
 	chain.AddFriend("tree_tmp");
 
-	const bool is_show_individual_signals = true;
+	chain.SetBranchStatus("*", 0); //disable all branches
+	chain.SetBranchStatus("ch_id", 1);
+	chain.SetBranchStatus("run_id", 1);
+	chain.SetBranchStatus("event_id", 1);
+	chain.SetBranchStatus("integral_one_peak", 1);
+
+	const bool is_show_individual_signals = false;
 	if (is_show_individual_signals)
 	{
 
@@ -131,7 +137,7 @@ int main(int argc, char *argv[])
 				cout << "event = " << i << endl;
 			}
 
-			REMEMBER_CUT(ch_id == 38 && run_id == 3396 && event_id == 0);
+			REMEMBER_CUT(ch_id == 38 && run_id == 3398 && event_id == 2);
 			if (cut_condition_bool)
 			{
 				//signals_x_values.clear();
@@ -206,6 +212,39 @@ int main(int argc, char *argv[])
 		
 	}
 	
+	const bool is_calc_integral_one_event = true;
+
+	if (is_calc_integral_one_event)
+	{
+		//vector<double> integral_one_event;
+		TH1F *hist = new TH1F("h", "ch_id == 38 && run_id < 10000 && event_id < 10", 100, -30, 60);
+		for (int i = 0; i < n_events; i++)
+		{
+			chain.GetEntry(i);
+
+			if (i % 10 == 0)
+			{
+				cout << "event = " << i << endl;
+			}
+
+			if (ch_id == 38 && run_id < 10000 && event_id < 10)
+			{
+				double integral_one_event_tmp = 0;
+				for (int j = 0; j < (*integral_one_peak).size(); j++)
+				{
+					if ((*integral_one_peak)[j] > 750) //algorithm is not ideal, so I should add some cuts (depend from ch_id and experimental conditions)
+					{
+						integral_one_event_tmp += (*integral_one_peak)[j];
+					}
+				}
+				hist->Fill(integral_one_event_tmp / 1705);
+				//cout << integral_one_event_tmp << endl;
+			}
+		}
+		//hist->SetTitle( cut_string.c_str() );
+		hist->DrawClone();
+	}
+
 	//total_cut = "ch_id == 38 && run_id < 10000 && event_id < 10 ";
 	//total_cut = "ch_id == 38 && run_id == 3396 && event_id == 0";	
 	//COUT(total_cut.GetName());
@@ -220,7 +259,7 @@ int main(int argc, char *argv[])
 	//chain.Draw("signals_x_stop", total_cut, "L");
 	//chain.Draw("local_baseline", total_cut, "L");
 	
-	//chain.Draw("double_integral_one_peak", total_cut, "L");
+	//chain.Draw("double_integral_one_peak >> h(80, -10E6, 50E6)", total_cut, "L");
 	
 	//chain.Draw("integral_one_peak >> h(250, -2000, 10000)", total_cut, "L");
 	//chain.Draw("integral_one_peak >> h(150, -2000, 10000)", total_cut, "L");
