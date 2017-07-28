@@ -6,6 +6,7 @@ using namespace std;
 
 int main()
 {
+	//correct
 	cout << "a = " << a << endl;
 	do_something();
 
@@ -15,6 +16,9 @@ int main()
 	cout << "struct_test_vec_obj.size() = " << struct_test_vec_obj.size() << endl;
 	cout << "struct_test_vec_obj[0].x = " << struct_test_vec_obj[0].x << endl;
 	cout << "struct_test_vec_obj[0].y = " << struct_test_vec_obj[0].y << endl;
+
+	////test
+	//initialize_single_pe_characteristics();
 	
 	system("pause");
 	return 0;
