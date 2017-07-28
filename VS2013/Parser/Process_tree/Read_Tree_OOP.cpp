@@ -217,17 +217,18 @@ int main(int argc, char *argv[])
 	if (is_calc_integral_one_event)
 	{
 		//vector<double> integral_one_event;
-		TH1F *hist = new TH1F("h", "ch_id == 38 && run_id < 10000 && event_id < 10", 100, -30, 60);
+		//TCanvas *c = new TCanvas();
+		TH1F *hist = new TH1F("h", "ch_id == 59 && run_id < 10000 && event_id < 10", 100, 0.1, 17);
 		for (int i = 0; i < n_events; i++)
 		{
 			chain.GetEntry(i);
 
-			if (i % 10 == 0)
+			if (i % 1000 == 0)
 			{
 				cout << "event = " << i << endl;
 			}
 
-			if (ch_id == 38 && run_id < 10000 && event_id < 10)
+			if (ch_id == 59 && run_id < 10000 && event_id < 10)
 			{
 				double integral_one_event_tmp = 0;
 				for (int j = 0; j < (*integral_one_peak).size(); j++)
@@ -237,8 +238,11 @@ int main(int argc, char *argv[])
 						integral_one_event_tmp += (*integral_one_peak)[j];
 					}
 				}
-				hist->Fill(integral_one_event_tmp / 1705);
-				//cout << integral_one_event_tmp << endl;
+				if (integral_one_event_tmp > 0)
+				{
+					const double single_pe_value = 1543; //DO NOT FORGET TO CHANGE THIS VALUE!
+					hist->Fill(integral_one_event_tmp / single_pe_value);
+				}
 			}
 		}
 		//hist->SetTitle( cut_string.c_str() );
@@ -292,7 +296,6 @@ int main(int argc, char *argv[])
 	//chain.Draw("(data_int/100.0):time_v", total_cut, "L");
 	//chain.SetLineColor(kGreen);
 	//chain.Draw("(-data_raw + baseline):time_v", total_cut, "LP");
-
 
 	bool is_average = false;
 	if (is_average)
