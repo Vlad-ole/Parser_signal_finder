@@ -39,12 +39,18 @@
     <ClCompile Include="LoadMacros.C">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Single_pe_characteristics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Chain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FormCanv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Single_pe_characteristics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -16,9 +16,12 @@
 #include "TFile.h"
 #include "TCut.h"
 
+#include "Single_pe_characteristics.h"
 
 #include "FormCanv.h"
 using namespace std;
+
+
 
 #define COUT(x) cout << #x " = " << x << endl;
 
@@ -218,7 +221,10 @@ int main(int argc, char *argv[])
 	{
 		//vector<double> integral_one_event;
 		//TCanvas *c = new TCanvas();
-		TH1F *hist = new TH1F("h", "ch_id == 59 && run_id < 10000 && event_id < 10", 100, 0.1, 17);
+		const int ch_cut = 59;
+		ostringstream hist_title;
+		hist_title << "ch_id == " << ch_cut << " && run_id < 10000 && event_id < 10";
+		TH1F *hist = new TH1F("h", hist_title.str().c_str(), 100, 0.1, 17);
 		for (int i = 0; i < n_events; i++)
 		{
 			chain.GetEntry(i);
@@ -228,7 +234,7 @@ int main(int argc, char *argv[])
 				cout << "event = " << i << endl;
 			}
 
-			if (ch_id == 59 && run_id < 10000 && event_id < 10)
+			if (ch_id == ch_cut && run_id < 10000 && event_id < 10)
 			{
 				double integral_one_event_tmp = 0;
 				for (int j = 0; j < (*integral_one_peak).size(); j++)
@@ -363,4 +369,7 @@ int main(int argc, char *argv[])
 	//COUT(integral_tmp);
 	//--------------------------------------
 
+	//initialize_single_pe_characteristics();
 }
+
+

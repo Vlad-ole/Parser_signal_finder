@@ -107,6 +107,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="Read_Tree_OOP.cpp" />
+    <ClCompile Include="Single_pe_characteristics.cpp" />
     <ClCompile Include="TestRead.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
@@ -115,6 +116,7 @@
   <ItemGroup>
     <ClInclude Include="Chain.h" />
     <ClInclude Include="FormCanv.h" />
+    <ClInclude Include="Single_pe_characteristics.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
