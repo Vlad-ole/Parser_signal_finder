@@ -8,6 +8,8 @@
 #include "CalcDer.h"
 #include "PeakFinder.h"
 
+#include "CoGBase.h"
+
 class CalcData
 {
 public:
@@ -55,6 +57,9 @@ public:
 
 	std::vector<double>& GetNumOfPeInEventVec();
 
+	double GetXCogPosition();
+	double GetYCogPosition();
+
 private:
 	std::vector< std::vector<double> >& data;
 	std::vector<double>& time;
@@ -95,5 +100,8 @@ private:
 
 	std::vector<double> yv_cut;
 	std::vector<double> num_of_pe_in_event_vec;
+
+	double x_cog_position;
+	double y_cog_position;
 };
 

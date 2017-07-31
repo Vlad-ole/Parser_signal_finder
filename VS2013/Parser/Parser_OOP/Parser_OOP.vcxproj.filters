@@ -55,6 +55,12 @@
     <Filter Include="Header Files\PhysicalData">
       <UniqueIdentifier>{e64db04d-83a0-418c-9830-9d7528b4f1e2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\CalcData\CoG">
+      <UniqueIdentifier>{d8cae407-337c-4469-82cc-beba1976f264}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\CalcData\CoG">
+      <UniqueIdentifier>{cdcef1f2-7e15-4289-9f9d-34dbb38f9afd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FillCanv.cpp">
@@ -132,6 +138,9 @@
     <ClCompile Include="ChCharacteristics.cpp">
       <Filter>Source Files\PhysicalData</Filter>
     </ClCompile>
+    <ClCompile Include="CoGBase.cpp">
+      <Filter>Source Files\CalcData\CoG</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FillCanv.h">
@@ -205,6 +214,9 @@
     </ClInclude>
     <ClInclude Include="ChCharacteristics.h">
       <Filter>Header Files\PhysicalData</Filter>
+    </ClInclude>
+    <ClInclude Include="CoGBase.h">
+      <Filter>Header Files\CalcData\CoG</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

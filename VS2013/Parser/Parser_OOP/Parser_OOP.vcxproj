@@ -78,7 +78,7 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;_LIB;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <ForcedIncludeFiles>w32pragma.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
-      <OpenMPSupport>false</OpenMPSupport>
+      <OpenMPSupport>true</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -100,6 +100,7 @@
     <ClCompile Include="CalcIntegral.cpp" />
     <ClCompile Include="CalcIntegralS1.cpp" />
     <ClCompile Include="ChCharacteristics.cpp" />
+    <ClCompile Include="CoGBase.cpp" />
     <ClCompile Include="FillCanv.cpp" />
     <ClCompile Include="FindS2.cpp" />
     <ClCompile Include="FTFilter.cpp" />
@@ -130,6 +131,7 @@
     <ClInclude Include="CalcIntegral.h" />
     <ClInclude Include="CalcIntegralS1.h" />
     <ClInclude Include="ChCharacteristics.h" />
+    <ClInclude Include="CoGBase.h" />
     <ClInclude Include="FillCanv.h" />
     <ClInclude Include="FindS2.h" />
     <ClInclude Include="FTFilter.h" />

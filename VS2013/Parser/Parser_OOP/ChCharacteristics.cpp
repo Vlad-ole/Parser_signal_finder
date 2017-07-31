@@ -5,9 +5,10 @@ using namespace std;
 double ChCharacteristics::step_x = 10; //mm
 double ChCharacteristics::step_y = 10; //mm
 
-ChCharacteristics::ChCharacteristics()
-{
-	ch_characteristics_struct = 
+std::vector<ChCharacteristicsStruct> ChCharacteristics::ch_characteristics_struct =
+//ChCharacteristics::ChCharacteristics()
+//{
+//	ch_characteristics_struct = 
 	{
 		{ 32, true, true, 1482, 750, 3000, -2 * step_x, step_y },
 		{ 33, true, true, 1256, 750, 3000, -step_x, 2 * step_y },
@@ -36,11 +37,11 @@ ChCharacteristics::ChCharacteristics()
 		{ 59, true, true, 1543, 750, 3000, step_x, -2 * step_y }
 
 	};
-}
 
-ChCharacteristics::~ChCharacteristics()
-{
-}
+
+//ChCharacteristics::~ChCharacteristics()
+//{
+//}
 
 vector<ChCharacteristicsStruct>& ChCharacteristics::GetChCharacteristics()
 {

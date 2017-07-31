@@ -66,6 +66,8 @@ int main(int argc, char *argv[])
 	double num_of_pe_in_event;
 	int der_min_position;
 	int der_max_position;
+	double x_cog_position;
+	double y_cog_position;
 	vector<double> *data_raw = 0;
 	vector<double> *data_der = 0;
 	vector<double> *data_int = 0;
@@ -87,6 +89,9 @@ int main(int argc, char *argv[])
 	chain.SetBranchAddress("der_max_position", &der_max_position);
 
 	chain.SetBranchAddress("num_of_pe_in_event", &num_of_pe_in_event);
+	chain.SetBranchAddress("x_cog_position", &x_cog_position);
+	chain.SetBranchAddress("y_cog_position", &y_cog_position);
+
 	chain.SetBranchAddress("local_baseline", &local_baseline);
 	chain.SetBranchAddress("signals_x_start", &signals_x_start);
 	chain.SetBranchAddress("signals_x_stop", &signals_x_stop);
@@ -125,8 +130,8 @@ int main(int argc, char *argv[])
 	chain.SetBranchStatus("run_id", 1);
 	chain.SetBranchStatus("event_id", 1);
 	chain.SetBranchStatus("num_of_pe_in_event", 1);
-	
-	//chain.SetBranchStatus("integral_one_peak", 1);
+	chain.SetBranchStatus("x_cog_position", 1);
+	chain.SetBranchStatus("y_cog_position", 1);
 
 
 	const bool is_show_individual_signals = false;
@@ -269,7 +274,8 @@ int main(int argc, char *argv[])
 	chain.SetMarkerSize(1);
 
 	//chain.Draw("(double_integral_one_peak_vec_y/5000.0):time_v", total_cut, "LP same");
-	chain.Draw("num_of_pe_in_event >> h(100, 0, 20)", total_cut && "num_of_pe_in_event > 0.1");
+	//chain.Draw("num_of_pe_in_event >> h(100, 0, 20)", total_cut && "num_of_pe_in_event > 0.1");
+	chain.Draw("y_cog_position", total_cut);
 
 	//chain.Draw("signals_x_start", total_cut, "L");
 	//chain.Draw("signals_x_stop", total_cut, "L");

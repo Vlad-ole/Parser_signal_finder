@@ -63,8 +63,8 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		CalcDer calc_der(invert_data, 21, 1);
 		der_data.push_back(calc_der.GetDer());
 
-		CalcDer calc_smooth(invert_data, 21, 0);
-		smooth_data.push_back(calc_smooth.GetDer());		
+/*		CalcDer calc_smooth(invert_data, 21, 0);
+		smooth_data.push_back(calc_smooth.GetDer());	*/	
 
 		//CalcBaselineMedianFilter calc_baseline_median_filter(invert_data, 0, 160000, 11, HORIZ_INTERVAL);
 		//baseline_vec.push_back(calc_baseline_median_filter.GetBaselineVec());
@@ -113,8 +113,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		//integral_one_event.push_back(integral_one_event_tmp);
 
 		//calc num of pe for one event
-		ChCharacteristics ch_characteristics;
-		vector<ChCharacteristicsStruct> ch_characteristics_struct = ch_characteristics.GetChCharacteristics();
+		vector<ChCharacteristicsStruct> ch_characteristics_struct = ChCharacteristics::GetChCharacteristics();
 		double num_of_pe_in_event = -1;
 		for (int k = 0; k < ch_characteristics_struct.size(); k++)
 		{
@@ -144,6 +143,10 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		CalcIntegral calc_integral_nontriv_baseline(invert_data, baseline[i], baseline_vec[i], 35000, 160000, HORIZ_INTERVAL);
 		integral.push_back(calc_integral_nontriv_baseline.GetIntegrtal());
 	}
+
+	CoGBase cog_obj(num_of_pe_in_event_vec);
+	x_cog_position = cog_obj.GetX();
+	y_cog_position = cog_obj.GetY();
 	
 	//const double cut_th_low_MHz = 0;
 	//const double cut_th_high_MHz = 1000;
@@ -301,4 +304,14 @@ vector<double> CalcData::GetIntegralS2()
 double CalcData::GetIntegral_s1_caen_outside_the_trigger()
 {
 	return integral_s1_caen_outside_the_trigger;
+}
+
+double CalcData::GetXCogPosition()
+{
+	return x_cog_position;
+}
+
+double CalcData::GetYCogPosition()
+{
+	return y_cog_position;
 }

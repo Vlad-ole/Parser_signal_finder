@@ -135,6 +135,8 @@ int main(int argc, char *argv[])
 		vector<int> signals_x_stop;
 		vector<double> double_integral_one_peak;
 		vector<double> double_integral_one_peak_vec_y;
+		double x_cog_position;
+		double y_cog_position;
 		
 		//define tree
 		if ((run_number - start_run_number) % runs_per_tree_file == 0)
@@ -169,6 +171,9 @@ int main(int argc, char *argv[])
 			//tree->Branch("integral_one_event", &integral_one_event);			
 			tree->Branch("double_integral_one_peak", &double_integral_one_peak);
 			tree->Branch("double_integral_one_peak_vec_y", &double_integral_one_peak_vec_y);
+
+			tree->Branch("x_cog_position", &x_cog_position);
+			tree->Branch("y_cog_position", &y_cog_position);
 			
 			//data			
 			tree->Branch("data_raw", &data_raw);
@@ -205,8 +210,8 @@ int main(int argc, char *argv[])
 				der_min_position = (calc_data_v[temp_event_id].GetDerMinPosition())[ch];
 				der_max_position = (calc_data_v[temp_event_id].GetDerMaxPosition())[ch];
 
-				data_smooth = (calc_data_v[temp_event_id].GetSmooth())[ch];
-				data_int = (calc_data_v[temp_event_id].GetInt())[ch];
+				//data_smooth = (calc_data_v[temp_event_id].GetSmooth())[ch];
+				//data_int = (calc_data_v[temp_event_id].GetInt())[ch];
 
 				signals_x_start = (calc_data_v[temp_event_id].GetSignalsXStart())[ch];
 				signals_x_stop = (calc_data_v[temp_event_id].GetSignalsXStop())[ch];
@@ -217,6 +222,9 @@ int main(int argc, char *argv[])
 
 				double_integral_one_peak = (calc_data_v[temp_event_id].GetDoubleIntegralVec())[ch];
 				double_integral_one_peak_vec_y = (calc_data_v[temp_event_id].GetDoubleIntegralVecY())[ch];
+
+				x_cog_position = calc_data_v[temp_event_id].GetXCogPosition();
+				y_cog_position = calc_data_v[temp_event_id].GetYCogPosition();
 
 				//cout << signals_x_start[0] << "\t" << signals_x_stop[0] << endl;
 				//signals_pair_values = (calc_data_v[temp_event_id].GetSignalsPairValues())[ch];

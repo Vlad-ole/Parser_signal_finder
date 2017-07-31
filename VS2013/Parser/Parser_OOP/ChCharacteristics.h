@@ -23,13 +23,13 @@ struct ChCharacteristicsStruct
 class ChCharacteristics
 {
 public:
-	ChCharacteristics();
-	~ChCharacteristics();
-	std::vector<ChCharacteristicsStruct>& GetChCharacteristics();
+	//ChCharacteristics();
+	//~ChCharacteristics();
+	static std::vector<ChCharacteristicsStruct>& GetChCharacteristics();
 private:
 	static double step_x;
 	static double step_y;
-	std::vector<ChCharacteristicsStruct> ch_characteristics_struct;
+	static std::vector<ChCharacteristicsStruct> ch_characteristics_struct;
 };
 
 
