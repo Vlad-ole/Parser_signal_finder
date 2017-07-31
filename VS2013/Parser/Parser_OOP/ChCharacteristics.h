@@ -25,7 +25,7 @@ class ChCharacteristics
 public:
 	ChCharacteristics();
 	~ChCharacteristics();
-	std::vector<ChCharacteristicsStruct> GetChCharacteristics();
+	std::vector<ChCharacteristicsStruct>& GetChCharacteristics();
 private:
 	static double step_x;
 	static double step_y;

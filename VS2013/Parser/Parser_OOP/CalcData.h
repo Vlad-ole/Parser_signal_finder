@@ -53,6 +53,8 @@ public:
 	std::vector< std::vector<double> >& GetDoubleIntegralVec();
 	std::vector< std::vector<double> >& GetDoubleIntegralVecY();
 
+	std::vector<double>& GetNumOfPeInEventVec();
+
 private:
 	std::vector< std::vector<double> >& data;
 	std::vector<double>& time;
@@ -92,5 +94,6 @@ private:
 	double integral_s1_caen_outside_the_trigger;
 
 	std::vector<double> yv_cut;
+	std::vector<double> num_of_pe_in_event_vec;
 };
 

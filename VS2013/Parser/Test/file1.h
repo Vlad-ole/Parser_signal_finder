@@ -4,40 +4,30 @@
 #include <iostream>
 #include <vector>
 
-
-
-//correct
-extern double a;
-void do_something();
+//void do_something();
 
 struct StructTest
 {
 	double x;
 	double y;
-	//StructTest();
 	StructTest(double x, double y);
 };
 
-extern StructTest struct_test_obj;
-extern std::vector<StructTest> struct_test_vec_obj;
+//extern std::vector<StructTest> struct_test_vec_obj;
 
-
-////test
-//void initialize_single_pe_characteristics();
-//
-//struct SinglePeCharacteristics
+//class Helper
 //{
-//	int ch_id;
-//	bool is_physical;
-//	bool is_spe_separated_from_noise;
-//	double spe_mean;
-//	double spe_min;
-//	double spe_max;
-//	//SinglePeCharacteristics();
-//	SinglePeCharacteristics(int ch_id, bool is_physical, bool is_spe_separated_from_noise, double spe_mean, double spe_min, double spe_max);
+//public:
+//	Helper();
+//	~Helper();
+//	void Initialize();
+////private:
+//	std::vector<StructTest> struct_test_vec_obj;
 //};
-//
-//extern std::vector<SinglePeCharacteristics> single_pe_characteristics;
+
+std::vector<StructTest> initialize();
+
+
 
 
 #endif // _file1

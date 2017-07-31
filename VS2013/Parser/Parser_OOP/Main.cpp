@@ -50,7 +50,8 @@ int main(int argc, char *argv[])
 		else ch_list[i].id = i + 24;*/
 		
 		//ch_list[0].id = 38;
-		ch_list[i].id = i + 32;
+		//ch_list[i].id = i + 32;
+		ch_list[i].id = GetChId(i);
 	}
 	
 
@@ -128,6 +129,7 @@ int main(int argc, char *argv[])
 		vector<double> baseline_v;
 		vector<double> local_baseline;
 		vector<double> integral_one_peak;
+		double num_of_pe_in_event;
 		//vector<double> integral_one_event;
 		vector<int> signals_x_start;
 		vector<int> signals_x_stop;
@@ -162,6 +164,7 @@ int main(int argc, char *argv[])
 			tree->Branch("signals_x_start", &signals_x_start);
 			tree->Branch("signals_x_stop", &signals_x_stop);
 			
+			tree->Branch("num_of_pe_in_event", &num_of_pe_in_event);
 			tree->Branch("integral_one_peak", &integral_one_peak);
 			//tree->Branch("integral_one_event", &integral_one_event);			
 			tree->Branch("double_integral_one_peak", &double_integral_one_peak);
@@ -186,7 +189,8 @@ int main(int argc, char *argv[])
 				else ch_id = ch + 24;*/
 				
 				//var1
-				ch_id = ch + 32;
+				//ch_id = ch + 32;
+				ch_id = GetChId(ch);
 
 				////var2
 				//ch_id = 38;
@@ -208,6 +212,7 @@ int main(int argc, char *argv[])
 				signals_x_stop = (calc_data_v[temp_event_id].GetSignalsXStop())[ch];
 				local_baseline = (calc_data_v[temp_event_id].GetLocalBaselineV())[ch];
 				integral_one_peak = (calc_data_v[temp_event_id].GetIntegralOnePeak())[ch];
+				num_of_pe_in_event = (calc_data_v[temp_event_id].GetNumOfPeInEventVec())[ch];
 				//integral_one_event = (calc_data_v[temp_event_id].GetIntegralOneEvent())[ch];
 
 				double_integral_one_peak = (calc_data_v[temp_event_id].GetDoubleIntegralVec())[ch];

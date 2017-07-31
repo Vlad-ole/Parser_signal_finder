@@ -9,13 +9,11 @@
 #include "CalcBaselineMedianFilter.h"
 
 #include "CalcDoubleIntegral.h"
-
 #include "PeakFinderFind.h"
-
 #include "TypeConvertion.h"
-
 #include "CalcDoubleIntegralCalib.h"
-
+#include "ChCharacteristics.h"
+#include "RunDescription.h"
 
 #include <iostream>
 #include <algorithm>
@@ -114,6 +112,29 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		}
 		//integral_one_event.push_back(integral_one_event_tmp);
 
+		//calc num of pe for one event
+		ChCharacteristics ch_characteristics;
+		vector<ChCharacteristicsStruct> ch_characteristics_struct = ch_characteristics.GetChCharacteristics();
+		double num_of_pe_in_event = -1;
+		for (int k = 0; k < ch_characteristics_struct.size(); k++)
+		{
+			if (ch_characteristics_struct[k].ch_id == GetChId(i) && ch_characteristics_struct[k].is_spe_separated_from_noise && ch_characteristics_struct[k].is_physical)
+			{
+				num_of_pe_in_event = 0;
+				for (int j = 0; j < integral_one_peak[i].size(); j++)
+				{
+					if (integral_one_peak[i][j] > ch_characteristics_struct[k].spe_min) //algorithm is not ideal, so I should add some cuts (depend from ch_id)
+					{
+						double n_pe_one_peak_tmp = integral_one_peak[i][j] / ch_characteristics_struct[k].spe_mean;
+						num_of_pe_in_event += n_pe_one_peak_tmp; //should I round this value to integer?
+					}
+				}
+				break;
+			}			
+		}
+		num_of_pe_in_event_vec.push_back(num_of_pe_in_event);
+		
+
 		//double integral calib
 		CalcDoubleIntegralCalib calc_double_intergral_calib(invert_data, pair_vec, HORIZ_INTERVAL);
 		double_integral_vec.push_back(calc_double_intergral_calib.GetDoubleIntegralVec());
@@ -149,6 +170,11 @@ std::vector< std::vector<int> >& CalcData::GetSignalsXStart()
 std::vector< std::vector<int> >& CalcData::GetSignalsXStop()
 {
 	return signals_x_stop_v;
+}
+
+std::vector<double>& CalcData::GetNumOfPeInEventVec()
+{
+	return num_of_pe_in_event_vec;
 }
 
 //CalcData& CalcData::operator=(const CalcData& CD)

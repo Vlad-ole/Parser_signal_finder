@@ -99,6 +99,7 @@
     <ClCompile Include="CalcDoubleIntegralCalib.cpp" />
     <ClCompile Include="CalcIntegral.cpp" />
     <ClCompile Include="CalcIntegralS1.cpp" />
+    <ClCompile Include="ChCharacteristics.cpp" />
     <ClCompile Include="FillCanv.cpp" />
     <ClCompile Include="FindS2.cpp" />
     <ClCompile Include="FTFilter.cpp" />
@@ -128,6 +129,7 @@
     <ClInclude Include="CalcDoubleIntegralCalib.h" />
     <ClInclude Include="CalcIntegral.h" />
     <ClInclude Include="CalcIntegralS1.h" />
+    <ClInclude Include="ChCharacteristics.h" />
     <ClInclude Include="FillCanv.h" />
     <ClInclude Include="FindS2.h" />
     <ClInclude Include="FTFilter.h" />

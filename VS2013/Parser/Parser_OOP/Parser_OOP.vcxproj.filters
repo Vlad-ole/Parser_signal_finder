@@ -49,6 +49,12 @@
     <Filter Include="Header Files\CalcData\PeakFinder">
       <UniqueIdentifier>{c7519d2c-8361-412e-9797-7c435f199807}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\PhysicalData">
+      <UniqueIdentifier>{5c4e1d7d-abc8-424f-8423-d378149f7d32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\PhysicalData">
+      <UniqueIdentifier>{e64db04d-83a0-418c-9830-9d7528b4f1e2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FillCanv.cpp">
@@ -123,6 +129,9 @@
     <ClCompile Include="MaskTreeBranches.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ChCharacteristics.cpp">
+      <Filter>Source Files\PhysicalData</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FillCanv.h">
@@ -193,6 +202,9 @@
     </ClInclude>
     <ClInclude Include="MaskTreeBranches.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ChCharacteristics.h">
+      <Filter>Header Files\PhysicalData</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

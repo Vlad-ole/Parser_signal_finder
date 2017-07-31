@@ -42,7 +42,7 @@ ChCharacteristics::~ChCharacteristics()
 {
 }
 
-vector<ChCharacteristicsStruct> ChCharacteristics::GetChCharacteristics()
+vector<ChCharacteristicsStruct>& ChCharacteristics::GetChCharacteristics()
 {
 	return ch_characteristics_struct;
 }

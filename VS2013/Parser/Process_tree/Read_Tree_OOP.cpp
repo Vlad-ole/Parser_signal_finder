@@ -63,6 +63,7 @@ int main(int argc, char *argv[])
 	double max_element;
 	double baseline;
 	double integral;
+	double num_of_pe_in_event;
 	int der_min_position;
 	int der_max_position;
 	vector<double> *data_raw = 0;
@@ -84,6 +85,8 @@ int main(int argc, char *argv[])
 	chain.SetBranchAddress("integral", &integral);
 	chain.SetBranchAddress("der_min_position", &der_min_position);
 	chain.SetBranchAddress("der_max_position", &der_max_position);
+
+	chain.SetBranchAddress("num_of_pe_in_event", &num_of_pe_in_event);
 	chain.SetBranchAddress("local_baseline", &local_baseline);
 	chain.SetBranchAddress("signals_x_start", &signals_x_start);
 	chain.SetBranchAddress("signals_x_stop", &signals_x_stop);
@@ -121,7 +124,10 @@ int main(int argc, char *argv[])
 	chain.SetBranchStatus("ch_id", 1);
 	chain.SetBranchStatus("run_id", 1);
 	chain.SetBranchStatus("event_id", 1);
-	chain.SetBranchStatus("integral_one_peak", 1);
+	chain.SetBranchStatus("num_of_pe_in_event", 1);
+	
+	//chain.SetBranchStatus("integral_one_peak", 1);
+
 
 	const bool is_show_individual_signals = false;
 	if (is_show_individual_signals)
@@ -215,8 +221,7 @@ int main(int argc, char *argv[])
 		
 	}
 	
-	const bool is_calc_integral_one_event = true;
-
+	const bool is_calc_integral_one_event = false;
 	if (is_calc_integral_one_event)
 	{
 		//vector<double> integral_one_event;
@@ -255,7 +260,7 @@ int main(int argc, char *argv[])
 		hist->DrawClone();
 	}
 
-	//total_cut = "ch_id == 38 && run_id < 10000 && event_id < 10 ";
+	total_cut = "ch_id == 59 && run_id < 10000 && event_id < 10";
 	//total_cut = "ch_id == 38 && run_id == 3396 && event_id == 0";	
 	//COUT(total_cut.GetName());
 	//COUT(total_cut.GetTitle());
@@ -264,6 +269,7 @@ int main(int argc, char *argv[])
 	chain.SetMarkerSize(1);
 
 	//chain.Draw("(double_integral_one_peak_vec_y/5000.0):time_v", total_cut, "LP same");
+	chain.Draw("num_of_pe_in_event >> h(100, 0, 20)", total_cut && "num_of_pe_in_event > 0.1");
 
 	//chain.Draw("signals_x_start", total_cut, "L");
 	//chain.Draw("signals_x_stop", total_cut, "L");

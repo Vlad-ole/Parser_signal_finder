@@ -2,6 +2,10 @@
 
 using namespace std;
 
+int GetChId(int array_position)
+{
+	return array_position + 32;
+}
 
 //---------------------------------------------
 //July 13 2017

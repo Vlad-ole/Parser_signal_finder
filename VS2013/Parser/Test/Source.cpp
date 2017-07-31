@@ -6,20 +6,20 @@ using namespace std;
 
 int main()
 {
-	//correct
-	cout << "a = " << a << endl;
-	do_something();
+	//do_something();
+	//Helper helper;
+	//helper.Initialize();
+	//for (int i = 0; i < helper.struct_test_vec_obj.size(); i++)
+	//{
+	//	cout << "x = " << helper.struct_test_vec_obj[i].x << "; y = " << helper.struct_test_vec_obj[i].y << endl;
+	//}
 
-	cout << "struct_test_obj.x = " << struct_test_obj.x << endl;
-	cout << "struct_test_obj.y = " << struct_test_obj.y << endl;
+	std::vector<StructTest> struct_test_vec_obj = initialize();
+	for (int i = 0; i < struct_test_vec_obj.size(); i++)
+	{
+		cout << "x = " << struct_test_vec_obj[i].x << "; y = " << struct_test_vec_obj[i].y << endl;
+	}
 
-	cout << "struct_test_vec_obj.size() = " << struct_test_vec_obj.size() << endl;
-	cout << "struct_test_vec_obj[0].x = " << struct_test_vec_obj[0].x << endl;
-	cout << "struct_test_vec_obj[0].y = " << struct_test_vec_obj[0].y << endl;
-
-	////test
-	//initialize_single_pe_characteristics();
-	
-	system("pause");
+	//system("pause");
 	return 0;
 }
