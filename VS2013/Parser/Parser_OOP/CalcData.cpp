@@ -28,6 +28,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 
 	vector<double> der_data_tmp(n_points);
 	integral_one_peak.resize(n_ch);
+	num_of_pe_in_one_peak.resize(n_ch);
 
 	min.resize(n_ch);
 	max.resize(n_ch);
@@ -114,18 +115,19 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 
 		//calc num of pe for one event
 		vector<ChCharacteristicsStruct> ch_characteristics_struct = ChCharacteristics::GetChCharacteristics();
-		double num_of_pe_in_event = -1;
+		double num_of_pe_in_event = 0;
 		for (int k = 0; k < ch_characteristics_struct.size(); k++)
 		{
 			if (ch_characteristics_struct[k].ch_id == GetChId(i) && ch_characteristics_struct[k].is_spe_separated_from_noise && ch_characteristics_struct[k].is_physical)
 			{
-				num_of_pe_in_event = 0;
+				//num_of_pe_in_event = 0;
 				for (int j = 0; j < integral_one_peak[i].size(); j++)
 				{
 					if (integral_one_peak[i][j] > ch_characteristics_struct[k].spe_min) //algorithm is not ideal, so I should add some cuts (depend from ch_id)
 					{
 						double n_pe_one_peak_tmp = integral_one_peak[i][j] / ch_characteristics_struct[k].spe_mean;
-						num_of_pe_in_event += n_pe_one_peak_tmp; //should I round this value to integer?
+						num_of_pe_in_event += round(n_pe_one_peak_tmp); //should I round this value to integer?
+						num_of_pe_in_one_peak[i].push_back( round(n_pe_one_peak_tmp) );
 					}
 				}
 				break;
@@ -158,6 +160,11 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 
 CalcData::~CalcData()
 {
+}
+
+std::vector< std::vector<double> >& CalcData::GetNumOfPeInOnePeak()
+{
+	return num_of_pe_in_one_peak;
 }
 
 std::vector< std::vector<double> >& CalcData::GetLocalBaselineV()

@@ -42,27 +42,12 @@ int main(int argc, char *argv[])
 	
 	vector<ch_info> ch_list;
 	//var1
-	const int n_ch = 32;
+	const int n_ch = /*1*/32;
 	ch_list.resize(n_ch);
 	for (int i = 0; i < n_ch; i++)
 	{
-		/*if (i < 8) ch_list[i].id = i;
-		else ch_list[i].id = i + 24;*/
-		
-		//ch_list[0].id = 38;
-		//ch_list[i].id = i + 32;
 		ch_list[i].id = GetChId(i);
 	}
-	
-
-	////var2
-	//const int n_ch = 1;
-	//ch_list.resize(n_ch);
-	//for (int i = 0; i < n_ch; i++)
-	//{
-	//	ch_list[0].id = 38;
-	//}
-	////
 	
 	comm_info str_comm;
 	str_comm.HORIZ_INTERVAL = 16;//ns per point;
@@ -135,6 +120,7 @@ int main(int argc, char *argv[])
 		vector<int> signals_x_stop;
 		vector<double> double_integral_one_peak;
 		vector<double> double_integral_one_peak_vec_y;
+		vector<double> num_of_pe_in_one_peak;
 		double x_cog_position;
 		double y_cog_position;
 		
@@ -165,7 +151,8 @@ int main(int argc, char *argv[])
 			tree->Branch("local_baseline", &local_baseline);
 			tree->Branch("signals_x_start", &signals_x_start);
 			tree->Branch("signals_x_stop", &signals_x_stop);
-			
+						
+			tree->Branch("num_of_pe_in_one_peak", &num_of_pe_in_one_peak);
 			tree->Branch("num_of_pe_in_event", &num_of_pe_in_event);
 			tree->Branch("integral_one_peak", &integral_one_peak);
 			//tree->Branch("integral_one_event", &integral_one_event);			
@@ -185,20 +172,14 @@ int main(int argc, char *argv[])
 		t_before = clock();
 		for (temp_event_id = 0; temp_event_id < PathInfo.events_per_file; temp_event_id++)
 		{
+			x_cog_position = calc_data_v[temp_event_id].GetXCogPosition();
+			y_cog_position = calc_data_v[temp_event_id].GetYCogPosition();
+			
 			for (int ch = 0; ch < n_ch; ch++)
 			{
 				data_raw = rdt.GetDataDouble()[temp_event_id][ch];
-
-				//define physical ch_id
-				/*if (ch < 8) ch_id = ch;
-				else ch_id = ch + 24;*/
 				
-				//var1
-				//ch_id = ch + 32;
 				ch_id = GetChId(ch);
-
-				////var2
-				//ch_id = 38;
 				
 				//get data from calc_data_v for each event and ch
 				min_element = (calc_data_v[temp_event_id].GetMin())[ch];
@@ -218,13 +199,11 @@ int main(int argc, char *argv[])
 				local_baseline = (calc_data_v[temp_event_id].GetLocalBaselineV())[ch];
 				integral_one_peak = (calc_data_v[temp_event_id].GetIntegralOnePeak())[ch];
 				num_of_pe_in_event = (calc_data_v[temp_event_id].GetNumOfPeInEventVec())[ch];
+				num_of_pe_in_one_peak = (calc_data_v[temp_event_id].GetNumOfPeInOnePeak())[ch];
 				//integral_one_event = (calc_data_v[temp_event_id].GetIntegralOneEvent())[ch];
 
 				double_integral_one_peak = (calc_data_v[temp_event_id].GetDoubleIntegralVec())[ch];
 				double_integral_one_peak_vec_y = (calc_data_v[temp_event_id].GetDoubleIntegralVecY())[ch];
-
-				x_cog_position = calc_data_v[temp_event_id].GetXCogPosition();
-				y_cog_position = calc_data_v[temp_event_id].GetYCogPosition();
 
 				//cout << signals_x_start[0] << "\t" << signals_x_stop[0] << endl;
 				//signals_pair_values = (calc_data_v[temp_event_id].GetSignalsPairValues())[ch];
