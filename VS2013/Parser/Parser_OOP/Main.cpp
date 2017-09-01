@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 	
 	vector<ch_info> ch_list;
 	//var1
-	const int n_ch = 1;
+	const int n_ch = /*1*/ 32;
 	ch_list.resize(n_ch);
 	for (int i = 0; i < n_ch; i++)
 	{

@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
 				cout << "event = " << i << endl;
 			}
 
-			REMEMBER_CUT(ch_id == 38 && run_id == 3227 && event_id == 0);
+			REMEMBER_CUT(ch_id == 32 && run_id == 3227 && event_id == 0);
 			if (cut_condition_bool)
 			{
 				//signals_x_values.clear();
@@ -289,7 +289,7 @@ int main(int argc, char *argv[])
 		hist->DrawClone();
 	}
 
-	total_cut = "ch_id == 38 && run_id < 10000 && event_id < 10";
+	total_cut = "ch_id < 100 && run_id < 10000 && event_id < 10";
 	//total_cut = "ch_id == 41 && run_id == 3133 && event_id == 0";	
 	//COUT(total_cut.GetName());
 	//COUT(total_cut.GetTitle());

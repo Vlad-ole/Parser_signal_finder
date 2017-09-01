@@ -166,7 +166,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 			int_data.push_back(calc_double_int.GetDataIntegrtal());
 
 			//calc double integral from 0 to max positive part
-			CalcIntegral calc_double_intergral(int_data[i], 3, HORIZ_INTERVAL);
+			CalcIntegral calc_double_intergral(int_data[i], HORIZ_INTERVAL, 3);
 			integral.push_back(calc_double_intergral.GetIntegrtal());
 
 			//calc single integral from point_from to max positive part of integral func
