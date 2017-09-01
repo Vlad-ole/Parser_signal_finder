@@ -91,6 +91,7 @@ CalcDoubleIntegralCalib::CalcDoubleIntegralCalib(std::vector<double> data, std::
 }
 
 
+
 CalcDoubleIntegralCalib::~CalcDoubleIntegralCalib()
 {
 }

@@ -14,13 +14,18 @@ public:
 	
 	CalcIntegral(std::vector<double> data, double baseline,
 		const double time_from, const double time_to, const double time_scale);
+
+	CalcIntegral(std::vector<double> data, const double time_scale, const int N_poitns_below_0);
+
+	
 	
 	~CalcIntegral();
 
+	int GetPointTo();
 	double GetIntegrtal();
 private:
 	double integral;
-	const int point_from;
-	const int point_to;
+	int point_from;
+	int point_to;
 };
 

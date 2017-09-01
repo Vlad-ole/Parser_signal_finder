@@ -45,8 +45,8 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		//it's comfortable to work with invert signal
 		vector<double> invert_data = GetInvertSignal(data[i], baseline[i]);
 
-		CalcDoubleIntegral calc_double_int(invert_data, baseline[i], HORIZ_INTERVAL);
-		int_data.push_back(calc_double_int.GetDataIntegrtal());
+		/*CalcDoubleIntegral calc_double_int(invert_data, baseline[i], HORIZ_INTERVAL);
+		int_data.push_back(calc_double_int.GetDataIntegrtal());*/
 
 		//min and max values will help to avoid signals with saturation
 		vector<double>::const_iterator it_b = invert_data.begin();
@@ -64,8 +64,8 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		CalcDer calc_der(invert_data, 21, 1);
 		der_data.push_back(calc_der.GetDer());
 
-/*		CalcDer calc_smooth(invert_data, 21, 0);
-		smooth_data.push_back(calc_smooth.GetDer());	*/	
+/*		CalcDer calc_smooth(invert_data, 41, 0);
+		smooth_data.push_back(calc_smooth.GetDer());*/		
 
 		//CalcBaselineMedianFilter calc_baseline_median_filter(invert_data, 0, 160000, 11, HORIZ_INTERVAL);
 		//baseline_vec.push_back(calc_baseline_median_filter.GetBaselineVec());
@@ -77,7 +77,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		//integral.push_back(calc_integral.GetIntegrtal());
 
 		vector<double> data_without_slope = TypeConvertion::GetDifference(invert_data, baseline_vec[i]);
-		PeakFinderFind peak_finder_find(data_without_slope/*invert_data*/, der_data[i], 0, 1 /*this parameter is very important*/, HORIZ_INTERVAL);
+		PeakFinderFind peak_finder_find(data_without_slope/*invert_data*/ /*smooth_data[i]*/, der_data[i], 0, 1 /*this parameter is very important*/, HORIZ_INTERVAL);
 		local_baseline_v.push_back(peak_finder_find.GetLocalBaselineV());
 		vector< pair<int, int> > pair_vec = peak_finder_find.GetPeakPositions();
 		vector<int> signals_values_x_first(pair_vec.size());
@@ -140,15 +140,55 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		CalcDoubleIntegralCalib calc_double_intergral_calib(invert_data, pair_vec, HORIZ_INTERVAL);
 		double_integral_vec.push_back(calc_double_intergral_calib.GetDoubleIntegralVec());
 		double_integral_vec_y.push_back(calc_double_intergral_calib.GetDoubleIntegralVecVy());
-		
-		//finaly, we calculate integral of signal
-		CalcIntegral calc_integral_nontriv_baseline(invert_data, baseline[i], baseline_vec[i], 35000, 160000, HORIZ_INTERVAL);
-		integral.push_back(calc_integral_nontriv_baseline.GetIntegrtal());
+
+		////finaly, we calculate integral of signal
+		//CalcIntegral calc_integral_nontriv_baseline(invert_data, baseline[i], baseline_vec[i], 35000, 160000, HORIZ_INTERVAL);
+		//integral.push_back(calc_integral_nontriv_baseline.GetIntegrtal());
+
+		////to caclulate double integral of positive part of integral
+		//CalcIntegral calc_double_intergral(int_data[i], 35000, pair_vec, HORIZ_INTERVAL);
+		//integral.push_back(calc_double_intergral.GetIntegrtal());
+		{
+			int point_from = 40000 / HORIZ_INTERVAL;
+
+			//let's find the first signal after time_from
+			for (int j = 0; j < pair_vec.size(); j++)
+			{
+				if ((pair_vec[j].first > point_from))
+				{
+					point_from = pair_vec[j].first - 200 / HORIZ_INTERVAL;
+					break;
+				}
+			}
+
+			//calc integral func from point_from to 160 us
+			CalcDoubleIntegral calc_double_int(invert_data, baseline[i], point_from, HORIZ_INTERVAL);
+			int_data.push_back(calc_double_int.GetDataIntegrtal());
+
+			//calc double integral from 0 to max positive part
+			CalcIntegral calc_double_intergral(int_data[i], 3, HORIZ_INTERVAL);
+			integral.push_back(calc_double_intergral.GetIntegrtal());
+
+			//calc single integral from point_from to max positive part of integral func
+			int point_to = calc_double_intergral.GetPointTo();
+			double single_integral_for_calib_tmp = 0;
+			for (int j = 0; j < pair_vec.size(); j++)
+			{
+				if (pair_vec[j].first >= point_from && pair_vec[j].second < point_to)
+				{
+					single_integral_for_calib_tmp += integral_one_peak[i][j];
+				}
+			}
+			single_integral_for_calib_one_event.push_back(single_integral_for_calib_tmp);
+		}
+
+
 	}
 
-	CoGBase cog_obj(num_of_pe_in_event_vec);
-	x_cog_position = cog_obj.GetX();
-	y_cog_position = cog_obj.GetY();
+	//comment during calibration
+	//CoGBase cog_obj(num_of_pe_in_event_vec);
+	//x_cog_position = cog_obj.GetX();
+	//y_cog_position = cog_obj.GetY();
 	
 	//const double cut_th_low_MHz = 0;
 	//const double cut_th_high_MHz = 1000;
@@ -160,6 +200,11 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 
 CalcData::~CalcData()
 {
+}
+
+std::vector<double>& CalcData::GetSignleIntegralForCalibOneEventVec()
+{
+	return single_integral_for_calib_one_event;
 }
 
 std::vector< std::vector<double> >& CalcData::GetNumOfPeInOnePeak()

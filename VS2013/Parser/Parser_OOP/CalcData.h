@@ -57,7 +57,8 @@ public:
 	std::vector< std::vector<double> >& GetDoubleIntegralVecY();
 
 	std::vector<double>& GetNumOfPeInEventVec();
-
+	std::vector<double>& GetSignleIntegralForCalibOneEventVec();
+	
 	double GetXCogPosition();
 	double GetYCogPosition();
 
@@ -85,6 +86,7 @@ private:
 	std::vector< std::vector<double> > integral_one_peak;
 	std::vector< std::vector<double> > num_of_pe_in_one_peak;
 	std::vector<double> integral_one_event;
+	std::vector<double> single_integral_for_calib_one_event;
 	std::vector< std::vector<double> > local_baseline_v;
 	std::vector< std::vector<int> > signals_x_start_v;
 	std::vector< std::vector<int> > signals_x_stop_v;

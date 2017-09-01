@@ -4,8 +4,24 @@ using namespace std;
 
 int GetChId(int array_position)
 {
-	return array_position + 32 /*38*/;
+	return /*array_position + 32*/ 38;
 }
+
+////---------------------------------------------
+//August 8 2017
+//path_info PathInfo = {"", 0, 1000};
+
+/*Flashlight*/
+//
+//std::string path_name_tree = "D:\\Data_work\\170803_caen_trees\\sipm_46V\\";
+//std::string PathInfo_path_name = "D:\\Data_work\\170803_caen_raw\\sipm_46V\\";
+//const int start_run_number = 1;
+//const int stop_run_number = /*146*/ 1;
+//
+//std::string path_name_tree = "D:\\Data_work\\170803_caen_trees\\sipm_46V_run2\\";
+//std::string PathInfo_path_name = "D:\\Data_work\\170803_caen_raw\\sipm_46V_run2\\";
+//const int start_run_number = 399;
+//const int stop_run_number = /*522*/ 399;
 
 ////---------------------------------------------
 //July 13 2017
@@ -273,10 +289,10 @@ path_info PathInfo = { "", 0, 10};
 //const int stop_run_number = 2914;
 //
 //380 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V, LOW ELECTRONIC NOISE
-string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_12_thmV\\";
-std::string PathInfo_path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_12_thmV\\";
-const int start_run_number = 2915;
-const int stop_run_number = 2953;
+//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_12_thmV\\";
+//std::string PathInfo_path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_12_thmV\\";
+//const int start_run_number = 2915;
+//const int stop_run_number = 2953;
 //
 //790 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V
 //string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_10_thmV\\";
@@ -309,10 +325,10 @@ const int stop_run_number = 2953;
 //const int stop_run_number = 3226;
 //
 //640 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V, LOW ELECTRONIC NOISE
-//std::string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_6_thmV\\";
-//std::string PathInfo_path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_6_thmV\\";
-//const int start_run_number = 3227;
-//const int stop_run_number = 3291;
+std::string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_6_thmV\\";
+std::string PathInfo_path_name = "D:\\Data_work\\170622_caen_raw\\event_x-ray_6_thmV\\";
+const int start_run_number = 3227;
+const int stop_run_number = 3291;
 //
 //1030 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V
 //string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_5_thmV\\";

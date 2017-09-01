@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 	
 	vector<ch_info> ch_list;
 	//var1
-	const int n_ch = /*1*/32;
+	const int n_ch = 1;
 	ch_list.resize(n_ch);
 	for (int i = 0; i < n_ch; i++)
 	{
@@ -123,6 +123,7 @@ int main(int argc, char *argv[])
 		vector<double> num_of_pe_in_one_peak;
 		double x_cog_position;
 		double y_cog_position;
+		double single_integral_for_calib_one_event;
 		
 		//define tree
 		if ((run_number - start_run_number) % runs_per_tree_file == 0)
@@ -158,7 +159,8 @@ int main(int argc, char *argv[])
 			//tree->Branch("integral_one_event", &integral_one_event);			
 			tree->Branch("double_integral_one_peak", &double_integral_one_peak);
 			tree->Branch("double_integral_one_peak_vec_y", &double_integral_one_peak_vec_y);
-
+			tree->Branch("single_integral_for_calib_one_event", &single_integral_for_calib_one_event);
+			
 			tree->Branch("x_cog_position", &x_cog_position);
 			tree->Branch("y_cog_position", &y_cog_position);
 			
@@ -172,8 +174,8 @@ int main(int argc, char *argv[])
 		t_before = clock();
 		for (temp_event_id = 0; temp_event_id < PathInfo.events_per_file; temp_event_id++)
 		{
-			x_cog_position = calc_data_v[temp_event_id].GetXCogPosition();
-			y_cog_position = calc_data_v[temp_event_id].GetYCogPosition();
+			/*x_cog_position = calc_data_v[temp_event_id].GetXCogPosition();
+			y_cog_position = calc_data_v[temp_event_id].GetYCogPosition();*/
 			
 			for (int ch = 0; ch < n_ch; ch++)
 			{
@@ -192,7 +194,7 @@ int main(int argc, char *argv[])
 				der_max_position = (calc_data_v[temp_event_id].GetDerMaxPosition())[ch];
 
 				//data_smooth = (calc_data_v[temp_event_id].GetSmooth())[ch];
-				//data_int = (calc_data_v[temp_event_id].GetInt())[ch];
+				data_int = (calc_data_v[temp_event_id].GetInt())[ch];
 
 				signals_x_start = (calc_data_v[temp_event_id].GetSignalsXStart())[ch];
 				signals_x_stop = (calc_data_v[temp_event_id].GetSignalsXStop())[ch];
@@ -201,6 +203,7 @@ int main(int argc, char *argv[])
 				num_of_pe_in_event = (calc_data_v[temp_event_id].GetNumOfPeInEventVec())[ch];
 				num_of_pe_in_one_peak = (calc_data_v[temp_event_id].GetNumOfPeInOnePeak())[ch];
 				//integral_one_event = (calc_data_v[temp_event_id].GetIntegralOneEvent())[ch];
+				single_integral_for_calib_one_event = (calc_data_v[temp_event_id].GetSignleIntegralForCalibOneEventVec())[ch];
 
 				double_integral_one_peak = (calc_data_v[temp_event_id].GetDoubleIntegralVec())[ch];
 				double_integral_one_peak_vec_y = (calc_data_v[temp_event_id].GetDoubleIntegralVecY())[ch];

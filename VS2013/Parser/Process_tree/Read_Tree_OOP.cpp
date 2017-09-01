@@ -68,6 +68,7 @@ int main(int argc, char *argv[])
 	int der_max_position;
 	double x_cog_position;
 	double y_cog_position;
+	double single_integral_for_calib_one_event;
 	vector<double> *data_raw = 0;
 	vector<double> *data_der = 0;
 	vector<double> *data_int = 0;
@@ -98,10 +99,12 @@ int main(int argc, char *argv[])
 	chain.SetBranchAddress("integral_one_peak", &integral_one_peak);
 	chain.SetBranchAddress("double_integral_one_peak", &double_integral_one_peak);
 	chain.SetBranchAddress("double_integral_one_peak_vec_y", &double_integral_one_peak_vec_y);
+	chain.SetBranchAddress("single_integral_for_calib_one_event", &single_integral_for_calib_one_event);
+	
 
 	chain.SetBranchAddress("data_raw", &data_raw);
 	chain.SetBranchAddress("data_int", &data_int);
-	chain.SetBranchAddress("data_smooth", &data_smooth);
+	//chain.SetBranchAddress("data_smooth", &data_smooth);
 	chain.SetBranchAddress("data_der", &data_der);
 
 	chain.SetBranchAddress("run_id", &run_id);
@@ -155,7 +158,7 @@ int main(int argc, char *argv[])
 				cout << "event = " << i << endl;
 			}
 
-			REMEMBER_CUT(ch_id == 41 && run_id == 3045 && event_id == 0);
+			REMEMBER_CUT(ch_id == 38 && run_id == 3227 && event_id == 0);
 			if (cut_condition_bool)
 			{
 				//signals_x_values.clear();
@@ -169,9 +172,9 @@ int main(int argc, char *argv[])
 					for (int k = (*signals_x_start)[j]; k < (*signals_x_stop)[j]; k++)
 					{
 						signals_x_values.push_back(k * HORIZ_INTERVAL);
-						signals_y_values.push_back(-(*data_raw)[k] + 2 * baseline - (*baseline_v)[k]);
-						//signals_y_values.push_back(-(*data_raw)[k] + baseline);
-						local_baseline_y_values.push_back((*local_baseline)[j]);
+						//signals_y_values.push_back(-(*data_raw)[k] + 2 * baseline - (*baseline_v)[k]);
+						signals_y_values.push_back(-(*data_raw)[k] + baseline);
+						local_baseline_y_values.push_back((*local_baseline)[j] - baseline);
 					}
 					//}
 
@@ -226,11 +229,19 @@ int main(int argc, char *argv[])
 			chain.SetMarkerSize(1);
 			chain.SetLineColor(kPink);
 			//chain.Draw("(-data_raw + baseline):time_v", total_cut, "same LP");
-			chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
-			chain.Draw("(baseline_v - baseline):time_v", total_cut, "same L");
+			//chain.Draw("(data_smooth - baseline):time_v", total_cut, "same LP");
+			//chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
+			//chain.Draw("(baseline_v - baseline):time_v", total_cut, "same L");
+			//chain.Draw("(baseline_v - baseline):time_v", total_cut, "same L");
 			//chain.SetLineColor(kBlue);
 			//chain.Draw("(data_int/500.0):time_v", total_cut, "same L");
 			//chain.Draw("(double_integral_one_peak_vec_y/500):time_v", total_cut, "same L");
+
+			chain.Draw("(-data_raw + baseline):time_v", total_cut, "same LP ");
+			chain.SetLineColor(kBlue);
+			//chain.SetMarkerColor(kRed);
+			//chain.Draw("(double_integral_one_peak_vec_y/500):time_v", total_cut, "same L");
+			chain.Draw("(data_int/500.0):time_v", total_cut, "same L");
 		}
 		else
 		{
@@ -278,7 +289,7 @@ int main(int argc, char *argv[])
 		hist->DrawClone();
 	}
 
-	total_cut = "ch_id == 41 && run_id == 2940 && event_id == 0";
+	total_cut = "ch_id == 38 && run_id < 10000 && event_id < 10";
 	//total_cut = "ch_id == 41 && run_id == 3133 && event_id == 0";	
 	//COUT(total_cut.GetName());
 	//COUT(total_cut.GetTitle());
@@ -286,7 +297,8 @@ int main(int argc, char *argv[])
 	chain.SetMarkerStyle(20);
 	chain.SetMarkerSize(1);
 
-	//chain.Draw("num_of_pe_in_event:run_id", total_cut);
+	chain.Draw("single_integral_for_calib_one_event:integral", total_cut);
+	//chain.Draw("num_of_pe_in_event:event_id", total_cut);
 	//chain.Draw("num_of_pe_in_event", total_cut);
 	//chain.Draw("(double_integral_one_peak_vec_y/5000.0):time_v", total_cut, "LP same");
 	//chain.Draw("num_of_pe_in_event >> h(100, 0, 70)", total_cut && "num_of_pe_in_event > 0.1");
@@ -332,9 +344,17 @@ int main(int argc, char *argv[])
 
 	//chain.Draw("(data_int/100.0):time_v", total_cut, "L");
 
-	chain.Draw("(-data_raw + baseline):time_v", total_cut, " LP");
-	chain.SetLineColor(kGreen);
-	chain.Draw("(baseline_v - baseline):time_v", total_cut, "same L");
+	//chain.Draw("(-data_raw + baseline):time_v", total_cut, " LP ");
+	//chain.SetLineColor(kRed);
+	////chain.SetMarkerColor(kRed);
+	////chain.Draw("(double_integral_one_peak_vec_y/500):time_v", total_cut, "same L");
+	//chain.Draw("(data_int/500.0):time_v", total_cut, "same L");
+
+	//chain.Draw("(data_smooth - baseline):time_v", total_cut, "same LP ");
+
+	//chain.Draw("(-data_raw + baseline):time_v", total_cut, " LP");
+	//chain.SetLineColor(kGreen);
+	//chain.Draw("(baseline_v - baseline):time_v", total_cut, "same L");
 
 	bool is_average = false;
 	if (is_average)

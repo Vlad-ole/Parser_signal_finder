@@ -41,9 +41,33 @@ CalcIntegral::CalcIntegral(std::vector<double> data, double baseline, std::vecto
 	integral *= time_scale;
 }
 
+//to caclulate double integral of positive part of integral
+CalcIntegral::CalcIntegral(std::vector<double> data, const double time_scale, const int N_poitns_below_0)
+{
+	integral = 0;
+
+	for (int i = 0; i < (data.size() - 100); i++)
+	{
+		if (data[i] < 0 && data[i + 1] < 0 && data[i + 100] < -2*500 )
+		{
+			point_to = i;
+			break;
+		}
+
+		integral += data[i];
+	}
+
+	integral *= time_scale;
+}
+
 
 CalcIntegral::~CalcIntegral()
 {
+}
+
+int CalcIntegral::GetPointTo()
+{
+	return point_to;
 }
 
 double CalcIntegral::GetIntegrtal()
