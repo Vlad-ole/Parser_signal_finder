@@ -209,12 +209,18 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		num_of_pe_in_event__positive_part_s_int.push_back(num_of_pe_in_event__positive_part_s_int_tmp);
 		num_of_pe_in_event__positive_part_d_int.push_back(num_of_pe_in_event__positive_part_d_int_tmp);
 
+		//algorithm will chose double or single integral varinats
+		double num_of_pe_in_event_for_cog_tmp;
+		num_of_pe_in_event_for_cog_tmp = num_of_pe_in_event__positive_part_s_int_tmp > 100 ? num_of_pe_in_event__positive_part_d_int_tmp : num_of_pe_in_event__positive_part_s_int_tmp;
+		num_of_pe_in_event_for_cog_tmp += num_of_pe_in_event__negative_part_s_int_tmp;
+		num_of_pe_in_event_for_cog.push_back( round(num_of_pe_in_event_for_cog_tmp) );
+			
 	}
 
 	//comment during calibration
-	//CoGBase cog_obj(num_of_pe_in_event_vec);
-	//x_cog_position = cog_obj.GetX();
-	//y_cog_position = cog_obj.GetY();
+	CoGBase cog_obj(/*num_of_pe_in_event_vec*/num_of_pe_in_event_for_cog);
+	x_cog_position = cog_obj.GetX();
+	y_cog_position = cog_obj.GetY();
 	
 	//const double cut_th_low_MHz = 0;
 	//const double cut_th_high_MHz = 1000;
@@ -256,6 +262,11 @@ std::vector< std::vector<int> >& CalcData::GetSignalsXStop()
 std::vector<double>& CalcData::GetNumOfPeInEventVec()
 {
 	return num_of_pe_in_event_vec;
+}
+
+std::vector<double>& CalcData::GetNum_of_pe_in_event_for_cog()
+{
+	return num_of_pe_in_event_for_cog;
 }
 
 std::vector<double>& CalcData::GetNum_of_pe_in_event__negative_part_s_int()

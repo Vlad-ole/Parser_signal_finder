@@ -68,6 +68,7 @@ int main(int argc, char *argv[])
 	double num_of_pe_in_event__negative_part_s_int;
 	double num_of_pe_in_event__positive_part_s_int;
 	double num_of_pe_in_event__positive_part_d_int;
+	double num_of_pe_in_event_for_cog;
 
 	int der_min_position;
 	int der_max_position;
@@ -98,7 +99,8 @@ int main(int argc, char *argv[])
 	chain.SetBranchAddress("num_of_pe_in_event__negative_part_s_int", &num_of_pe_in_event__negative_part_s_int);
 	chain.SetBranchAddress("num_of_pe_in_event__positive_part_s_int", &num_of_pe_in_event__positive_part_s_int);
 	chain.SetBranchAddress("num_of_pe_in_event__positive_part_d_int", &num_of_pe_in_event__positive_part_d_int);
-
+	chain.SetBranchAddress("num_of_pe_in_event_for_cog", &num_of_pe_in_event_for_cog);
+	
 
 	chain.SetBranchAddress("x_cog_position", &x_cog_position);
 	chain.SetBranchAddress("y_cog_position", &y_cog_position);
@@ -168,7 +170,7 @@ int main(int argc, char *argv[])
 				cout << "event = " << i << endl;
 			}
 
-			REMEMBER_CUT(ch_id == 32 && run_id == 3169 && event_id == 1);
+			REMEMBER_CUT(ch_id == 41 && run_id == 2721 && event_id == 0);
 			if (cut_condition_bool)
 			{
 				//signals_x_values.clear();
@@ -299,8 +301,8 @@ int main(int argc, char *argv[])
 		hist->DrawClone();
 	}
 
-	total_cut = "ch_id == 41 && run_id < 10000 && event_id < 10";
-	//total_cut = "ch_id == 41 && run_id == 3133 && event_id == 0";	
+	total_cut = "ch_id == 59 && run_id < 10000 && event_id < 10";
+	//total_cut = "ch_id == 41 && run_id == 2721 && event_id == 0";	
 	//COUT(total_cut.GetName());
 	//COUT(total_cut.GetTitle());
 
@@ -309,14 +311,25 @@ int main(int argc, char *argv[])
 
 	//chain.Draw("single_integral_for_calib_one_event:integral", total_cut && "single_integral_for_calib_one_event > 0" && "integral > 0");
 	//chain.Draw("num_of_pe_in_event:event_id", total_cut);
-	chain.Draw("num_of_pe_in_event__positive_part_d_int", total_cut);
+
+	//chain.Draw("num_of_pe_in_event", total_cut);
+	//chain.Draw("num_of_pe_in_event__positive_part_s_int + num_of_pe_in_event__negative_part_s_int", total_cut);
+	//chain.Draw("num_of_pe_in_event__positive_part_d_int + num_of_pe_in_event__negative_part_s_int", total_cut);
+	//chain.Draw("num_of_pe_in_event_for_cog", total_cut);
+
+	//chain.Draw("num_of_pe_in_event__negative_part_s_int", total_cut);
+	//chain.Draw("num_of_pe_in_event__positive_part_d_int", total_cut);
+	//chain.Draw("num_of_pe_in_event__positive_part_s_int", total_cut);
+	
+
 	//chain.Draw("(double_integral_one_peak_vec_y/5000.0):time_v", total_cut, "LP same");
 	//chain.Draw("num_of_pe_in_event >> h(100, 0, 70)", total_cut && "num_of_pe_in_event > 0.1");
 	//chain.Draw("num_of_pe_in_event", "abs(x_cog_position) < 0.1 && ch_id == 54 && run_id == 3403 && event_id == 6");
 	//chain.Draw("num_of_pe_in_event", "ch_id == 59 && run_id < 10000 && event_id < 10");
 	//chain.Draw("num_of_pe_in_event", total_cut && "abs(x_cog_position) < 0.1" && "ch_id == 54");
-	//chain.Draw("y_cog_position:x_cog_position", total_cut && "ch_id == 33");
-	//chain.Draw("y_cog_position", total_cut && "ch_id == 33");
+	chain.Draw("y_cog_position:x_cog_position", total_cut);
+	//chain.Draw("x_cog_position >> h(100, -15, 5) ", total_cut);
+	//chain.Draw("x_cog_position ", total_cut);
 
 	//chain.Draw("signals_x_start", total_cut, "L");
 	//chain.Draw("signals_x_stop", total_cut, "L");

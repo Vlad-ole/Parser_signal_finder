@@ -55,8 +55,8 @@ CoGBase::CoGBase(std::vector<double> num_of_pe_in_event_vec)
 	if (n_pe_y == 0 || n_pe_x == 0)
 	{
 		cout << "n_pe_y == 0 || n_pe_x == 0" << endl;
-		system("pause");
-		exit(1);
+		//system("pause");
+		//exit(1);
 	}
 	else
 	{

@@ -61,6 +61,7 @@ public:
 	std::vector<double>& GetNum_of_pe_in_event__positive_part_s_int();
 	std::vector<double>& GetNum_of_pe_in_event__positive_part_d_int();
 	std::vector<double>& GetSignleIntegralForCalibOneEventVec();
+	std::vector<double>& GetNum_of_pe_in_event_for_cog();
 	
     double GetXCogPosition();
 	double GetYCogPosition();
@@ -106,10 +107,13 @@ private:
 	double integral_s1_caen_outside_the_trigger;
 
 	std::vector<double> yv_cut;
+
 	std::vector<double> num_of_pe_in_event_vec;
 	std::vector<double> num_of_pe_in_event__negative_part_s_int;
 	std::vector<double>	num_of_pe_in_event__positive_part_s_int;
 	std::vector<double>	num_of_pe_in_event__positive_part_d_int;
+	std::vector<double> num_of_pe_in_event_for_cog;
+
 
 	double x_cog_position;
 	double y_cog_position;

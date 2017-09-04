@@ -119,6 +119,7 @@ int main(int argc, char *argv[])
 		double num_of_pe_in_event__negative_part_s_int;
 		double num_of_pe_in_event__positive_part_s_int;
 		double num_of_pe_in_event__positive_part_d_int;
+		double num_of_pe_in_event_for_cog;
 
 		//vector<double> integral_one_event;
 		vector<int> signals_x_start;
@@ -164,6 +165,8 @@ int main(int argc, char *argv[])
 			tree->Branch("num_of_pe_in_event__negative_part_s_int", &num_of_pe_in_event__negative_part_s_int);
 			tree->Branch("num_of_pe_in_event__positive_part_s_int", &num_of_pe_in_event__positive_part_s_int);
 			tree->Branch("num_of_pe_in_event__positive_part_d_int", &num_of_pe_in_event__positive_part_d_int);
+			tree->Branch("num_of_pe_in_event_for_cog", &num_of_pe_in_event_for_cog);
+			
 
 			tree->Branch("integral_one_peak", &integral_one_peak);
 			//tree->Branch("integral_one_event", &integral_one_event);			
@@ -184,8 +187,8 @@ int main(int argc, char *argv[])
 		t_before = clock();
 		for (temp_event_id = 0; temp_event_id < PathInfo.events_per_file; temp_event_id++)
 		{
-			/*x_cog_position = calc_data_v[temp_event_id].GetXCogPosition();
-			y_cog_position = calc_data_v[temp_event_id].GetYCogPosition();*/
+			x_cog_position = calc_data_v[temp_event_id].GetXCogPosition();
+			y_cog_position = calc_data_v[temp_event_id].GetYCogPosition();
 			
 			for (int ch = 0; ch < n_ch; ch++)
 			{
@@ -215,7 +218,7 @@ int main(int argc, char *argv[])
 				num_of_pe_in_event__negative_part_s_int = (calc_data_v[temp_event_id].GetNum_of_pe_in_event__negative_part_s_int())[ch];
 				num_of_pe_in_event__positive_part_s_int = (calc_data_v[temp_event_id].GetNum_of_pe_in_event__positive_part_s_int())[ch];
 				num_of_pe_in_event__positive_part_d_int = (calc_data_v[temp_event_id].GetNum_of_pe_in_event__positive_part_d_int())[ch];
-
+				num_of_pe_in_event_for_cog = (calc_data_v[temp_event_id].GetNum_of_pe_in_event_for_cog())[ch];
 
 				num_of_pe_in_one_peak = (calc_data_v[temp_event_id].GetNumOfPeInOnePeak())[ch];
 				//integral_one_event = (calc_data_v[temp_event_id].GetIntegralOneEvent())[ch];
