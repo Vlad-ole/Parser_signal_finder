@@ -114,7 +114,12 @@ int main(int argc, char *argv[])
 		vector<double> baseline_v;
 		vector<double> local_baseline;
 		vector<double> integral_one_peak;
+		
 		double num_of_pe_in_event;
+		double num_of_pe_in_event__negative_part_s_int;
+		double num_of_pe_in_event__positive_part_s_int;
+		double num_of_pe_in_event__positive_part_d_int;
+
 		//vector<double> integral_one_event;
 		vector<int> signals_x_start;
 		vector<int> signals_x_stop;
@@ -154,7 +159,12 @@ int main(int argc, char *argv[])
 			tree->Branch("signals_x_stop", &signals_x_stop);
 						
 			tree->Branch("num_of_pe_in_one_peak", &num_of_pe_in_one_peak);
+
 			tree->Branch("num_of_pe_in_event", &num_of_pe_in_event);
+			tree->Branch("num_of_pe_in_event__negative_part_s_int", &num_of_pe_in_event__negative_part_s_int);
+			tree->Branch("num_of_pe_in_event__positive_part_s_int", &num_of_pe_in_event__positive_part_s_int);
+			tree->Branch("num_of_pe_in_event__positive_part_d_int", &num_of_pe_in_event__positive_part_d_int);
+
 			tree->Branch("integral_one_peak", &integral_one_peak);
 			//tree->Branch("integral_one_event", &integral_one_event);			
 			tree->Branch("double_integral_one_peak", &double_integral_one_peak);
@@ -200,7 +210,13 @@ int main(int argc, char *argv[])
 				signals_x_stop = (calc_data_v[temp_event_id].GetSignalsXStop())[ch];
 				local_baseline = (calc_data_v[temp_event_id].GetLocalBaselineV())[ch];
 				integral_one_peak = (calc_data_v[temp_event_id].GetIntegralOnePeak())[ch];
+
 				num_of_pe_in_event = (calc_data_v[temp_event_id].GetNumOfPeInEventVec())[ch];
+				num_of_pe_in_event__negative_part_s_int = (calc_data_v[temp_event_id].GetNum_of_pe_in_event__negative_part_s_int())[ch];
+				num_of_pe_in_event__positive_part_s_int = (calc_data_v[temp_event_id].GetNum_of_pe_in_event__positive_part_s_int())[ch];
+				num_of_pe_in_event__positive_part_d_int = (calc_data_v[temp_event_id].GetNum_of_pe_in_event__positive_part_d_int())[ch];
+
+
 				num_of_pe_in_one_peak = (calc_data_v[temp_event_id].GetNumOfPeInOnePeak())[ch];
 				//integral_one_event = (calc_data_v[temp_event_id].GetIntegralOneEvent())[ch];
 				single_integral_for_calib_one_event = (calc_data_v[temp_event_id].GetSignleIntegralForCalibOneEventVec())[ch];

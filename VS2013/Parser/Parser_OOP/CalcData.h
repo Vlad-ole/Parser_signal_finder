@@ -57,9 +57,12 @@ public:
 	std::vector< std::vector<double> >& GetDoubleIntegralVecY();
 
 	std::vector<double>& GetNumOfPeInEventVec();
+	std::vector<double>& GetNum_of_pe_in_event__negative_part_s_int();
+	std::vector<double>& GetNum_of_pe_in_event__positive_part_s_int();
+	std::vector<double>& GetNum_of_pe_in_event__positive_part_d_int();
 	std::vector<double>& GetSignleIntegralForCalibOneEventVec();
 	
-	double GetXCogPosition();
+    double GetXCogPosition();
 	double GetYCogPosition();
 
 private:
@@ -104,6 +107,9 @@ private:
 
 	std::vector<double> yv_cut;
 	std::vector<double> num_of_pe_in_event_vec;
+	std::vector<double> num_of_pe_in_event__negative_part_s_int;
+	std::vector<double>	num_of_pe_in_event__positive_part_s_int;
+	std::vector<double>	num_of_pe_in_event__positive_part_d_int;
 
 	double x_cog_position;
 	double y_cog_position;

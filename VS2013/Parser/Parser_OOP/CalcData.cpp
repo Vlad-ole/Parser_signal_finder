@@ -113,29 +113,6 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		}
 		//integral_one_event.push_back(integral_one_event_tmp);
 
-		//calc num of pe for one event
-		vector<ChCharacteristicsStruct> ch_characteristics_struct = ChCharacteristics::GetChCharacteristics();
-		double num_of_pe_in_event = 0;
-		for (int k = 0; k < ch_characteristics_struct.size(); k++)
-		{
-			if (ch_characteristics_struct[k].ch_id == GetChId(i) && ch_characteristics_struct[k].is_spe_separated_from_noise && ch_characteristics_struct[k].is_physical)
-			{
-				//num_of_pe_in_event = 0;
-				for (int j = 0; j < integral_one_peak[i].size(); j++)
-				{
-					if (integral_one_peak[i][j] > ch_characteristics_struct[k].spe_min) //algorithm is not ideal, so I should add some cuts (depend from ch_id)
-					{
-						double n_pe_one_peak_tmp = integral_one_peak[i][j] / ch_characteristics_struct[k].spe_mean;
-						num_of_pe_in_event += round(n_pe_one_peak_tmp); //should I round this value to integer?
-						num_of_pe_in_one_peak[i].push_back( round(n_pe_one_peak_tmp) );
-					}
-				}
-				break;
-			}			
-		}
-		num_of_pe_in_event_vec.push_back(num_of_pe_in_event);
-		
-
 		//double integral calib
 		CalcDoubleIntegralCalib calc_double_intergral_calib(invert_data, pair_vec, HORIZ_INTERVAL);
 		double_integral_vec.push_back(calc_double_intergral_calib.GetDoubleIntegralVec());
@@ -148,40 +125,89 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		////to caclulate double integral of positive part of integral
 		//CalcIntegral calc_double_intergral(int_data[i], 35000, pair_vec, HORIZ_INTERVAL);
 		//integral.push_back(calc_double_intergral.GetIntegrtal());
+		
+		//----------
+		int point_from = 40000 / HORIZ_INTERVAL;
+
+		//let's find the first signal after time_from
+		for (int j = 0; j < pair_vec.size(); j++)
 		{
-			int point_from = 40000 / HORIZ_INTERVAL;
-
-			//let's find the first signal after time_from
-			for (int j = 0; j < pair_vec.size(); j++)
+			if ((pair_vec[j].first > point_from))
 			{
-				if ((pair_vec[j].first > point_from))
-				{
-					point_from = pair_vec[j].first - 200 / HORIZ_INTERVAL;
-					break;
-				}
+				point_from = pair_vec[j].first - 200 / HORIZ_INTERVAL;
+				break;
 			}
-
-			//calc integral func from point_from to 160 us
-			CalcDoubleIntegral calc_double_int(invert_data, baseline[i], point_from, HORIZ_INTERVAL);
-			int_data.push_back(calc_double_int.GetDataIntegrtal());
-
-			//calc double integral from 0 to max positive part
-			CalcIntegral calc_double_intergral(int_data[i], HORIZ_INTERVAL, 3);
-			integral.push_back(calc_double_intergral.GetIntegrtal());
-
-			//calc single integral from point_from to max positive part of integral func
-			int point_to = calc_double_intergral.GetPointTo();
-			double single_integral_for_calib_tmp = 0;
-			for (int j = 0; j < pair_vec.size(); j++)
-			{
-				if (pair_vec[j].first >= point_from && pair_vec[j].second < point_to)
-				{
-					single_integral_for_calib_tmp += integral_one_peak[i][j];
-				}
-			}
-			single_integral_for_calib_one_event.push_back(single_integral_for_calib_tmp);
 		}
 
+		//calc integral func from point_from to 160 us
+		CalcDoubleIntegral calc_double_int(invert_data, baseline[i], point_from, HORIZ_INTERVAL);
+		int_data.push_back(calc_double_int.GetDataIntegrtal());
+
+		//calc double integral from 0 to max positive part
+		CalcIntegral calc_double_intergral(int_data[i], HORIZ_INTERVAL, 3);
+		integral.push_back(calc_double_intergral.GetIntegrtal());
+
+		//calc single integral from point_from to max positive part of integral func
+		int point_to = calc_double_intergral.GetPointTo();
+		double single_integral_for_calib_tmp = 0;
+		for (int j = 0; j < pair_vec.size(); j++)
+		{
+			if (pair_vec[j].first >= point_from && pair_vec[j].second < point_to)
+			{
+				single_integral_for_calib_tmp += integral_one_peak[i][j];
+			}
+		}
+		single_integral_for_calib_one_event.push_back(single_integral_for_calib_tmp);
+		//---------
+
+		////let's calc N_pe using singal integral for negative part
+		//num_of_pe_in_event__negative_part_s_int				
+		//num_of_pe_in_event__positive_part_s_int
+		//num_of_pe_in_event__positive_part_d_int
+
+
+
+		//calc num of pe for one event
+		vector<ChCharacteristicsStruct> ch_characteristics_struct = ChCharacteristics::GetChCharacteristics();
+		double num_of_pe_in_event = 0;//all peaks using s_int
+		double num_of_pe_in_event__negative_part_s_int_tmp = 0;
+		double num_of_pe_in_event__positive_part_s_int_tmp = 0;
+		double num_of_pe_in_event__positive_part_d_int_tmp = 0;
+		const double d_int_to_s_int_recalib = 1.75E-4; // (mV*ns) / (mV*ns*ns) = ns^-1 
+		for (int k = 0; k < ch_characteristics_struct.size(); k++)
+		{
+			if (ch_characteristics_struct[k].ch_id == GetChId(i) && ch_characteristics_struct[k].is_spe_separated_from_noise && ch_characteristics_struct[k].is_physical)
+			{
+				//num_of_pe_in_event = 0;
+				for (int j = 0; j < integral_one_peak[i].size(); j++)
+				{
+					if (integral_one_peak[i][j] > ch_characteristics_struct[k].spe_min) //algorithm is not ideal, so I should add some cuts (depend from ch_id)
+					{
+						double n_pe_one_peak_tmp = integral_one_peak[i][j] / ch_characteristics_struct[k].spe_mean;
+						num_of_pe_in_event += round(n_pe_one_peak_tmp); //should I round this value to integer?
+						num_of_pe_in_one_peak[i].push_back(round(n_pe_one_peak_tmp));
+
+						if (pair_vec[j].first >= point_from && pair_vec[j].second < point_to)
+						{
+							num_of_pe_in_event__positive_part_s_int_tmp += round(integral_one_peak[i][j] / ch_characteristics_struct[k].spe_mean);
+						}
+
+						if (pair_vec[j].second > point_to)
+						{
+							num_of_pe_in_event__negative_part_s_int_tmp += round(integral_one_peak[i][j] / ch_characteristics_struct[k].spe_mean);
+						}
+					}
+				}
+
+				num_of_pe_in_event__positive_part_d_int_tmp = round(integral[i] * d_int_to_s_int_recalib / ch_characteristics_struct[k].spe_mean);
+
+				break;
+			}
+		}
+		num_of_pe_in_event_vec.push_back(num_of_pe_in_event);
+		num_of_pe_in_event__negative_part_s_int.push_back(num_of_pe_in_event__negative_part_s_int_tmp);
+		num_of_pe_in_event__positive_part_s_int.push_back(num_of_pe_in_event__positive_part_s_int_tmp);
+		num_of_pe_in_event__positive_part_d_int.push_back(num_of_pe_in_event__positive_part_d_int_tmp);
 
 	}
 
@@ -230,6 +256,21 @@ std::vector< std::vector<int> >& CalcData::GetSignalsXStop()
 std::vector<double>& CalcData::GetNumOfPeInEventVec()
 {
 	return num_of_pe_in_event_vec;
+}
+
+std::vector<double>& CalcData::GetNum_of_pe_in_event__negative_part_s_int()
+{
+	return num_of_pe_in_event__negative_part_s_int;
+}
+
+std::vector<double>& CalcData::GetNum_of_pe_in_event__positive_part_d_int()
+{
+	return num_of_pe_in_event__positive_part_d_int;
+}
+
+std::vector<double>& CalcData::GetNum_of_pe_in_event__positive_part_s_int()
+{
+	return num_of_pe_in_event__positive_part_s_int;
 }
 
 //CalcData& CalcData::operator=(const CalcData& CD)
