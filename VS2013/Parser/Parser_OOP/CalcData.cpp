@@ -127,7 +127,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		//integral.push_back(calc_double_intergral.GetIntegrtal());
 		
 		//----------
-		int point_from = 40000 / HORIZ_INTERVAL;
+		int point_from = /*40000*/ 32000 / HORIZ_INTERVAL;
 
 		//let's find the first signal after time_from
 		for (int j = 0; j < pair_vec.size(); j++)

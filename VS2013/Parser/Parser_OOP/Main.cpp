@@ -179,7 +179,7 @@ int main(int argc, char *argv[])
 			
 			//data			
 			tree->Branch("data_raw", &data_raw);
-			tree->Branch("data_smooth", &data_smooth);
+			//tree->Branch("data_smooth", &data_smooth);
 			tree->Branch("data_int", &data_int);
 
 		}

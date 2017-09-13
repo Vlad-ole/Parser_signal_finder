@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 {
 	gROOT->SetBatch(kFALSE);
 
-	const int n_tree_files = 8;
+	const int n_tree_files = 15;
 	const double HORIZ_INTERVAL = 16;
 
 	TObjArray Hlist_gr(0);
@@ -144,16 +144,17 @@ int main(int argc, char *argv[])
 	//chain.SetBranchStatus("ch_id", 1);
 	//chain.SetBranchStatus("run_id", 1);
 	//chain.SetBranchStatus("event_id", 1);
-	//chain.SetBranchStatus("num_of_pe_in_event", 1);
-	//chain.SetBranchStatus("x_cog_position", 1);
-	//chain.SetBranchStatus("y_cog_position", 1);
+	////chain.SetBranchStatus("num_of_pe_in_event", 1);
+	////chain.SetBranchStatus("x_cog_position", 1);
+	////chain.SetBranchStatus("y_cog_position", 1);
 	//chain.SetBranchStatus("data_raw", 1);
 	//chain.SetBranchStatus("time_v", 1);
 	//chain.SetBranchStatus("baseline", 1);
-	//chain.SetBranchStatus("baseline_v", 1);
+	////chain.SetBranchStatus("baseline_v", 1);
+	////chain.SetBranchStatus("num_of_pe_in_event_for_cog", 1);
 
 
-	const bool is_show_individual_signals = false;
+	const bool is_show_individual_signals = true;
 	if (is_show_individual_signals)
 	{
 
@@ -170,7 +171,7 @@ int main(int argc, char *argv[])
 				cout << "event = " << i << endl;
 			}
 
-			REMEMBER_CUT(ch_id == 41 && run_id == 2721 && event_id == 0);
+			REMEMBER_CUT(ch_id == 41 && run_id == 578 && event_id == 0);
 			if (cut_condition_bool)
 			{
 				//signals_x_values.clear();
@@ -184,9 +185,15 @@ int main(int argc, char *argv[])
 					for (int k = (*signals_x_start)[j]; k < (*signals_x_stop)[j]; k++)
 					{
 						signals_x_values.push_back(k * HORIZ_INTERVAL);
-						//signals_y_values.push_back(-(*data_raw)[k] + 2 * baseline - (*baseline_v)[k]);
+
+						//var1
 						signals_y_values.push_back(-(*data_raw)[k] + baseline);
-						local_baseline_y_values.push_back((*local_baseline)[j] - baseline);
+						local_baseline_y_values.push_back( (*local_baseline)[j] - baseline );
+
+						//var2
+						/*signals_y_values.push_back(-(*data_raw)[k] + 2 * baseline - (*baseline_v)[k]);
+						local_baseline_y_values.push_back((*local_baseline)[j]);*/
+						
 					}
 					//}
 
@@ -249,11 +256,18 @@ int main(int argc, char *argv[])
 			//chain.Draw("(data_int/500.0):time_v", total_cut, "same L");
 			//chain.Draw("(double_integral_one_peak_vec_y/500):time_v", total_cut, "same L");
 
+			//var1
 			chain.Draw("(-data_raw + baseline):time_v", total_cut, "same LP ");
+
+			//var2
+			//chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
+			
 			chain.SetLineColor(kBlue);
 			//chain.SetMarkerColor(kRed);
 			//chain.Draw("(double_integral_one_peak_vec_y/500):time_v", total_cut, "same L");
+			
 			chain.Draw("(data_int/500.0):time_v", total_cut, "same L");
+
 		}
 		else
 		{
@@ -301,8 +315,8 @@ int main(int argc, char *argv[])
 		hist->DrawClone();
 	}
 
-	total_cut = "ch_id == 59 && run_id < 10000 && event_id < 10";
-	//total_cut = "ch_id == 41 && run_id == 2721 && event_id == 0";	
+	//total_cut = "ch_id == 44 && run_id < 10000 && event_id < 30";
+	//total_cut = "ch_id == 37 && run_id == 549 && event_id == 10";	
 	//COUT(total_cut.GetName());
 	//COUT(total_cut.GetTitle());
 
@@ -327,9 +341,9 @@ int main(int argc, char *argv[])
 	//chain.Draw("num_of_pe_in_event", "abs(x_cog_position) < 0.1 && ch_id == 54 && run_id == 3403 && event_id == 6");
 	//chain.Draw("num_of_pe_in_event", "ch_id == 59 && run_id < 10000 && event_id < 10");
 	//chain.Draw("num_of_pe_in_event", total_cut && "abs(x_cog_position) < 0.1" && "ch_id == 54");
-	chain.Draw("y_cog_position:x_cog_position", total_cut);
+	//chain.Draw("y_cog_position:x_cog_position", total_cut);
 	//chain.Draw("x_cog_position >> h(100, -15, 5) ", total_cut);
-	//chain.Draw("x_cog_position ", total_cut);
+	//chain.Draw("y_cog_position ", total_cut);
 
 	//chain.Draw("signals_x_start", total_cut, "L");
 	//chain.Draw("signals_x_stop", total_cut, "L");
@@ -380,9 +394,10 @@ int main(int argc, char *argv[])
 	//chain.Draw("(baseline_v - baseline):time_v", total_cut, "same L");
 
 	bool is_average = false;
+	vector<double> data_raw_average;
 	if (is_average)
 	{
-		vector<double> data_raw_average;
+		
 		data_raw_average.resize(time_v.size());
 		double baseline_average = 0;
 
@@ -390,12 +405,12 @@ int main(int argc, char *argv[])
 		for (int i = 0; i < n_events; i++)
 		{
 			chain.GetEntry(i);
-			if (i % 10 == 0)
+			if (i % 100 == 0)
 			{
 				cout << "event = " << i << endl;
 			}
 
-			if (ch_id == 38 /*&& integral > 100E3*/)
+			if (ch_id == 41 /*&& integral > 100E3*/)
 			{
 				cut_pass_counter++;
 				baseline_average += baseline;
@@ -415,35 +430,42 @@ int main(int argc, char *argv[])
 		baseline_average /= cut_pass_counter;
 		for (int j = 0; j < time_v.size(); j++)
 		{
-			data_raw_average[j] /= cut_pass_counter;
+			data_raw_average[j] = -((data_raw_average[j] / cut_pass_counter) - baseline_average);
+			//data_raw_average[j] /= data_raw_average[j] / cut_pass_counter;
 		}
 		COUT(cut_pass_counter);
 
 		vector<double> baseline_v_avr;
-		baseline_v_avr.resize(time_v.size(), baseline_average);
+		//baseline_v_avr.resize(time_v.size(), baseline_average);
+		baseline_v_avr.resize(time_v.size(), 0);
 
 		TGraph *gr = new TGraph(time_v.size(), &time_v[0], &data_raw_average[0]);
 		TGraph *gr_baseline = new TGraph(time_v.size(), &time_v[0], &baseline_v_avr[0]);
+		gr->SetTitle("Average signal");
 		gr->Draw("APL");
 		gr_baseline->SetLineColor(kGreen);
 		gr_baseline->Draw("same");
+
+		//--------------------------------------
+		const double time_from = 50000;
+		const double time_to = 74750;
+		const int point_from = time_from / HORIZ_INTERVAL;
+		const int point_to = time_to / HORIZ_INTERVAL;
+
+		double integral_tmp = 0;
+		for (int i = point_from; i < point_to; i++)
+		{
+			integral_tmp += (data_raw_average[i]/* - baseline_v_avr[i]*/);
+		}
+		integral_tmp *= HORIZ_INTERVAL;
+
+		COUT(integral_tmp);
+		//--------------------------------------
+
+
 	}
 
-	//--------------------------------------
-	//const double time_from = 58000;
-	//const double time_to = 76200;
-	//const int point_from = time_from / HORIZ_INTERVAL;
-	//const int point_to = time_to / HORIZ_INTERVAL;
 
-	//double integral_tmp = 0;
-	//for (int i = point_from; i < point_to; i++)
-	//{
-	//	integral_tmp += (data_raw_average[i] - baseline_v[i]);
-	//}
-	//integral_tmp *= HORIZ_INTERVAL;
-	//
-	//COUT(integral_tmp);
-	//--------------------------------------
 
 	//initialize_single_pe_characteristics();
 }
