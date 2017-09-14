@@ -4,12 +4,12 @@ using namespace std;
 
 int GetChId(int array_position)
 {
-	return array_position + 32 /*38*/;
+	return /*array_position + 32*/ 41;
 }
 
 ////---------------------------------------------
 //August 8 2017
-path_info PathInfo = {"", 0, /*1000*/ 30};
+path_info PathInfo = {"", 0, 1000 /*30*/};
 
 /*Flashlight*/
 //

@@ -14,8 +14,8 @@ PeakFinderFind::PeakFinderFind(std::vector<double>& yv, std::vector<double>& yv_
 	pair<int, int> pair_var;
 
 	const double window = 200; //ns
-	const double local_baseline_window = 300; //ns
-	const double local_baseline_window_shift = 100; //ns
+	const double local_baseline_window = 350; //ns
+	const double local_baseline_window_shift = 50; //ns
 	const double check_overlapping_window = 500; //ns
 
 	const int half_window_p = window / HORIZ_INTERVAL;

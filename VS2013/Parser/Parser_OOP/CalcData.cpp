@@ -70,7 +70,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		//CalcBaselineMedianFilter calc_baseline_median_filter(invert_data, 0, 160000, 11, HORIZ_INTERVAL);
 		//baseline_vec.push_back(calc_baseline_median_filter.GetBaselineVec());
 
-		CalcBaselineZeroComp calc_baseline_zero_comp(invert_data/*smooth_data[i]*/, 40000, 100000, calc_baseline.GetBaseline(), der_max_position[i], HORIZ_INTERVAL);
+		CalcBaselineZeroComp calc_baseline_zero_comp(invert_data/*smooth_data[i]*/, 0, 159900, calc_baseline.GetBaseline(), der_max_position[i], HORIZ_INTERVAL);
 		baseline_vec.push_back(calc_baseline_zero_comp.GetBaselineVec());
 
 		//CalcIntegral calc_integral(data[i], baseline[i], 37800, 68300, HORIZ_INTERVAL);
@@ -127,7 +127,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		//integral.push_back(calc_double_intergral.GetIntegrtal());
 		
 		//----------
-		int point_from = /*40000*/ 32000 / HORIZ_INTERVAL;
+		int point_from = /*40000*/ /*32000*/ 20000 / HORIZ_INTERVAL;
 
 		//let's find the first signal after time_from
 		for (int j = 0; j < pair_vec.size(); j++)

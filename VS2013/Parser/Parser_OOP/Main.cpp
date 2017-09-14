@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 	
 	vector<ch_info> ch_list;
 	//var1
-	const int n_ch = /*1*/ 32;
+	const int n_ch = 1 /*32*/;
 	ch_list.resize(n_ch);
 	for (int i = 0; i < n_ch; i++)
 	{
@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 		{
 			//CalcData calc_data(rdt.GetDataDouble()[temp_event_id], rdt.GetTimeArray());
 			//calc_data_v[temp_event_id] = calc_data;
-			if (temp_event_id % 10 == 0)
+			if (temp_event_id % 100 == 0)
 			{
 				cout << "temp_event_id = " << temp_event_id << endl;
 			}			

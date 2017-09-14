@@ -154,10 +154,10 @@ int main(int argc, char *argv[])
 	////chain.SetBranchStatus("num_of_pe_in_event_for_cog", 1);
 
 
-	const bool is_show_individual_signals = true;
+	const bool is_show_individual_signals = false;
 	if (is_show_individual_signals)
 	{
-
+		bool is_baseline_slope = false;
 
 		vector<double> signals_x_values;
 		vector<double> signals_y_values;
@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
 				cout << "event = " << i << endl;
 			}
 
-			REMEMBER_CUT(ch_id == 41 && run_id == 578 && event_id == 0);
+			REMEMBER_CUT(ch_id == 32 && run_id == 578 && event_id == 25);
 			if (cut_condition_bool)
 			{
 				//signals_x_values.clear();
@@ -186,13 +186,18 @@ int main(int argc, char *argv[])
 					{
 						signals_x_values.push_back(k * HORIZ_INTERVAL);
 
-						//var1
-						signals_y_values.push_back(-(*data_raw)[k] + baseline);
-						local_baseline_y_values.push_back( (*local_baseline)[j] - baseline );
+						if (is_baseline_slope)
+						{
+							signals_y_values.push_back(-(*data_raw)[k] + baseline);
+							local_baseline_y_values.push_back((*local_baseline)[j] - baseline);
+						}
+						else
+						{
+							signals_y_values.push_back(-(*data_raw)[k] + 2 * baseline - (*baseline_v)[k]);
+							local_baseline_y_values.push_back((*local_baseline)[j]);
+						}
 
-						//var2
-						/*signals_y_values.push_back(-(*data_raw)[k] + 2 * baseline - (*baseline_v)[k]);
-						local_baseline_y_values.push_back((*local_baseline)[j]);*/
+						
 						
 					}
 					//}
@@ -256,12 +261,11 @@ int main(int argc, char *argv[])
 			//chain.Draw("(data_int/500.0):time_v", total_cut, "same L");
 			//chain.Draw("(double_integral_one_peak_vec_y/500):time_v", total_cut, "same L");
 
-			//var1
-			chain.Draw("(-data_raw + baseline):time_v", total_cut, "same LP ");
+			if (is_baseline_slope)
+				chain.Draw("(-data_raw + baseline):time_v", total_cut, "same LP ");
+			else
+				chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
 
-			//var2
-			//chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
-			
 			chain.SetLineColor(kBlue);
 			//chain.SetMarkerColor(kRed);
 			//chain.Draw("(double_integral_one_peak_vec_y/500):time_v", total_cut, "same L");
@@ -315,8 +319,8 @@ int main(int argc, char *argv[])
 		hist->DrawClone();
 	}
 
-	//total_cut = "ch_id == 44 && run_id < 10000 && event_id < 30";
-	//total_cut = "ch_id == 37 && run_id == 549 && event_id == 10";	
+	total_cut = "ch_id == 32 && run_id < 10000 && event_id < 30";
+	//total_cut = "ch_id == 41 && run_id == 578 && event_id == 25";	
 	//COUT(total_cut.GetName());
 	//COUT(total_cut.GetTitle());
 
@@ -326,7 +330,7 @@ int main(int argc, char *argv[])
 	//chain.Draw("single_integral_for_calib_one_event:integral", total_cut && "single_integral_for_calib_one_event > 0" && "integral > 0");
 	//chain.Draw("num_of_pe_in_event:event_id", total_cut);
 
-	//chain.Draw("num_of_pe_in_event", total_cut);
+	chain.Draw("num_of_pe_in_event >> h(100, 0, 300)", total_cut);
 	//chain.Draw("num_of_pe_in_event__positive_part_s_int + num_of_pe_in_event__negative_part_s_int", total_cut);
 	//chain.Draw("num_of_pe_in_event__positive_part_d_int + num_of_pe_in_event__negative_part_s_int", total_cut);
 	//chain.Draw("num_of_pe_in_event_for_cog", total_cut);
