@@ -179,7 +179,7 @@ int main(int argc, char *argv[])
 			
 			//data			
 			tree->Branch("data_raw", &data_raw);
-			//tree->Branch("data_smooth", &data_smooth);
+			tree->Branch("data_smooth", &data_smooth);
 			tree->Branch("data_int", &data_int);
 
 		}
@@ -206,7 +206,7 @@ int main(int argc, char *argv[])
 				der_min_position = (calc_data_v[temp_event_id].GetDerMinPosition())[ch];
 				der_max_position = (calc_data_v[temp_event_id].GetDerMaxPosition())[ch];
 
-				//data_smooth = (calc_data_v[temp_event_id].GetSmooth())[ch];
+				data_smooth = (calc_data_v[temp_event_id].GetSmooth())[ch];
 				data_int = (calc_data_v[temp_event_id].GetInt())[ch];
 
 				signals_x_start = (calc_data_v[temp_event_id].GetSignalsXStart())[ch];

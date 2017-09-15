@@ -63,23 +63,31 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		//to find nonoverlapped signals
 		CalcDer calc_der(invert_data, 21, 1);
 		der_data.push_back(calc_der.GetDer());
+		
 
-/*		CalcDer calc_smooth(invert_data, 41, 0);
-		smooth_data.push_back(calc_smooth.GetDer());*/		
+#define IS_USE_SMOOTH
+#ifdef IS_USE_SMOOTH
+		cout << "SMOOTH" << endl;
+		CalcDer calc_smooth(invert_data, /*41*/ 13, 0);
+		smooth_data.push_back(calc_smooth.GetDer());
 
-		//CalcBaselineMedianFilter calc_baseline_median_filter(invert_data, 0, 160000, 11, HORIZ_INTERVAL);
-		//baseline_vec.push_back(calc_baseline_median_filter.GetBaselineVec());
-
-		CalcBaselineZeroComp calc_baseline_zero_comp(invert_data/*smooth_data[i]*/, 0, 159900, calc_baseline.GetBaseline(), der_max_position[i], HORIZ_INTERVAL);
+		CalcBaselineZeroComp calc_baseline_zero_comp(smooth_data[i], 0, 159900, calc_baseline.GetBaseline(), der_max_position[i], HORIZ_INTERVAL);
 		baseline_vec.push_back(calc_baseline_zero_comp.GetBaselineVec());
 
-		//CalcIntegral calc_integral(data[i], baseline[i], 37800, 68300, HORIZ_INTERVAL);
-		//integral.push_back(calc_integral.GetIntegrtal());
+		vector<double> data_without_slope = TypeConvertion::GetDifference(smooth_data[i], baseline_vec[i]);
+#else
+		cout << " DO NOT SMOOTH" << endl;
+		CalcBaselineZeroComp calc_baseline_zero_comp(invert_data, 0, 159900, calc_baseline.GetBaseline(), der_max_position[i], HORIZ_INTERVAL);
+		baseline_vec.push_back(calc_baseline_zero_comp.GetBaselineVec());
 
 		vector<double> data_without_slope = TypeConvertion::GetDifference(invert_data, baseline_vec[i]);
-		PeakFinderFind peak_finder_find(data_without_slope/*invert_data*/ /*smooth_data[i]*/, der_data[i], 0, 1 /*this parameter is very important*/, HORIZ_INTERVAL);
+#endif  // IS_USE_SMOOTH
+
+		PeakFinderFind peak_finder_find(data_without_slope, der_data[i], 0, 1 /*this parameter is very important*/, HORIZ_INTERVAL);
+		
 		local_baseline_v.push_back(peak_finder_find.GetLocalBaselineV());
 		vector< pair<int, int> > pair_vec = peak_finder_find.GetPeakPositions();
+
 		vector<int> signals_values_x_first(pair_vec.size());
 		vector<int> signals_values_x_second(pair_vec.size());
 		for (int j = 0; j < pair_vec.size(); j++)
@@ -218,7 +226,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 	}
 
 	//comment during calibration
-	CoGBase cog_obj(/*num_of_pe_in_event_vec*/num_of_pe_in_event_for_cog);
+	CoGBase cog_obj(num_of_pe_in_event_vec/*num_of_pe_in_event_for_cog*/);
 	x_cog_position = cog_obj.GetX();
 	y_cog_position = cog_obj.GetY();
 	

@@ -4,12 +4,13 @@ using namespace std;
 
 int GetChId(int array_position)
 {
-	return /*array_position + 32*/ 41;
+	//return array_position + 32;
+	return 41;
 }
 
 ////---------------------------------------------
 //August 8 2017
-path_info PathInfo = {"", 0, 1000 /*30*/};
+path_info PathInfo = {"", 0, 1 /*30*/};
 
 /*Flashlight*/
 //
@@ -30,11 +31,29 @@ path_info PathInfo = {"", 0, 1000 /*30*/};
 //const int start_run_number = 539;
 //const int stop_run_number = 564;
 //
-//20 kV, Cd, V(PMT) = 700V, V(SiPM) = 48V, dV(GEM) = 2200, internal 2mm, trigger from 3PMT (th = 128 mV) + 6 dB att.
-std::string path_name_tree = "D:\\Data_work\\170803_caen_trees\\event_20kV_48Vsipm_700Vpmt_int_coll_Cd_2200gem_offset\\";
-std::string PathInfo_path_name = "D:\\Data_work\\170803_caen_raw\\event_20kV_48Vsipm_700Vpmt_int_coll_Cd_2200gem_offset\\";
-const int start_run_number = 578;
-const int stop_run_number = /*611*/ 578;
+////34000 events, 20 kV, Cd, V(PMT) = 700V, V(SiPM) = 48V, dV(GEM) = 2200, internal 2mm, trigger from 3PMT (th = 128 mV) + 6 dB att.
+//std::string path_name_tree = "D:\\Data_work\\170803_caen_trees\\event_20kV_48Vsipm_700Vpmt_int_coll_Cd_2200gem_offset\\";
+//std::string PathInfo_path_name = "D:\\Data_work\\170803_caen_raw\\event_20kV_48Vsipm_700Vpmt_int_coll_Cd_2200gem_offset\\";
+//const int start_run_number = 578;
+//const int stop_run_number = 611;
+//
+//35000 events, 20 kV, Cd, V(PMT) = 700V, V(SiPM) = 48V, dV(GEM) = 2000, internal 2mm, trigger from 3PMT (th = 128 mV) + 6 dB att.
+//std::string path_name_tree = "D:\\Data_work\\170803_caen_trees\\event_20kV_48Vsipm_700Vpmt_int_coll_Cd_2000gem_offset\\";
+//std::string PathInfo_path_name = "D:\\Data_work\\170803_caen_raw\\event_20kV_48Vsipm_700Vpmt_int_coll_Cd_2000gem_offset\\";
+//const int start_run_number = 612;
+//const int stop_run_number = 646;
+//
+//43000 events, 20 kV, Cd, V(PMT) = 700V, V(SiPM) = 46V, dV(GEM) = 2200, no collimator, trigger from 3PMT (th = 128 mV) + 6 dB att.
+std::string path_name_tree = "D:\\Data_work\\170803_caen_trees\\event_20kV_46Vsipm_700Vpmt_without_coll_Cd_2200gem_offset\\";
+std::string PathInfo_path_name = "D:\\Data_work\\170803_caen_raw\\event_20kV_46Vsipm_700Vpmt_without_coll_Cd_2200gem_offset\\";
+const int start_run_number = 1;
+const int stop_run_number = 1 /*43*/;
+//
+//43000 events, 20 kV, Cd, V(PMT) = 700V, V(SiPM) = 48V, dV(GEM) = 2200, no collimator, trigger from 3PMT (th = 128 mV) + 6 dB att.
+//std::string path_name_tree = "D:\\Data_work\\170803_caen_trees\\event_20kV_48Vsipm_700Vpmt_without_coll_Cd_2200gem_offset\\";
+//std::string PathInfo_path_name = "D:\\Data_work\\170803_caen_raw\\event_20kV_48Vsipm_700Vpmt_without_coll_Cd_2200gem_offset\\";
+//const int start_run_number = 1;
+//const int stop_run_number = 100;
 
 ////---------------------------------------------
 //July 13 2017

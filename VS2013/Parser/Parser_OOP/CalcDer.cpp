@@ -29,9 +29,17 @@ CalcDer::CalcDer(std::vector<double> yv, const int param_n_points, const int ord
 	for (int i = 0; i < yv.size(); i++)
 	{
 
-		if (i < point_half || i >(yv.size() - point_half - 1))
+		//if (i < point_half || i >(yv.size() - point_half - 1))
+		//{
+		//	yv_der[i] = 0;//this works good only if you use signal without baseline
+		//}
+		if (i < point_half)  // I think, it's better solution
 		{
-			yv_der[i] = 0;
+			yv_der[i] = yv[point_half];
+		}
+		else if ( i > (yv.size() - point_half - 1) )
+		{
+			yv_der[i] = yv[yv.size() - 1];
 		}
 		else
 		{
