@@ -105,3 +105,6 @@ double CoGBase::GetY()
 {
 	return y;
 }
+
+MyClass::MyClass() {};
+MyClass::~MyClass() {};
