@@ -20,8 +20,33 @@ CoGBase::CoGBase(std::vector<double> num_of_pe_in_event_vec)
 	{
 		int ch = GetChId(i);
 
+		//central row & col
+		bool is_central_row = ch == 52 || ch == 53 || ch == 38 || ch == 39 || ch == 54;
+		bool is_cental_col = ch == 48 || ch == 51 || ch == 38 || ch == 41 || ch == 58;
+
+		//3x5 & 5x3
+		bool is_ch_for_x_5x3 =
+			ch == 32 || ch == 33 || ch == 48 || ch == 49 || ch == 34 ||
+			ch == 35 || ch == 50 || ch == 51 || ch == 36 || ch == 37 ||
+			ch == 52 || ch == 53 || ch == 38 || ch == 39 || ch == 54;
+
+		bool is_ch_for_y_3x5 =
+			ch == 32 || ch == 33 || ch == 48 ||
+			ch == 35 || ch == 50 ||	ch == 51 || 
+			ch == 52 || ch == 53 || ch == 38 || 
+			ch == 55 || ch == 40 || ch == 41 || 
+			ch == 42 || ch == 43 || ch == 58;
+
+		////var 1
+		//bool ch_for_x = is_central_row;
+		//bool ch_for_y = is_cental_col;
+
+		//var 2
+		bool ch_for_x = is_ch_for_x_5x3;
+		bool ch_for_y = is_ch_for_y_3x5;
+
 		//for y
-		if (ch == 48 || ch == 51 || ch == 38|| ch == 41|| ch == 58)
+		if (ch_for_y)
 		{
 			for (int j = 0; j < ChCharacteristics::GetChCharacteristics().size(); j++)
 			{
@@ -35,7 +60,7 @@ CoGBase::CoGBase(std::vector<double> num_of_pe_in_event_vec)
 		}
 
 		//for x
-		if ( ch == 52 || ch == 53 || ch == 38 || ch == 39 || ch == 54 )
+		if (ch_for_x)
 		{
 			for (int j = 0; j < ChCharacteristics::GetChCharacteristics().size(); j++)
 			{

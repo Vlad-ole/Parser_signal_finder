@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 	
 	vector<ch_info> ch_list;
 	//var1
-	const int n_ch = 1 /*32*/;
+	const int n_ch = /*1*/ 32;
 	ch_list.resize(n_ch);
 	for (int i = 0; i < n_ch; i++)
 	{
@@ -179,7 +179,7 @@ int main(int argc, char *argv[])
 			
 			//data			
 			tree->Branch("data_raw", &data_raw);
-			tree->Branch("data_smooth", &data_smooth);
+			//tree->Branch("data_smooth", &data_smooth);
 			tree->Branch("data_int", &data_int);
 
 		}
@@ -206,7 +206,7 @@ int main(int argc, char *argv[])
 				der_min_position = (calc_data_v[temp_event_id].GetDerMinPosition())[ch];
 				der_max_position = (calc_data_v[temp_event_id].GetDerMaxPosition())[ch];
 
-				data_smooth = (calc_data_v[temp_event_id].GetSmooth())[ch];
+				//data_smooth = (calc_data_v[temp_event_id].GetSmooth())[ch];
 				data_int = (calc_data_v[temp_event_id].GetInt())[ch];
 
 				signals_x_start = (calc_data_v[temp_event_id].GetSignalsXStart())[ch];
@@ -271,6 +271,7 @@ int main(int argc, char *argv[])
 	cout << "t_tree_fill[ms] = " << (double)(t_tree_fill) / (CLOCKS_PER_SEC * n_runs) * 1000 << endl;
 	cout << "t_total[ms] = " << (double)(clock() - t_total) / (CLOCKS_PER_SEC * n_runs) * 1000 << endl;
 
+	system("mspaint.exe D:\\git_repositories\\Parser_signal_finder\\VS2013\\Parser\\maxresdefault.jpg");
 	cout << "all is ok" << endl;
 	system("pause");
 	theApp.Terminate();

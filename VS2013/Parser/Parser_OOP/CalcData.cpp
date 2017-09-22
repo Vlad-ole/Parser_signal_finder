@@ -65,7 +65,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		der_data.push_back(calc_der.GetDer());
 		
 
-#define IS_USE_SMOOTH
+//#define IS_USE_SMOOTH
 #ifdef IS_USE_SMOOTH
 		cout << "SMOOTH" << endl;
 		CalcDer calc_smooth(invert_data, /*41*/ 13, 0);
@@ -76,7 +76,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 
 		vector<double> data_without_slope = TypeConvertion::GetDifference(smooth_data[i], baseline_vec[i]);
 #else
-		cout << " DO NOT SMOOTH" << endl;
+		//cout << " DO NOT SMOOTH" << endl;
 		CalcBaselineZeroComp calc_baseline_zero_comp(invert_data, 0, 159900, calc_baseline.GetBaseline(), der_max_position[i], HORIZ_INTERVAL);
 		baseline_vec.push_back(calc_baseline_zero_comp.GetBaselineVec());
 
@@ -226,7 +226,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 	}
 
 	//comment during calibration
-	CoGBase cog_obj(num_of_pe_in_event_vec/*num_of_pe_in_event_for_cog*/);
+	CoGBase cog_obj(/*num_of_pe_in_event_vec*/num_of_pe_in_event_for_cog);
 	x_cog_position = cog_obj.GetX();
 	y_cog_position = cog_obj.GetY();
 	

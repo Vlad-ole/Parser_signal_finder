@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 {
 	gROOT->SetBatch(kFALSE);
 
-	const int n_tree_files = 1;
+	const int n_tree_files = 42;
 	const double HORIZ_INTERVAL = 16;
 
 	TObjArray Hlist_gr(0);
@@ -116,7 +116,7 @@ int main(int argc, char *argv[])
 
 	chain.SetBranchAddress("data_raw", &data_raw);
 	chain.SetBranchAddress("data_int", &data_int);
-	chain.SetBranchAddress("data_smooth", &data_smooth);
+	//chain.SetBranchAddress("data_smooth", &data_smooth);
 	chain.SetBranchAddress("data_der", &data_der);
 
 	chain.SetBranchAddress("run_id", &run_id);
@@ -140,7 +140,7 @@ int main(int argc, char *argv[])
 	tree_tmp.Fill();
 	chain.AddFriend("tree_tmp");
 
-	const bool is_show_individual_signals = true;
+	const bool is_show_individual_signals = false;
 	if (is_show_individual_signals)
 	{
 		chain.SetBranchStatus("*", 0); //disable all branches
@@ -157,8 +157,10 @@ int main(int argc, char *argv[])
 		chain.SetBranchStatus("signals_x_stop", 1);
 		chain.SetBranchStatus("local_baseline", 1);
 		chain.SetBranchStatus("baseline_v", 1);
+		chain.SetBranchStatus("data_int", 1);
+		
 
-		chain.SetBranchStatus("data_smooth", 1);
+		//chain.SetBranchStatus("data_smooth", 1);
 				
 		//chain.SetBranchStatus("baseline_v", 1);
 		//chain.SetBranchStatus("num_of_pe_in_event_for_cog", 1);
@@ -178,7 +180,7 @@ int main(int argc, char *argv[])
 				cout << "event = " << i << endl;
 			}
 
-			REMEMBER_CUT(ch_id == 41 && run_id == 1 && event_id == 0);
+			REMEMBER_CUT(ch_id == 41 && run_id == 2500 && event_id == 5);
 			if (cut_condition_bool)
 			{
 				//signals_x_values.clear();
@@ -200,9 +202,11 @@ int main(int argc, char *argv[])
 						}
 						else
 						{
-							//signals_y_values.push_back(-(*data_raw)[k] + 2 * baseline - (*baseline_v)[k]);
-							signals_y_values.push_back( (*data_smooth)[k] - (*baseline_v)[k] );
+							signals_y_values.push_back(-(*data_raw)[k] + 2 * baseline - (*baseline_v)[k]);
 							local_baseline_y_values.push_back((*local_baseline)[j]);
+
+							//signals_y_values.push_back( (*data_smooth)[k] - (*baseline_v)[k] );
+							
 						}
 
 						
@@ -276,15 +280,15 @@ int main(int argc, char *argv[])
 			}
 			else
 			{
-				//chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
-				chain.Draw("(data_smooth - baseline_v):time_v", total_cut, "same LP");
+				chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
+				//chain.Draw("(data_smooth - baseline_v):time_v", total_cut, "same LP");
 			}
 
 			chain.SetLineColor(kBlue);
 			//chain.SetMarkerColor(kRed);
 			//chain.Draw("(double_integral_one_peak_vec_y/500):time_v", total_cut, "same L");
 			
-			//chain.Draw("(data_int/500.0):time_v", total_cut, "same L");
+			chain.Draw("(data_int/1500.0):time_v", total_cut, "same L");
 
 		}
 		else
@@ -333,13 +337,16 @@ int main(int argc, char *argv[])
 		hist->DrawClone();
 	}
 
-	//total_cut = "ch_id == 32 && run_id < 10000 && event_id < 30";
+	total_cut = "ch_id == 59 && run_id < 10000 && event_id < 30";
 	//total_cut = "ch_id == 41 && run_id == 1 && event_id == 0";	
 	//COUT(total_cut.GetName());
 	//COUT(total_cut.GetTitle());
 
 	chain.SetMarkerStyle(20);
 	chain.SetMarkerSize(1);
+
+	//SiPM ch correlation
+	//chain.Draw("num_of_pe_in_event_for_cog:event_id", total_cut);
 
 	//chain.Draw("single_integral_for_calib_one_event:integral", total_cut && "single_integral_for_calib_one_event > 0" && "integral > 0");
 	//chain.Draw("num_of_pe_in_event:event_id", total_cut);
@@ -363,7 +370,7 @@ int main(int argc, char *argv[])
 	//chain.Draw("num_of_pe_in_event", total_cut && "abs(x_cog_position) < 0.1" && "ch_id == 54");
 	//chain.Draw("y_cog_position:x_cog_position", total_cut);
 	//chain.Draw("x_cog_position", total_cut);
-	//chain.Draw("y_cog_position ", total_cut);
+	chain.Draw("y_cog_position ", total_cut);
 
 	//chain.Draw("signals_x_start", total_cut, "L");
 	//chain.Draw("signals_x_stop", total_cut, "L");
@@ -409,6 +416,10 @@ int main(int argc, char *argv[])
 
 	
 	//chain.Draw("(data_smooth - baseline_v):time_v", total_cut, "LP ");
+
+	//chain.Draw("(data_smooth):time_v", total_cut, "LP ");
+	//chain.SetLineColor(kGreen);
+	//chain.Draw("(baseline_v):time_v", total_cut, "same L");
 
 	//chain.Draw("(-data_raw + baseline):time_v", total_cut, " LP");
 	//chain.SetLineColor(kGreen);

@@ -26,6 +26,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test_long_array", "Test_lon
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TestBeep", "TestBeep\TestBeep.vcxproj", "{1232B677-9DBA-486D-BDA9-1740770DB9A2}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnitTest1", "UnitTest1\UnitTest1.vcxproj", "{9A3A71EF-2691-4833-B0F7-506A475EE046}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -90,6 +92,12 @@ Global
 		{1232B677-9DBA-486D-BDA9-1740770DB9A2}.Release|Win32.ActiveCfg = Release|Win32
 		{1232B677-9DBA-486D-BDA9-1740770DB9A2}.Release|Win32.Build.0 = Release|Win32
 		{1232B677-9DBA-486D-BDA9-1740770DB9A2}.Release|x64.ActiveCfg = Release|Win32
+		{9A3A71EF-2691-4833-B0F7-506A475EE046}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9A3A71EF-2691-4833-B0F7-506A475EE046}.Debug|Win32.Build.0 = Debug|Win32
+		{9A3A71EF-2691-4833-B0F7-506A475EE046}.Debug|x64.ActiveCfg = Debug|Win32
+		{9A3A71EF-2691-4833-B0F7-506A475EE046}.Release|Win32.ActiveCfg = Release|Win32
+		{9A3A71EF-2691-4833-B0F7-506A475EE046}.Release|Win32.Build.0 = Release|Win32
+		{9A3A71EF-2691-4833-B0F7-506A475EE046}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
