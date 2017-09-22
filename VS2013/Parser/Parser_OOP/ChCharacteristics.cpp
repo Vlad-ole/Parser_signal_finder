@@ -10,7 +10,7 @@ std::vector<ChCharacteristicsStruct> ChCharacteristics::ch_characteristics_struc
 //{
 //	ch_characteristics_struct = 
 	{
-		{ 32, true, true, 1482, 750, 3000, -2 * step_x, step_y },
+		{ 32, true, true, 1482, 750, 3000, -2 * step_x, 2 * step_y },
 		{ 33, true, true, 1256, 750, 3000, -step_x, 2 * step_y },
 		{ 34, true, true, 1622, 750, 3000, 2 * step_x, 2 * step_y },
 		{ 35, true, true, 1569, 750, 3000, -2 * step_x, step_y },

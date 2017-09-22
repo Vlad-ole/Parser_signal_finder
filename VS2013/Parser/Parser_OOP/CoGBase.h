@@ -15,13 +15,3 @@ private:
 	double y;
 };
 
-class MyClass
-{
-public:
-	MyClass();
-	~MyClass();
-
-private:
-
-};
-
