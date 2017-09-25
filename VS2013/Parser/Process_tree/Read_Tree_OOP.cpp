@@ -16,7 +16,8 @@
 #include "TFile.h"
 #include "TCut.h"
 
-#include "Single_pe_characteristics.h"
+//#include "Single_pe_characteristics.h"
+//#include "RunDescription.h"
 
 #include "FormCanv.h"
 using namespace std;
@@ -38,7 +39,7 @@ int main(int argc, char *argv[])
 {
 	gROOT->SetBatch(kFALSE);
 
-	const int n_tree_files = 42;
+	const int n_tree_files = 1;
 	const double HORIZ_INTERVAL = 16;
 
 	TObjArray Hlist_gr(0);
@@ -90,38 +91,42 @@ int main(int argc, char *argv[])
 	chain.SetBranchAddress("min_element", &min_element);
 	chain.SetBranchAddress("max_element", &max_element);
 	chain.SetBranchAddress("baseline", &baseline);
-	chain.SetBranchAddress("baseline_v", &baseline_v);
 	chain.SetBranchAddress("integral", &integral);
-	chain.SetBranchAddress("der_min_position", &der_min_position);
-	chain.SetBranchAddress("der_max_position", &der_max_position);
-
-	chain.SetBranchAddress("num_of_pe_in_event", &num_of_pe_in_event);
-	chain.SetBranchAddress("num_of_pe_in_event__negative_part_s_int", &num_of_pe_in_event__negative_part_s_int);
-	chain.SetBranchAddress("num_of_pe_in_event__positive_part_s_int", &num_of_pe_in_event__positive_part_s_int);
-	chain.SetBranchAddress("num_of_pe_in_event__positive_part_d_int", &num_of_pe_in_event__positive_part_d_int);
-	chain.SetBranchAddress("num_of_pe_in_event_for_cog", &num_of_pe_in_event_for_cog);
-	
-
-	chain.SetBranchAddress("x_cog_position", &x_cog_position);
-	chain.SetBranchAddress("y_cog_position", &y_cog_position);
-
-	chain.SetBranchAddress("local_baseline", &local_baseline);
-	chain.SetBranchAddress("signals_x_start", &signals_x_start);
-	chain.SetBranchAddress("signals_x_stop", &signals_x_stop);
-	chain.SetBranchAddress("integral_one_peak", &integral_one_peak);
-	chain.SetBranchAddress("double_integral_one_peak", &double_integral_one_peak);
-	chain.SetBranchAddress("double_integral_one_peak_vec_y", &double_integral_one_peak_vec_y);
-	chain.SetBranchAddress("single_integral_for_calib_one_event", &single_integral_for_calib_one_event);
-	
-
 	chain.SetBranchAddress("data_raw", &data_raw);
-	chain.SetBranchAddress("data_int", &data_int);
-	//chain.SetBranchAddress("data_smooth", &data_smooth);
-	chain.SetBranchAddress("data_der", &data_der);
 
 	chain.SetBranchAddress("run_id", &run_id);
 	chain.SetBranchAddress("ch_id", &ch_id);
 	chain.SetBranchAddress("event_id", &event_id);
+
+	if (is_sipm_ch)
+	{
+		chain.SetBranchAddress("baseline_v", &baseline_v);
+
+		chain.SetBranchAddress("der_min_position", &der_min_position);
+		chain.SetBranchAddress("der_max_position", &der_max_position);
+
+		chain.SetBranchAddress("num_of_pe_in_event", &num_of_pe_in_event);
+		chain.SetBranchAddress("num_of_pe_in_event__negative_part_s_int", &num_of_pe_in_event__negative_part_s_int);
+		chain.SetBranchAddress("num_of_pe_in_event__positive_part_s_int", &num_of_pe_in_event__positive_part_s_int);
+		chain.SetBranchAddress("num_of_pe_in_event__positive_part_d_int", &num_of_pe_in_event__positive_part_d_int);
+		chain.SetBranchAddress("num_of_pe_in_event_for_cog", &num_of_pe_in_event_for_cog);
+
+		chain.SetBranchAddress("x_cog_position", &x_cog_position);
+		chain.SetBranchAddress("y_cog_position", &y_cog_position);
+
+		chain.SetBranchAddress("local_baseline", &local_baseline);
+		chain.SetBranchAddress("signals_x_start", &signals_x_start);
+		chain.SetBranchAddress("signals_x_stop", &signals_x_stop);
+		chain.SetBranchAddress("integral_one_peak", &integral_one_peak);
+		chain.SetBranchAddress("double_integral_one_peak", &double_integral_one_peak);
+		chain.SetBranchAddress("double_integral_one_peak_vec_y", &double_integral_one_peak_vec_y);
+		chain.SetBranchAddress("single_integral_for_calib_one_event", &single_integral_for_calib_one_event);
+
+		chain.SetBranchAddress("data_int", &data_int);
+		//chain.SetBranchAddress("data_smooth", &data_smooth);
+		chain.SetBranchAddress("data_der", &data_der);
+	}
+
 	//---------------------------
 
 	const int n_events = chain.GetEntries();
@@ -337,8 +342,8 @@ int main(int argc, char *argv[])
 		hist->DrawClone();
 	}
 
-	total_cut = "ch_id == 59 && run_id < 10000 && event_id < 30";
-	//total_cut = "ch_id == 41 && run_id == 1 && event_id == 0";	
+	//total_cut = "ch_id == 2 && run_id < 10000 && event_id < 30";
+	//total_cut = "ch_id == 2 && run_id == 55 && event_id == 0";	
 	//COUT(total_cut.GetName());
 	//COUT(total_cut.GetTitle());
 
@@ -370,7 +375,7 @@ int main(int argc, char *argv[])
 	//chain.Draw("num_of_pe_in_event", total_cut && "abs(x_cog_position) < 0.1" && "ch_id == 54");
 	//chain.Draw("y_cog_position:x_cog_position", total_cut);
 	//chain.Draw("x_cog_position", total_cut);
-	chain.Draw("y_cog_position ", total_cut);
+	//chain.Draw("y_cog_position ", total_cut);
 
 	//chain.Draw("signals_x_start", total_cut, "L");
 	//chain.Draw("signals_x_stop", total_cut, "L");
@@ -427,7 +432,7 @@ int main(int argc, char *argv[])
 	//chain.Draw("(data_smooth - baseline):time_v", total_cut, "same LP ");
 	//chain.Draw("(baseline_v - baseline):time_v", total_cut, "same L");
 
-	bool is_average = false;
+	bool is_average = true;
 	vector<double> data_raw_average;
 	if (is_average)
 	{
@@ -444,14 +449,14 @@ int main(int argc, char *argv[])
 				cout << "event = " << i << endl;
 			}
 
-			if (ch_id == 41 /*&& integral > 100E3*/)
+			if (ch_id == 2 /*&& integral > 100E3*/)
 			{
 				cut_pass_counter++;
-				baseline_average += baseline;
+				//baseline_average += baseline;
 
 				for (int j = 0; j < time_v.size(); j++)
 				{
-					data_raw_average[j] += (*data_raw)[j];
+					data_raw_average[j] += ((*data_raw)[j] - baseline);
 				}
 			}
 
@@ -461,39 +466,39 @@ int main(int argc, char *argv[])
 			//COUT(integral);
 		}
 
-		baseline_average /= cut_pass_counter;
+		//baseline_average /= cut_pass_counter;
 		for (int j = 0; j < time_v.size(); j++)
 		{
-			data_raw_average[j] = -((data_raw_average[j] / cut_pass_counter) - baseline_average);
-			//data_raw_average[j] /= data_raw_average[j] / cut_pass_counter;
+			//	data_raw_average[j] = -((data_raw_average[j] / cut_pass_counter) - baseline_average);
+			data_raw_average[j] /= cut_pass_counter;
 		}
 		COUT(cut_pass_counter);
 
-		vector<double> baseline_v_avr;
+		//vector<double> baseline_v_avr;
 		//baseline_v_avr.resize(time_v.size(), baseline_average);
-		baseline_v_avr.resize(time_v.size(), 0);
+		//baseline_v_avr.resize(time_v.size(), 0);
 
 		TGraph *gr = new TGraph(time_v.size(), &time_v[0], &data_raw_average[0]);
-		TGraph *gr_baseline = new TGraph(time_v.size(), &time_v[0], &baseline_v_avr[0]);
+		//TGraph *gr_baseline = new TGraph(time_v.size(), &time_v[0], &baseline_v_avr[0]);
 		gr->SetTitle("Average signal");
 		gr->Draw("APL");
-		gr_baseline->SetLineColor(kGreen);
-		gr_baseline->Draw("same");
+		//gr_baseline->SetLineColor(kGreen);
+		//gr_baseline->Draw("same");
 
 		//--------------------------------------
-		const double time_from = 50000;
-		const double time_to = 74750;
-		const int point_from = time_from / HORIZ_INTERVAL;
-		const int point_to = time_to / HORIZ_INTERVAL;
+		//const double time_from = 50000;
+		//const double time_to = 74750;
+		//const int point_from = time_from / HORIZ_INTERVAL;
+		//const int point_to = time_to / HORIZ_INTERVAL;
 
-		double integral_tmp = 0;
-		for (int i = point_from; i < point_to; i++)
-		{
-			integral_tmp += (data_raw_average[i]/* - baseline_v_avr[i]*/);
-		}
-		integral_tmp *= HORIZ_INTERVAL;
+		//double integral_tmp = 0;
+		//for (int i = point_from; i < point_to; i++)
+		//{
+		//	integral_tmp += (data_raw_average[i]/* - baseline_v_avr[i]*/);
+		//}
+		//integral_tmp *= HORIZ_INTERVAL;
 
-		COUT(integral_tmp);
+		//COUT(integral_tmp);
 		//--------------------------------------
 
 
