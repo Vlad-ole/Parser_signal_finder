@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 {
 	gROOT->SetBatch(kFALSE);
 
-	const int n_tree_files = 1;
+	const int n_tree_files = 50;
 	const double HORIZ_INTERVAL = 16;
 
 	TObjArray Hlist_gr(0);
@@ -342,8 +342,8 @@ int main(int argc, char *argv[])
 		hist->DrawClone();
 	}
 
-	//total_cut = "ch_id == 2 && run_id < 10000 && event_id < 30";
-	//total_cut = "ch_id == 2 && run_id == 55 && event_id == 0";	
+	total_cut = "ch_id == 32 && run_id < 10000 && event_id == 0";
+	//total_cut = "ch_id == 2 && run_id == 49 && event_id == 0";	
 	//COUT(total_cut.GetName());
 	//COUT(total_cut.GetTitle());
 
@@ -375,7 +375,7 @@ int main(int argc, char *argv[])
 	//chain.Draw("num_of_pe_in_event", total_cut && "abs(x_cog_position) < 0.1" && "ch_id == 54");
 	//chain.Draw("y_cog_position:x_cog_position", total_cut);
 	//chain.Draw("x_cog_position", total_cut);
-	//chain.Draw("y_cog_position ", total_cut);
+	chain.Draw("y_cog_position ", total_cut);
 
 	//chain.Draw("signals_x_start", total_cut, "L");
 	//chain.Draw("signals_x_stop", total_cut, "L");
@@ -432,7 +432,7 @@ int main(int argc, char *argv[])
 	//chain.Draw("(data_smooth - baseline):time_v", total_cut, "same LP ");
 	//chain.Draw("(baseline_v - baseline):time_v", total_cut, "same L");
 
-	bool is_average = true;
+	bool is_average = false;
 	vector<double> data_raw_average;
 	if (is_average)
 	{
@@ -485,6 +485,29 @@ int main(int argc, char *argv[])
 		//gr_baseline->SetLineColor(kGreen);
 		//gr_baseline->Draw("same");
 
+		//save avg wavwform
+		ostringstream file_out_oss;
+		file_out_oss << path_name_tree << "avr_waveform_of_signal.txt";
+		ofstream file_out(file_out_oss.str().c_str(), std::ofstream::out);
+		if (!file_out.good())
+		{
+			cout << "can't open this file: " << file_out_oss.str().c_str() << endl;
+			system("pause");
+			file_out.close();
+			exit(1);
+		}
+		else
+		{
+			cout << "file has been opened: " << file_out_oss.str().c_str() << endl;
+		}
+
+		for (int i = 0; i < time_v.size(); i++)
+		{
+			file_out << time_v[i] << "\t" << data_raw_average[i] << endl;
+		}
+
+
+		file_out.close();
 		//--------------------------------------
 		//const double time_from = 50000;
 		//const double time_to = 74750;

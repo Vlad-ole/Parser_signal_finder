@@ -60,7 +60,7 @@ const bool is_sipm_ch = false;
 ////---------------------------------------------
 //July 13 2017
 
-path_info PathInfo = {"", 0, /*1000*/ 10};
+//path_info PathInfo = {"", 0, /*1000*/ 1000};
 
 /*Cd*/
 //63000 events, Cd, V(PMT) = 700V, V(SiPM) = 48V
@@ -89,10 +89,10 @@ path_info PathInfo = {"", 0, /*1000*/ 10};
 
 /*X-ray*/
 //2000 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V, HIGH ELECTRONIC NOISE
-std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\X-ray\\event_2200dVGEM_20kV\\";
-std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\X-ray\\event_2200dVGEM_20kV\\";
-const int start_run_number = 55;
-const int stop_run_number = 56;
+//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\X-ray\\event_2200dVGEM_20kV\\";
+//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\X-ray\\event_2200dVGEM_20kV\\";
+//const int start_run_number = 55;
+//const int stop_run_number = 56;
 //
 //2000 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V, HIGH ELECTRONIC NOISE
 //std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\X-ray\\event_2200dVGEM_20kV_ped\\";
@@ -101,68 +101,68 @@ const int stop_run_number = 56;
 //const int stop_run_number = 58;
 //
 //2000 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V
-//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\Cd\\event_2200dVGEM_18kV\\";
-//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\Cd\\event_2200dVGEM_18kV\\";
+//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\X-ray\\event_2200dVGEM_18kV\\";
+//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\X-ray\\event_2200dVGEM_18kV\\";
 //const int start_run_number = 49;
 //const int stop_run_number = 50;
 //
 //2000 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V
-//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\Cd\\event_2200dVGEM_18kV_again2\\";
-//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\Cd\\event_2200dVGEM_18kV_again2\\";
+//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\X-ray\\event_2200dVGEM_18kV_again2\\";
+//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\X-ray\\event_2200dVGEM_18kV_again2\\";
 //const int start_run_number = 53;
 //const int stop_run_number = 54;
 //
 //2000 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V
-//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\Cd\\event_2200dVGEM_18kV_ped\\";
-//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\Cd\\event_2200dVGEM_18kV_ped\\";
+//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\X-ray\\event_2200dVGEM_18kV_ped\\";
+//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\X-ray\\event_2200dVGEM_18kV_ped\\";
 //const int start_run_number = 51;
 //const int stop_run_number = 52;
 //
 //2000 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V
-//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\Cd\\event_2200dVGEM_16kV\\";
-//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\Cd\\event_2200dVGEM_16kV\\";
+//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\X-ray\\event_2200dVGEM_16kV\\";
+//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\X-ray\\event_2200dVGEM_16kV\\";
 //const int start_run_number = 59;
 //const int stop_run_number = 60;
 //
 //2000 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V
-//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\Cd\\event_2200dVGEM_16kV_ped\\";
-//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\Cd\\event_2200dVGEM_16kV_ped\\";
+//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\X-ray\\event_2200dVGEM_16kV_ped\\";
+//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\X-ray\\event_2200dVGEM_16kV_ped\\";
 //const int start_run_number = 61;
 //const int stop_run_number = 62;
 //
 //2000 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V
-//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\Cd\\event_2200dVGEM_14kV\\";
-//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\Cd\\event_2200dVGEM_14kV\\";
+//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\X-ray\\event_2200dVGEM_14kV\\";
+//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\X-ray\\event_2200dVGEM_14kV\\";
 //const int start_run_number = 63;
 //const int stop_run_number = 64;
 //
 //2000 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V
-//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\Cd\\event_2200dVGEM_14kV_ped\\";
-//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\Cd\\event_2200dVGEM_14kV_ped\\";
+//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\X-ray\\event_2200dVGEM_14kV_ped\\";
+//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\X-ray\\event_2200dVGEM_14kV_ped\\";
 //const int start_run_number = 65;
 //const int stop_run_number = 66;
 //
 //2000 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V
-//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\Cd\\event_2200dVGEM_12kV\\";
-//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\Cd\\event_2200dVGEM_12kV\\";
+//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\X-ray\\event_2200dVGEM_12kV\\";
+//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\X-ray\\event_2200dVGEM_12kV\\";
 //const int start_run_number = 67;
 //const int stop_run_number = 68;
 //
 //2000 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V
-//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\Cd\\event_2200dVGEM_12kV_ped\\";
-//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\Cd\\event_2200dVGEM_12kV_ped\\";
+//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\X-ray\\event_2200dVGEM_12kV_ped\\";
+//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\X-ray\\event_2200dVGEM_12kV_ped\\";
 //const int start_run_number = 69;
 //const int stop_run_number = 70;
 //
 //3000 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V
-//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\Cd\\event_2200dVGEM_10kV\\";
-//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\Cd\\event_2200dVGEM_10kV\\";
+//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\X-ray\\event_2200dVGEM_10kV\\";
+//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\X-ray\\event_2200dVGEM_10kV\\";
 //const int start_run_number = 71;
 //const int stop_run_number = 73;
 //
 //3000 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V
-//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\Cd\\event_2200dVGEM_10kV_ped\\";
-//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\Cd\\event_2200dVGEM_10kV_ped\\";
+//std::string path_name_tree = "D:\\Data_work\\170713_caen_trees\\X-ray\\event_2200dVGEM_10kV_ped\\";
+//std::string PathInfo_path_name = "D:\\Data_work\\170713_caen_raw\\X-ray\\event_2200dVGEM_10kV_ped\\";
 //const int start_run_number = 74;
 //const int stop_run_number = 76;
 //
@@ -293,10 +293,10 @@ const int stop_run_number = 56;
 //const int stop_run_number = 2782;
 //
 //4180 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V, LOW ELECTRONIC NOISE
-//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\";
-//std::string PathInfo_path_name = "D:\\Data_work\\170622_caen_raw\\event_x_ray_18_2mmColl\\";
-//const int start_run_number = 3537;
-//const int stop_run_number = 3955;
+string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\";
+std::string PathInfo_path_name = "D:\\Data_work\\170622_caen_raw\\event_x_ray_18_2mmColl\\";
+const int start_run_number = 3537;
+const int stop_run_number = 3955;
 //
 //2180 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V, LOW ELECTRONIC NOISE (but high intensity of light and problems with saturation and PMT signal shifting)
 //string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_18_thmV\\";
