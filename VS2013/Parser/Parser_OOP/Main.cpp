@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 	
 	vector<ch_info> ch_list;
 	//var1
-	const int n_ch = 1 /*32*/;
+	const int n_ch = /*1*/ 32;
 	ch_list.resize(n_ch);
 	for (int i = 0; i < n_ch; i++)
 	{
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 	
 
 	//tree settings
-	const int runs_per_tree_file = 10;
+	const int runs_per_tree_file = 100;
 	
 	//which raw files should be processed?
 	//this information in RunDescription.cpp

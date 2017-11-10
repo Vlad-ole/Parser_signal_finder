@@ -15,6 +15,9 @@
 #include "TCanvas.h"
 #include "TFile.h"
 #include "TCut.h"
+#include "TH2F.h"
+
+#include "TStopwatch.h"
 
 //#include "Single_pe_characteristics.h"
 //#include "RunDescription.h"
@@ -39,7 +42,7 @@ int main(int argc, char *argv[])
 {
 	gROOT->SetBatch(kFALSE);
 
-	const int n_tree_files = 50;
+	const int n_tree_files = 5;
 	const double HORIZ_INTERVAL = 16;
 
 	TObjArray Hlist_gr(0);
@@ -164,6 +167,7 @@ int main(int argc, char *argv[])
 		chain.SetBranchStatus("baseline_v", 1);
 		chain.SetBranchStatus("data_int", 1);
 		
+		TStopwatch timer;
 
 		//chain.SetBranchStatus("data_smooth", 1);
 				
@@ -176,6 +180,7 @@ int main(int argc, char *argv[])
 		vector<double> signals_x_values;
 		vector<double> signals_y_values;
 		vector<double> local_baseline_y_values;
+		timer.Start();
 		for (int i = 0; i < n_events; i++)
 		{
 			chain.GetEntry(i);
@@ -185,9 +190,10 @@ int main(int argc, char *argv[])
 				cout << "event = " << i << endl;
 			}
 
-			REMEMBER_CUT(ch_id == 41 && run_id == 2500 && event_id == 5);
+			REMEMBER_CUT(ch_id == 38 && run_id == 3537 && event_id == 2);
 			if (cut_condition_bool)
 			{
+				
 				//signals_x_values.clear();
 				//signals_y_values.clear();
 				cout << "in if (cut_condition_bool)"  << endl;
@@ -220,9 +226,13 @@ int main(int argc, char *argv[])
 					//}
 
 				}
+				
+
 				break;
 			}
 		}
+
+		
 
 		COUT(signals_x_values.size());
 		COUT(local_baseline_y_values.size());
@@ -282,6 +292,8 @@ int main(int argc, char *argv[])
 			{
 				chain.Draw("(-data_raw + baseline):time_v", total_cut, "same LP ");
 				//chain.Draw("(-data_smooth + baseline):time_v", total_cut, "same LP ");
+				timer.Stop();
+				cout << " timer.RealTime() = " << timer.RealTime() << endl;
 			}
 			else
 			{
@@ -302,7 +314,7 @@ int main(int argc, char *argv[])
 		}
 		
 	}
-	
+	 
 	const bool is_calc_integral_one_event = false;
 	if (is_calc_integral_one_event)
 	{
@@ -342,8 +354,8 @@ int main(int argc, char *argv[])
 		hist->DrawClone();
 	}
 
-	total_cut = "ch_id == 32 && run_id < 10000 && event_id == 0";
-	//total_cut = "ch_id == 2 && run_id == 49 && event_id == 0";	
+	//total_cut = "ch_id == 32 && run_id < 10000 && event_id < 1000";
+	//total_cut = "ch_id == 38 && run_id == 1889 && event_id == 0";	
 	//COUT(total_cut.GetName());
 	//COUT(total_cut.GetTitle());
 
@@ -375,7 +387,7 @@ int main(int argc, char *argv[])
 	//chain.Draw("num_of_pe_in_event", total_cut && "abs(x_cog_position) < 0.1" && "ch_id == 54");
 	//chain.Draw("y_cog_position:x_cog_position", total_cut);
 	//chain.Draw("x_cog_position", total_cut);
-	chain.Draw("y_cog_position ", total_cut);
+	//chain.Draw("y_cog_position ", total_cut);
 
 	//chain.Draw("signals_x_start", total_cut, "L");
 	//chain.Draw("signals_x_stop", total_cut, "L");
@@ -415,8 +427,8 @@ int main(int argc, char *argv[])
 
 	//chain.Draw("(-data_raw + baseline):time_v", total_cut, " LP ");
 	//chain.SetLineColor(kRed);
-	////chain.SetMarkerColor(kRed);
-	////chain.Draw("(double_integral_one_peak_vec_y/500):time_v", total_cut, "same L");
+	//chain.SetMarkerColor(kRed);
+	//////chain.Draw("(double_integral_one_peak_vec_y/500):time_v", total_cut, "same L");
 	//chain.Draw("(data_int/500.0):time_v", total_cut, "same L");
 
 	
@@ -431,6 +443,141 @@ int main(int argc, char *argv[])
 	//chain.SetMarkerColor(kRed);
 	//chain.Draw("(data_smooth - baseline):time_v", total_cut, "same LP ");
 	//chain.Draw("(baseline_v - baseline):time_v", total_cut, "same L");
+
+	bool is_Npe_sipm_matrix = true;
+	if (is_Npe_sipm_matrix)
+	{
+		TH1F *hist = new TH1F("hist", "hist", 400, 0, 400);
+		//hist->SetBit();
+		double val = 0;
+
+		chain.SetBranchStatus("*", 0); //disable all branches
+		chain.SetBranchStatus("num_of_pe_in_event_for_cog", 1);
+		chain.SetBranchStatus("num_of_pe_in_event__negative_part_s_int", 1);
+
+		ofstream file_out("D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\hist.txt");
+		
+		for (int i = 0; i < n_events; i++)
+		{
+			chain.GetEntry(i);
+			if (i % 1000 == 0)
+			{
+				//cout << "event = " << i << ";  ch_id = " << ch_id << endl;
+				cout << "event = " << i << " (" << (100 *i / (double) n_events) << " %)" << endl;
+			}
+				
+			val += num_of_pe_in_event__negative_part_s_int;
+
+			if ( (i % 32 == 31) /*&& run_id < 10000 && event_id < 1000*/)
+			{
+				hist->Fill(val);
+				//cout << "  fill has been filled hist with val " << val << endl;
+				file_out << val << endl;
+				val = 0;
+			}				
+			
+		}	
+		
+		hist->Draw();
+	}
+
+	bool is_cog_output = false;
+	if (is_cog_output)
+	{ 
+		chain.SetBranchStatus("*", 0); //disable all branches
+		chain.SetBranchStatus("ch_id", 1);
+		chain.SetBranchStatus("x_cog_position", 1);
+		chain.SetBranchStatus("y_cog_position", 1);
+
+		ofstream file_out("D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\xy_cog.txt");
+
+		for (int i = 0; i < n_events; i++)
+		{
+			chain.GetEntry(i);
+			if (i % 1000 == 0)
+			{
+				cout << "event = " << i << " (" << (100 * i / (double)n_events) << " %)" << endl;
+			}
+
+			if (ch_id == 32)
+			{
+				file_out << x_cog_position << " " << y_cog_position << endl;
+			}
+
+		}
+
+
+	}
+
+	bool is_cog_event_output = false;
+	if (is_cog_event_output)
+	{
+		chain.SetBranchStatus("*", 0); //disable all branches
+		chain.SetBranchStatus("ch_id", 1);
+		chain.SetBranchStatus("run_id", 1);
+		chain.SetBranchStatus("event_id", 1);
+		chain.SetBranchStatus("num_of_pe_in_event_for_cog", 1);
+
+		ofstream file_out("D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\xy_cog_event.txt");
+		ofstream file_out_x("D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\xy_cog_event_x_projection.txt");
+		ofstream file_out_y("D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\xy_cog_event_y_projection.txt");
+		ofstream file_out_TL_BR("D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\xy_cog_event_topleft_to_bottomright_projection.txt");
+		ofstream file_out_TR_BL("D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\xy_cog_event_topright_to_bottomleft_projection.txt");
+
+			
+		int your_run_id = 3700;
+		vector<double> n_pe;
+
+		for (int i = 0; i < n_events; i++)
+		{
+			chain.GetEntry(i);
+
+			if (run_id == your_run_id && event_id == 0)
+			{
+				n_pe.push_back(num_of_pe_in_event_for_cog);
+			}
+
+			if (run_id > your_run_id)
+				break;
+
+		}
+
+		//-----------------------
+		//row1
+		file_out << n_pe[32 - 32] /*ch32*/ << " " << n_pe[33 - 32]  /*ch33*/ << " " << n_pe[48 - 32]  /*ch48*/ << " " << n_pe[49 - 32]  /*ch49*/ << " " << n_pe[34 - 32]  /*ch34*/ << endl;
+
+		//row2
+		file_out << n_pe[35 - 32] /*ch35*/ << " " << n_pe[50 - 32]  /*ch50*/ << " " << n_pe[51 - 32]  /*ch51*/ << " " << n_pe[36 - 32]  /*ch36*/ << " " << n_pe[37 - 32]  /*ch37*/ << endl;
+
+		//row3
+		file_out << n_pe[52 - 32] /*ch52*/ << " " << n_pe[53 - 32]  /*ch53*/ << " " << n_pe[38 - 32]  /*ch38*/ << " " << n_pe[39 - 32]  /*ch39*/ << " " << n_pe[54 - 32]  /*ch54*/ << endl;
+
+		//row4
+		file_out << n_pe[55 - 32] /*ch55*/ << " " << n_pe[40 - 32]  /*ch40*/ << " " << n_pe[41 - 32]  /*ch41*/ << " " << n_pe[56 - 32]  /*ch56*/ << " " << n_pe[57 - 32]  /*ch57*/ << endl;
+
+		//row5
+		file_out << n_pe[42 - 32] /*ch42*/ << " " << n_pe[43 - 32]  /*ch33*/ << " " << n_pe[58 - 32]  /*ch58*/ << " " << n_pe[59 - 32]  /*ch59*/ << " " << n_pe[44 - 32]  /*ch44*/ << endl;
+		//-----------------------
+
+
+		//-----------------------
+		file_out_x << (n_pe[32 - 32] + n_pe[35 - 32] + n_pe[52 - 32] + n_pe[55 - 32] + n_pe[42 - 32]) << endl;
+		file_out_x << (n_pe[33 - 32] + n_pe[50 - 32] + n_pe[53 - 32] + n_pe[40 - 32] + n_pe[43 - 32]) << endl;
+		file_out_x << (n_pe[48 - 32] + n_pe[51 - 32] + n_pe[38 - 32] + n_pe[41 - 32] + n_pe[58 - 32]) << endl;
+		file_out_x << (n_pe[49 - 32] + n_pe[36 - 32] + n_pe[39 - 32] + n_pe[56 - 32] + n_pe[59 - 32]) << endl;
+		file_out_x << (n_pe[34 - 32] + n_pe[37 - 32] + n_pe[54 - 32] + n_pe[57 - 32] + n_pe[44 - 32]) << endl;
+		//-----------------------
+
+		//-----------------------
+		file_out_y << (n_pe[32 - 32] + n_pe[33 - 32] + n_pe[48 - 32] + n_pe[49 - 32] + n_pe[34 - 32]) << endl;
+		file_out_y << (n_pe[35 - 32] + n_pe[50 - 32] + n_pe[51 - 32] + n_pe[36 - 32] + n_pe[37 - 32]) << endl;
+		file_out_y << (n_pe[52 - 32] + n_pe[53 - 32] + n_pe[38 - 32] + n_pe[39 - 32] + n_pe[54 - 32]) << endl;
+		file_out_y << (n_pe[55 - 32] + n_pe[40 - 32] + n_pe[41 - 32] + n_pe[56 - 32] + n_pe[57 - 32]) << endl;
+		file_out_y << (n_pe[42 - 32] + n_pe[43 - 32] + n_pe[58 - 32] + n_pe[59 - 32] + n_pe[44 - 32]) << endl;
+		//-----------------------
+
+		cout << "xy_cog_event has been filled" << endl;
+	}
 
 	bool is_average = false;
 	vector<double> data_raw_average;
@@ -527,6 +674,63 @@ int main(int argc, char *argv[])
 
 	}
 
+	bool is_ch_correlation = false;
+	if (is_ch_correlation)
+	{
+		chain.SetBranchStatus("*", 0); //disable all branches
+		chain.SetBranchStatus("ch_id", 1);
+		chain.SetBranchStatus("num_of_pe_in_event", 1);
+		
+		vector<double> N_pe_ch_i;
+		vector<double> N_pe_ch_j;
+		bool common_cut;
+
+		ofstream file_out_1("D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\n_pe_ch38.txt");
+		ofstream file_out_2("D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\n_pe_ch41.txt");
+
+		int cut_pass_counter = 0;
+		for (int i = 0; i < n_events; i++)
+		{
+			chain.GetEntry(i);
+			if (i % 1000 == 0)
+			{
+				cout << "event = " << i << " (" << (100 * i / (double)n_events) << " %)" << endl;
+			}
+
+			common_cut = true;
+			//common_cut = event_id == 0;
+
+			if (ch_id == 38 && common_cut)
+			{
+				N_pe_ch_i.push_back(num_of_pe_in_event);
+				file_out_1 << num_of_pe_in_event << endl;
+			}
+
+			if (ch_id == 41 && common_cut)
+			{
+				N_pe_ch_j.push_back(num_of_pe_in_event);
+				file_out_2 << num_of_pe_in_event << endl;
+			}
+		}
+		
+		TGraph *gr = new TGraph(N_pe_ch_i.size(), &N_pe_ch_i[0], &N_pe_ch_j[0]);
+		//gr->SetTitle("ch_38(x) vs ch_32(y)");
+		gr->GetXaxis()->SetTitle("N_pe on ch_38");
+		gr->GetYaxis()->SetTitle("N_pe on ch_41");
+		//gr->GetXaxis()->SetLimits(0, 160E3);
+		gr->SetMarkerSize(1);
+		gr->SetMarkerStyle(20);
+		gr->Draw("AP");
+
+		//TH2F *h2 = new TH2F("h2", "", 15, 0, 500, 15, 0, 100);
+		//for (int i = 0; i < N_pe_ch_i.size(); i++)
+		//{
+		//	h2->Fill(N_pe_ch_i[i], N_pe_ch_j[i]);
+		//}
+		//h2->GetXaxis()->SetTitle("N_pe on ch_38");
+		//h2->GetYaxis()->SetTitle("N_pe on ch_34");
+		//h2->Draw("COLz");
+	}
 
 
 	//initialize_single_pe_characteristics();

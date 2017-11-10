@@ -139,17 +139,17 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 			//integral.push_back(calc_double_intergral.GetIntegrtal());
 
 			//----------
-			int point_from = /*40000*/ /*32000*/ 20000 / HORIZ_INTERVAL;
+			int point_from = /*40000*/ /*32000*/ 25000 / HORIZ_INTERVAL;
 
-			//let's find the first signal after time_from
-			for (int j = 0; j < pair_vec.size(); j++)
-			{
-				if ((pair_vec[j].first > point_from))
-				{
-					point_from = pair_vec[j].first - 200 / HORIZ_INTERVAL;
-					break;
-				}
-			}
+			////let's find the first signal after time_from and change point_from
+			//for (int j = 0; j < pair_vec.size(); j++)
+			//{
+			//	if ((pair_vec[j].first > point_from))
+			//	{
+			//		point_from = pair_vec[j].first - 200 / HORIZ_INTERVAL;
+			//		break;
+			//	}
+			//}
 
 			//calc integral func from point_from to 160 us
 			CalcDoubleIntegral calc_double_int(invert_data, baseline[i], point_from, HORIZ_INTERVAL);
@@ -230,7 +230,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		}
 
 		//comment during calibration
-		CoGBase cog_obj(/*num_of_pe_in_event_vec*/num_of_pe_in_event_for_cog);
+		CoGBase cog_obj(/*num_of_pe_in_event_vec*/ num_of_pe_in_event_for_cog /*num_of_pe_in_event__positive_part_s_int*/);
 		x_cog_position = cog_obj.GetX();
 		y_cog_position = cog_obj.GetY();
 	}
