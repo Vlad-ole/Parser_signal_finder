@@ -66,6 +66,9 @@ public:
     double GetXCogPosition();
 	double GetYCogPosition();
 
+	std::vector<double>& CalcData::GetPointTo();
+	
+
 private:
 	std::vector< std::vector<double> >& data;
 	std::vector<double>& time;
@@ -113,6 +116,7 @@ private:
 	std::vector<double>	num_of_pe_in_event__positive_part_s_int;
 	std::vector<double>	num_of_pe_in_event__positive_part_d_int;
 	std::vector<double> num_of_pe_in_event_for_cog;
+	std::vector<double> point_to_vec;
 
 
 	double x_cog_position;

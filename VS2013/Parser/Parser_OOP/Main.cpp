@@ -42,11 +42,12 @@ int main(int argc, char *argv[])
 	
 	vector<ch_info> ch_list;
 	//var1
-	const int n_ch = /*1*/ 32;
+	const int n_ch = 35 /*32*/;
 	ch_list.resize(n_ch);
 	for (int i = 0; i < n_ch; i++)
 	{
 		ch_list[i].id = GetChId(i);
+		//cout << i << " " << GetChId(i) << endl;
 	}
 	
 	comm_info str_comm;
@@ -57,7 +58,7 @@ int main(int argc, char *argv[])
 	
 
 	//tree settings
-	const int runs_per_tree_file = 100;
+	const int runs_per_tree_file = 1000;
 	
 	//which raw files should be processed?
 	//this information in RunDescription.cpp
@@ -107,6 +108,7 @@ int main(int argc, char *argv[])
 		double baseline;
 		double integral;
 		vector<double> data_raw = rdt.GetDataDouble()[0][0];
+		double point_to;
 
 		//if (is_sipm_ch)
 		//{
@@ -161,7 +163,7 @@ int main(int argc, char *argv[])
 			{
 				tree->Branch("baseline_v", &baseline_v);
 
-				tree->Branch("data_der", &data_der);
+				//tree->Branch("data_der", &data_der);
 				tree->Branch("der_min_position", &der_min_position);
 				tree->Branch("der_max_position", &der_max_position);
 
@@ -176,6 +178,7 @@ int main(int argc, char *argv[])
 				tree->Branch("num_of_pe_in_event__positive_part_s_int", &num_of_pe_in_event__positive_part_s_int);
 				tree->Branch("num_of_pe_in_event__positive_part_d_int", &num_of_pe_in_event__positive_part_d_int);
 				tree->Branch("num_of_pe_in_event_for_cog", &num_of_pe_in_event_for_cog);
+				tree->Branch("point_to", &point_to);
 				
 				tree->Branch("integral_one_peak", &integral_one_peak);
 				//tree->Branch("integral_one_event", &integral_one_event);			
@@ -189,7 +192,7 @@ int main(int argc, char *argv[])
 				//data			
 
 				//tree->Branch("data_smooth", &data_smooth);
-				tree->Branch("data_int", &data_int);
+				//tree->Branch("data_int", &data_int);
 			}
 		}
 
@@ -217,12 +220,12 @@ int main(int argc, char *argv[])
 				if (is_sipm_ch)
 				{
 					baseline_v = (calc_data_v[temp_event_id].GetBaselineVec())[ch];
-					data_der = (calc_data_v[temp_event_id].GetDer())[ch];
+					//data_der = (calc_data_v[temp_event_id].GetDer())[ch];
 					der_min_position = (calc_data_v[temp_event_id].GetDerMinPosition())[ch];
 					der_max_position = (calc_data_v[temp_event_id].GetDerMaxPosition())[ch];
 
 					//data_smooth = (calc_data_v[temp_event_id].GetSmooth())[ch];
-					data_int = (calc_data_v[temp_event_id].GetInt())[ch];
+					//data_int = (calc_data_v[temp_event_id].GetInt())[ch];
 
 					signals_x_start = (calc_data_v[temp_event_id].GetSignalsXStart())[ch];
 					signals_x_stop = (calc_data_v[temp_event_id].GetSignalsXStop())[ch];
@@ -234,6 +237,7 @@ int main(int argc, char *argv[])
 					num_of_pe_in_event__positive_part_s_int = (calc_data_v[temp_event_id].GetNum_of_pe_in_event__positive_part_s_int())[ch];
 					num_of_pe_in_event__positive_part_d_int = (calc_data_v[temp_event_id].GetNum_of_pe_in_event__positive_part_d_int())[ch];
 					num_of_pe_in_event_for_cog = (calc_data_v[temp_event_id].GetNum_of_pe_in_event_for_cog())[ch];
+					point_to = (calc_data_v[temp_event_id].GetPointTo())[ch];
 
 					num_of_pe_in_one_peak = (calc_data_v[temp_event_id].GetNumOfPeInOnePeak())[ch];
 					//integral_one_event = (calc_data_v[temp_event_id].GetIntegralOneEvent())[ch];

@@ -3,16 +3,34 @@
 using namespace std;
 
 int GetChId(int array_position)
+{	
+	//return array_position + 32;
+	
+	//return 0;
+	
+	int ch_id;
+	if (array_position >= 0 && array_position <= 2)
+		ch_id = array_position;
+	else if (array_position >= 3 && array_position < 35)
+		ch_id = array_position + 32 - 3;
+	else
+	{
+		cout << "Unknown channel in GetChId " << endl;
+		exit(1);
+	}
+	return ch_id;
+}
+
+int GetChIdSiPM(int array_position)
 {
 	return array_position + 32;
-	//return 2;
 }
 
 const bool is_sipm_ch = true;
 
 ////---------------------------------------------
 //August 8 2017
-//path_info PathInfo = {"", 0, /*1000*/ 10};
+path_info PathInfo = {"", 0, /*1000*/ 1};
 
 /*Flashlight*/
 //
@@ -27,11 +45,11 @@ const bool is_sipm_ch = true;
 //const int stop_run_number = /*522*/ 399;
 
 /*Cd*/
-//20 kV, Cd, V(PMT) = 700V, V(SiPM) = 46V, dV(GEM) = 0, internal 2mm, trigger from 3PMT (th = 400 mV) + 6 dB att.; LOW ELECTRONIC NOISE
-//std::string path_name_tree = "D:\\Data_work\\170803_caen_trees\\event_20kV_46Vsipm_700Vpmt_int_coll_Cd\\";
-//std::string PathInfo_path_name = "D:\\Data_work\\170803_caen_raw\\event_20kV_46Vsipm_700Vpmt_int_coll_Cd\\";
-//const int start_run_number = 539;
-//const int stop_run_number = 564;
+//26000 events, 20 kV, Cd, V(PMT) = 700V, V(SiPM) = 46V, dV(GEM) = 0, internal 2mm, trigger from 3PMT (th = 400 mV) + 6 dB att.; LOW ELECTRONIC NOISE
+std::string path_name_tree = "D:\\Data_work\\170803_caen_trees\\event_20kV_46Vsipm_700Vpmt_int_coll_Cd\\";
+std::string PathInfo_path_name = "D:\\Data_work\\170803_caen_raw\\event_20kV_46Vsipm_700Vpmt_int_coll_Cd\\";
+const int start_run_number = 539;
+const int stop_run_number = 564;
 //
 ////34000 events, 20 kV, Cd, V(PMT) = 700V, V(SiPM) = 48V, dV(GEM) = 2200, internal 2mm, trigger from 3PMT (th = 128 mV) + 6 dB att.
 //std::string path_name_tree = "D:\\Data_work\\170803_caen_trees\\event_20kV_48Vsipm_700Vpmt_int_coll_Cd_2200gem_offset\\";
@@ -245,7 +263,7 @@ const bool is_sipm_ch = true;
 //---------------------------------------------
 //June 22 2017
 
-path_info PathInfo = { "", 0, /*10*/ 10};
+//path_info PathInfo = { "", 0, /*10*/ 10};
 
 /*Cd*/
 //10 events, Cd, V(PMT) = 700V, V(SiPM) = 46V, HIGH ELECTRONIC NOISE
@@ -293,10 +311,10 @@ path_info PathInfo = { "", 0, /*10*/ 10};
 //const int stop_run_number = 2782;
 //
 //4180 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V, LOW ELECTRONIC NOISE
-string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\";
-std::string PathInfo_path_name = "D:\\Data_work\\170622_caen_raw\\event_x_ray_18_2mmColl\\";
-const int start_run_number = 3537;
-const int stop_run_number = 3955 /*3537*/;
+//string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\";
+//std::string PathInfo_path_name = "D:\\Data_work\\170622_caen_raw\\event_x_ray_18_2mmColl\\";
+//const int start_run_number = 3537;
+//const int stop_run_number = 3955 /*3537*/;
 //
 //2180 events, X-ray, V(PMT) = 550V, V(SiPM) = 46V, LOW ELECTRONIC NOISE (but high intensity of light and problems with saturation and PMT signal shifting)
 //string path_name_tree = "D:\\Data_work\\170622_caen_trees\\event_x-ray_18_thmV\\";

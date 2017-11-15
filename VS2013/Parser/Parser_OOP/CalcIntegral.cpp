@@ -45,7 +45,7 @@ CalcIntegral::CalcIntegral(std::vector<double> data, double baseline, std::vecto
 CalcIntegral::CalcIntegral(std::vector<double> data, const double time_scale, const int N_poitns_below_0)
 {
 	integral = 0;
-		
+	point_to = 0;
 
 	for (int i = 0; i < (data.size() - 100); i++)
 	{

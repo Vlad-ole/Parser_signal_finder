@@ -4,6 +4,7 @@
 #include "ReadData.h"
 
 int GetChId(int array_position);
+int GetChIdSiPM(int array_position);
 extern const bool is_sipm_ch;
 
 extern std::string path_name_tree;

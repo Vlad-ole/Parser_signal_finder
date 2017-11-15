@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Parser", "Parser\Parser.vcxproj", "{EC7CC6FC-8ECA-40CE-A6AE-89C3037C7750}"
 EndProject
@@ -34,8 +34,8 @@ Global
 		{EC7CC6FC-8ECA-40CE-A6AE-89C3037C7750}.Release|Win32.ActiveCfg = Release|Win32
 		{EC7CC6FC-8ECA-40CE-A6AE-89C3037C7750}.Release|Win32.Build.0 = Release|Win32
 		{EC7CC6FC-8ECA-40CE-A6AE-89C3037C7750}.Release|x64.ActiveCfg = Release|Win32
-		{A67552CE-CAE2-4451-8435-6ED07D6CD065}.Debug|Win32.ActiveCfg = Release|Win32
-		{A67552CE-CAE2-4451-8435-6ED07D6CD065}.Debug|Win32.Build.0 = Release|Win32
+		{A67552CE-CAE2-4451-8435-6ED07D6CD065}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A67552CE-CAE2-4451-8435-6ED07D6CD065}.Debug|Win32.Build.0 = Debug|Win32
 		{A67552CE-CAE2-4451-8435-6ED07D6CD065}.Debug|x64.ActiveCfg = Debug|Win32
 		{A67552CE-CAE2-4451-8435-6ED07D6CD065}.Release|Win32.ActiveCfg = Release|Win32
 		{A67552CE-CAE2-4451-8435-6ED07D6CD065}.Release|Win32.Build.0 = Release|Win32

@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 {
 	gROOT->SetBatch(kFALSE);
 
-	const int n_tree_files = 5;
+	const int n_tree_files =  1 /*42*/;
 	const double HORIZ_INTERVAL = 16;
 
 	TObjArray Hlist_gr(0);
@@ -73,6 +73,7 @@ int main(int argc, char *argv[])
 	double num_of_pe_in_event__positive_part_s_int;
 	double num_of_pe_in_event__positive_part_d_int;
 	double num_of_pe_in_event_for_cog;
+	double point_to;
 
 	int der_min_position;
 	int der_max_position;
@@ -125,9 +126,9 @@ int main(int argc, char *argv[])
 		chain.SetBranchAddress("double_integral_one_peak_vec_y", &double_integral_one_peak_vec_y);
 		chain.SetBranchAddress("single_integral_for_calib_one_event", &single_integral_for_calib_one_event);
 
-		chain.SetBranchAddress("data_int", &data_int);
+		//chain.SetBranchAddress("data_int", &data_int);
 		//chain.SetBranchAddress("data_smooth", &data_smooth);
-		chain.SetBranchAddress("data_der", &data_der);
+		//chain.SetBranchAddress("data_der", &data_der);
 	}
 
 	//---------------------------
@@ -148,219 +149,18 @@ int main(int argc, char *argv[])
 	tree_tmp.Fill();
 	chain.AddFriend("tree_tmp");
 
-	const bool is_show_individual_signals = false;
-	if (is_show_individual_signals)
-	{
-		chain.SetBranchStatus("*", 0); //disable all branches
-		chain.SetBranchStatus("ch_id", 1);
-		chain.SetBranchStatus("run_id", 1);
-		chain.SetBranchStatus("event_id", 1);
-		//chain.SetBranchStatus("num_of_pe_in_event", 1);
-		//chain.SetBranchStatus("x_cog_position", 1);
-		//chain.SetBranchStatus("y_cog_position", 1);
-		chain.SetBranchStatus("data_raw", 1);
-		chain.SetBranchStatus("time_v", 1);
-		chain.SetBranchStatus("baseline", 1);
-		chain.SetBranchStatus("signals_x_start", 1);
-		chain.SetBranchStatus("signals_x_stop", 1);
-		chain.SetBranchStatus("local_baseline", 1);
-		chain.SetBranchStatus("baseline_v", 1);
-		chain.SetBranchStatus("data_int", 1);
-		
-		TStopwatch timer;
-
-		//chain.SetBranchStatus("data_smooth", 1);
-				
-		//chain.SetBranchStatus("baseline_v", 1);
-		//chain.SetBranchStatus("num_of_pe_in_event_for_cog", 1);
-		
-		
-		bool is_baseline_slope = false;
-
-		vector<double> signals_x_values;
-		vector<double> signals_y_values;
-		vector<double> local_baseline_y_values;
-		timer.Start();
-		for (int i = 0; i < n_events; i++)
-		{
-			chain.GetEntry(i);
-
-			if (i % 10 == 0)
-			{
-				cout << "event = " << i << endl;
-			}
-
-			REMEMBER_CUT(ch_id == 38 && run_id == 3537 && event_id == 2);
-			if (cut_condition_bool)
-			{
-				
-				//signals_x_values.clear();
-				//signals_y_values.clear();
-				cout << "in if (cut_condition_bool)"  << endl;
-				for (int j = 0; j < (*signals_x_start).size(); j++)
-				{
-					//I want to avoid misidentification because of electronic noise at trigger time
-					//if ( !(((*signals_x_start)[j] * HORIZ_INTERVAL > 32000) && ((*signals_x_start)[j] * HORIZ_INTERVAL < 35000)) )
-					//{
-					for (int k = (*signals_x_start)[j]; k < (*signals_x_stop)[j]; k++)
-					{
-						signals_x_values.push_back(k * HORIZ_INTERVAL);
-
-						if (is_baseline_slope)
-						{
-							signals_y_values.push_back(-(*data_raw)[k] + baseline);
-							local_baseline_y_values.push_back((*local_baseline)[j] - baseline);
-						}
-						else
-						{
-							signals_y_values.push_back(-(*data_raw)[k] + 2 * baseline - (*baseline_v)[k]);
-							local_baseline_y_values.push_back((*local_baseline)[j]);
-
-							//signals_y_values.push_back( (*data_smooth)[k] - (*baseline_v)[k] );
-							
-						}
-
-						
-						
-					}
-					//}
-
-				}
-				
-
-				break;
-			}
-		}
-
-		
-
-		COUT(signals_x_values.size());
-		COUT(local_baseline_y_values.size());
-
-		//TCut total_cut = cut_condition_srt.c_str();
-		chain.SetMarkerStyle(20);
-		chain.SetMarkerSize(1);
-		chain.SetLineColor(kPink);
-
-		if (signals_x_values.size() > 0)
-		{
-			TGraph *gr = new TGraph(signals_x_values.size(), &signals_x_values[0], &signals_y_values[0]);
-			gr->SetMarkerSize(2);
-			gr->SetMarkerStyle(29);
-			gr->SetMarkerColor(kOrange);
-			//gr->SetTitle(cut_condition_srt.c_str()); //var0 default
-			gr->GetXaxis()->SetLimits(0, 160E3);
-			gr->Draw("AP");
-			//c1->Update();
-
-			//var2
-			std::ostringstream gr_title_oss;
-			gr_title_oss << "#splitline{" << cut_condition_srt << 
-			//	"}{double integral values: ";
-			//for (int k = 0; k < (*double_integral_one_peak).size(); k++)
-			//{
-			//	gr_title_oss << (*double_integral_one_peak)[k] << "\t";
-			//}
-				"}{ integral values: ";
-			//for (int k = 0; k < (*integral_one_peak).size(); k++)
-			//{
-			//	gr_title_oss << (*integral_one_peak)[k] << "\t";
-			//}
-			gr_title_oss << "}";
-			gr->SetTitle(gr_title_oss.str().c_str());
-
-			TGraph *gr_local_baseline = new TGraph(signals_x_values.size(), &signals_x_values[0], &local_baseline_y_values[0]);
-			gr_local_baseline->SetMarkerSize(1);
-			gr_local_baseline->SetMarkerStyle(20);
-			gr_local_baseline->SetMarkerColor(kGreen);
-			gr_local_baseline->Draw("same P");
-
-			//chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
-			chain.SetMarkerStyle(20);
-			chain.SetMarkerSize(1);
-			chain.SetLineColor(kPink);
-			//chain.Draw("(-data_raw + baseline):time_v", total_cut, "same LP");
-			//chain.Draw("(data_smooth - baseline):time_v", total_cut, "same LP");
-			//chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
-			//chain.Draw("(baseline_v - baseline):time_v", total_cut, "same L");
-			//chain.Draw("(baseline_v - baseline):time_v", total_cut, "same L");
-			//chain.SetLineColor(kBlue);
-			//chain.Draw("(data_int/500.0):time_v", total_cut, "same L");
-			//chain.Draw("(double_integral_one_peak_vec_y/500):time_v", total_cut, "same L");
-
-			if (is_baseline_slope)
-			{
-				chain.Draw("(-data_raw + baseline):time_v", total_cut, "same LP ");
-				//chain.Draw("(-data_smooth + baseline):time_v", total_cut, "same LP ");
-				timer.Stop();
-				cout << " timer.RealTime() = " << timer.RealTime() << endl;
-			}
-			else
-			{
-				chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
-				//chain.Draw("(data_smooth - baseline_v):time_v", total_cut, "same LP");
-			}
-
-			chain.SetLineColor(kBlue);
-			//chain.SetMarkerColor(kRed);
-			//chain.Draw("(double_integral_one_peak_vec_y/500):time_v", total_cut, "same L");
-			
-			chain.Draw("(data_int/1500.0):time_v", total_cut, "same L");
-
-		}
-		else
-		{
-			chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "LP");
-		}
-		
-	}
-	 
-	const bool is_calc_integral_one_event = false;
-	if (is_calc_integral_one_event)
-	{
-		//vector<double> integral_one_event;
-		//TCanvas *c = new TCanvas();
-		const int ch_cut = 59;
-		ostringstream hist_title;
-		hist_title << "ch_id == " << ch_cut << " && run_id < 10000 && event_id < 10";
-		TH1F *hist = new TH1F("h", hist_title.str().c_str(), 100, 0.1, 17);
-		for (int i = 0; i < n_events; i++)
-		{
-			chain.GetEntry(i);
-
-			if (i % 1000 == 0)
-			{
-				cout << "event = " << i << endl;
-			}
-
-			if (ch_id == ch_cut && run_id < 10000 && event_id < 10)
-			{
-				double integral_one_event_tmp = 0;
-				for (int j = 0; j < (*integral_one_peak).size(); j++)
-				{
-					if ((*integral_one_peak)[j] > 750) //algorithm is not ideal, so I should add some cuts (depend from ch_id and experimental conditions)
-					{
-						integral_one_event_tmp += (*integral_one_peak)[j];
-					}
-				}
-				if (integral_one_event_tmp > 0)
-				{
-					const double single_pe_value = 1543; //DO NOT FORGET TO CHANGE THIS VALUE!
-					hist->Fill(integral_one_event_tmp / single_pe_value);
-				}
-			}
-		}
-		//hist->SetTitle( cut_string.c_str() );
-		hist->DrawClone();
-	}
-
-	//total_cut = "ch_id == 32 && run_id < 10000 && event_id < 1000";
-	//total_cut = "ch_id == 38 && run_id == 1889 && event_id == 0";	
+	//total_cut = "ch_id == 0 && run_id < 10000 && event_id < 1000";
+	//total_cut = "ch_id == 0 && run_id == 546 && event_id == 0";	
 	//COUT(total_cut.GetName());
 	//COUT(total_cut.GetTitle());
 
 	chain.SetMarkerStyle(20);
 	chain.SetMarkerSize(1);
+
+	//chain.Draw("integral", total_cut && "max_element < 900"  && "min_element > -900");
+	//chain.Draw("integral >> h(500, -1000, 4E6)", total_cut && "max_element < 900"  && "min_element > -900");
+	//chain.Draw("min_element", total_cut);
+	//chain.Draw("baseline", total_cut);
 
 	//SiPM ch correlation
 	//chain.Draw("num_of_pe_in_event_for_cog:event_id", total_cut);
@@ -444,7 +244,9 @@ int main(int argc, char *argv[])
 	//chain.Draw("(data_smooth - baseline):time_v", total_cut, "same LP ");
 	//chain.Draw("(baseline_v - baseline):time_v", total_cut, "same L");
 
-	bool is_Npe_sipm_matrix = true;
+	//chain.Draw("point_to");
+
+	bool is_Npe_sipm_matrix = false;
 	if (is_Npe_sipm_matrix)
 	{
 		TH1F *hist = new TH1F("hist", "hist", 400, 0, 400);
@@ -452,8 +254,12 @@ int main(int argc, char *argv[])
 		double val = 0;
 
 		chain.SetBranchStatus("*", 0); //disable all branches
+		chain.SetBranchStatus("run_id", 1);
+		chain.SetBranchStatus("event_id", 1);
 		chain.SetBranchStatus("num_of_pe_in_event_for_cog", 1);
 		chain.SetBranchStatus("num_of_pe_in_event__negative_part_s_int", 1);
+		chain.SetBranchStatus("num_of_pe_in_event__positive_part_s_int", 1);
+		chain.SetBranchStatus("num_of_pe_in_event__positive_part_d_int", 1);
 
 		ofstream file_out("D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\hist.txt");
 		
@@ -466,13 +272,18 @@ int main(int argc, char *argv[])
 				cout << "event = " << i << " (" << (100 *i / (double) n_events) << " %)" << endl;
 			}
 				
-			val += num_of_pe_in_event__negative_part_s_int;
+			val += num_of_pe_in_event__positive_part_s_int;
 
 			if ( (i % 32 == 31) /*&& run_id < 10000 && event_id < 1000*/)
 			{
 				hist->Fill(val);
 				//cout << "  fill has been filled hist with val " << val << endl;
 				file_out << val << endl;
+
+				/*if (val > 100 && val < 105)
+					cout << run_id << " " << event_id << endl;*/
+
+
 				val = 0;
 			}				
 			
@@ -517,6 +328,9 @@ int main(int argc, char *argv[])
 		chain.SetBranchStatus("run_id", 1);
 		chain.SetBranchStatus("event_id", 1);
 		chain.SetBranchStatus("num_of_pe_in_event_for_cog", 1);
+		chain.SetBranchStatus("num_of_pe_in_event__negative_part_s_int", 1);
+		chain.SetBranchStatus("num_of_pe_in_event__positive_part_s_int", 1);
+		chain.SetBranchStatus("num_of_pe_in_event__positive_part_d_int", 1);
 
 		ofstream file_out("D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\xy_cog_event.txt");
 		ofstream file_out_x("D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\xy_cog_event_x_projection.txt");
@@ -534,7 +348,7 @@ int main(int argc, char *argv[])
 
 			if (run_id == your_run_id && event_id == 0)
 			{
-				n_pe.push_back(num_of_pe_in_event_for_cog);
+				n_pe.push_back(num_of_pe_in_event__positive_part_s_int);
 			}
 
 			if (run_id > your_run_id)
@@ -583,7 +397,12 @@ int main(int argc, char *argv[])
 	vector<double> data_raw_average;
 	if (is_average)
 	{
-		
+		chain.SetBranchStatus("*", 0); //disable all branches
+		chain.SetBranchStatus("ch_id", 1);
+		chain.SetBranchStatus("data_raw", 1);
+		chain.SetBranchStatus("baseline", 1);
+
+
 		data_raw_average.resize(time_v.size());
 		double baseline_average = 0;
 
@@ -596,7 +415,7 @@ int main(int argc, char *argv[])
 				cout << "event = " << i << endl;
 			}
 
-			if (ch_id == 2 /*&& integral > 100E3*/)
+			if (ch_id == 0 /*&& integral > 100E3*/)
 			{
 				cut_pass_counter++;
 				//baseline_average += baseline;
@@ -730,6 +549,248 @@ int main(int argc, char *argv[])
 		//h2->GetXaxis()->SetTitle("N_pe on ch_38");
 		//h2->GetYaxis()->SetTitle("N_pe on ch_34");
 		//h2->Draw("COLz");
+	}
+
+
+	const bool is_show_individual_signals = false;
+	if (is_show_individual_signals)
+	{
+		chain.SetBranchStatus("*", 0); //disable all branches
+		chain.SetBranchStatus("ch_id", 1);
+		chain.SetBranchStatus("run_id", 1);
+		chain.SetBranchStatus("event_id", 1);
+		//chain.SetBranchStatus("num_of_pe_in_event", 1);
+		//chain.SetBranchStatus("x_cog_position", 1);
+		//chain.SetBranchStatus("y_cog_position", 1);
+		chain.SetBranchStatus("data_raw", 1);
+		chain.SetBranchStatus("time_v", 1);
+		chain.SetBranchStatus("baseline", 1);
+		chain.SetBranchStatus("signals_x_start", 1);
+		chain.SetBranchStatus("signals_x_stop", 1);
+		chain.SetBranchStatus("local_baseline", 1);
+		chain.SetBranchStatus("baseline_v", 1);
+		chain.SetBranchStatus("data_int", 1);
+
+		TStopwatch timer;
+
+		//chain.SetBranchStatus("data_smooth", 1);
+
+		//chain.SetBranchStatus("baseline_v", 1);
+		//chain.SetBranchStatus("num_of_pe_in_event_for_cog", 1);
+
+
+		bool is_baseline_slope = false;
+
+		vector<double> signals_x_values;
+		vector<double> signals_y_values;
+		vector<double> local_baseline_y_values;
+		timer.Start();
+		for (int i = 0; i < n_events; i++)
+		{
+			chain.GetEntry(i);
+
+			if (i % 10 == 0)
+			{
+				cout << "event = " << i << endl;
+			}
+
+			REMEMBER_CUT(ch_id == 38 && run_id == /*3574*/ 3537 && event_id == /*3*/ 0);
+			if (cut_condition_bool)
+			{
+
+				//signals_x_values.clear();
+				//signals_y_values.clear();
+				cout << "in if (cut_condition_bool)" << endl;
+				for (int j = 0; j < (*signals_x_start).size(); j++)
+				{
+					//I want to avoid misidentification because of electronic noise at trigger time
+					//if ( !(((*signals_x_start)[j] * HORIZ_INTERVAL > 32000) && ((*signals_x_start)[j] * HORIZ_INTERVAL < 35000)) )
+					//{
+					for (int k = (*signals_x_start)[j]; k < (*signals_x_stop)[j]; k++)
+					{
+						signals_x_values.push_back(k * HORIZ_INTERVAL);
+
+						if (is_baseline_slope)
+						{
+							signals_y_values.push_back(-(*data_raw)[k] + baseline);
+							local_baseline_y_values.push_back((*local_baseline)[j] - baseline);
+						}
+						else
+						{
+							signals_y_values.push_back(-(*data_raw)[k] + 2 * baseline - (*baseline_v)[k]);
+							local_baseline_y_values.push_back((*local_baseline)[j]);
+
+							//signals_y_values.push_back( (*data_smooth)[k] - (*baseline_v)[k] );
+
+						}
+
+
+
+					}
+					//}
+
+				}
+
+
+				break;
+			}
+		}
+
+
+
+		COUT(signals_x_values.size());
+		COUT(local_baseline_y_values.size());
+
+		//TCut total_cut = cut_condition_srt.c_str();
+		chain.SetMarkerStyle(20);
+		chain.SetMarkerSize(1);
+		chain.SetLineColor(kPink);
+
+		if (signals_x_values.size() > 0)
+		{
+			TGraph *gr = new TGraph(signals_x_values.size(), &signals_x_values[0], &signals_y_values[0]);
+			gr->SetMarkerSize(2);
+			gr->SetMarkerStyle(29);
+			gr->SetMarkerColor(kOrange);
+			//gr->SetTitle(cut_condition_srt.c_str()); //var0 default
+			gr->GetXaxis()->SetLimits(0, 160E3);
+			gr->Draw("AP");
+			//c1->Update();
+
+			//var2
+			std::ostringstream gr_title_oss;
+			gr_title_oss << "#splitline{" << cut_condition_srt <<
+				//	"}{double integral values: ";
+				//for (int k = 0; k < (*double_integral_one_peak).size(); k++)
+				//{
+				//	gr_title_oss << (*double_integral_one_peak)[k] << "\t";
+				//}
+				"}{ integral values: ";
+			//for (int k = 0; k < (*integral_one_peak).size(); k++)
+			//{
+			//	gr_title_oss << (*integral_one_peak)[k] << "\t";
+			//}
+			gr_title_oss << "}";
+			gr->SetTitle(gr_title_oss.str().c_str());
+
+			TGraph *gr_local_baseline = new TGraph(signals_x_values.size(), &signals_x_values[0], &local_baseline_y_values[0]);
+			gr_local_baseline->SetMarkerSize(1);
+			gr_local_baseline->SetMarkerStyle(20);
+			gr_local_baseline->SetMarkerColor(kGreen);
+			gr_local_baseline->Draw("same P");
+
+			//chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
+			chain.SetMarkerStyle(20);
+			chain.SetMarkerSize(1);
+			chain.SetLineColor(kPink);
+			//chain.Draw("(-data_raw + baseline):time_v", total_cut, "same LP");
+			//chain.Draw("(data_smooth - baseline):time_v", total_cut, "same LP");
+			//chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
+			//chain.Draw("(baseline_v - baseline):time_v", total_cut, "same L");
+			//chain.Draw("(baseline_v - baseline):time_v", total_cut, "same L");
+			//chain.SetLineColor(kBlue);
+			//chain.Draw("(data_int/500.0):time_v", total_cut, "same L");
+			//chain.Draw("(double_integral_one_peak_vec_y/500):time_v", total_cut, "same L");
+
+			if (is_baseline_slope)
+			{
+				chain.Draw("(-data_raw + baseline):time_v", total_cut, "same LP ");
+				//chain.Draw("(-data_smooth + baseline):time_v", total_cut, "same LP ");
+				timer.Stop();
+				cout << " timer.RealTime() = " << timer.RealTime() << endl;
+			}
+			else
+			{
+				chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
+				//chain.Draw("(data_smooth - baseline_v):time_v", total_cut, "same LP");
+			}
+
+			chain.SetLineColor(kBlue);
+			//chain.SetMarkerColor(kRed);
+			//chain.Draw("(double_integral_one_peak_vec_y/500):time_v", total_cut, "same L");
+
+			chain.Draw("(data_int/1500.0):time_v", total_cut, "same L");
+
+		}
+		else
+		{
+			chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "LP");
+		}
+
+		cout << "point_to = " << point_to << endl;
+
+	}
+
+	const bool is_calc_integral_one_event = false;
+	if (is_calc_integral_one_event)
+	{
+		//vector<double> integral_one_event;
+		//TCanvas *c = new TCanvas();
+		const int ch_cut = 59;
+		ostringstream hist_title;
+		hist_title << "ch_id == " << ch_cut << " && run_id < 10000 && event_id < 10";
+		TH1F *hist = new TH1F("h", hist_title.str().c_str(), 100, 0.1, 17);
+		for (int i = 0; i < n_events; i++)
+		{
+			chain.GetEntry(i);
+
+			if (i % 1000 == 0)
+			{
+				cout << "event = " << i << endl;
+			}
+
+			if (ch_id == ch_cut && run_id < 10000 && event_id < 10)
+			{
+				double integral_one_event_tmp = 0;
+				for (int j = 0; j < (*integral_one_peak).size(); j++)
+				{
+					if ((*integral_one_peak)[j] > 750) //algorithm is not ideal, so I should add some cuts (depend from ch_id and experimental conditions)
+					{
+						integral_one_event_tmp += (*integral_one_peak)[j];
+					}
+				}
+				if (integral_one_event_tmp > 0)
+				{
+					const double single_pe_value = 1543; //DO NOT FORGET TO CHANGE THIS VALUE!
+					hist->Fill(integral_one_event_tmp / single_pe_value);
+				}
+			}
+		}
+		//hist->SetTitle( cut_string.c_str() );
+		hist->DrawClone();
+	}
+
+	const bool is_output_pmt_sipm_info = true;
+	if (is_output_pmt_sipm_info)
+	{
+		chain.SetBranchStatus("*", 0); //disable all branches
+		chain.SetBranchStatus("ch_id", 1);
+		chain.SetBranchStatus("run_id", 1);
+		chain.SetBranchStatus("event_id", 1);
+		chain.SetBranchStatus("integral", 1);
+		chain.SetBranchStatus("max_element", 1);
+		chain.SetBranchStatus("min_element", 1);
+
+		ostringstream oss;
+		oss << path_name_tree << "sipm_pmt_info.txt";
+		ofstream file_out( oss.str().c_str() );
+
+		for (int i = 0; i < n_events; i++)
+		{
+			chain.GetEntry(i);
+			if (i % 1000 == 0 || i == (n_events - 1))
+			{
+				double val = n_events > 1 ? (100 * i / (double)(n_events - 1)) : 100;
+				cout << "event = " << i << " (" << val << " %)" << endl;
+			}
+
+
+			if (ch_id == 0 && (max_element < 900) && (min_element > -900) )
+			{
+				file_out << integral << endl;
+			}
+		}
+
 	}
 
 
