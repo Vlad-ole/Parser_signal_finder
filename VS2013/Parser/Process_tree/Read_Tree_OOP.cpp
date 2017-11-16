@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 {
 	gROOT->SetBatch(kFALSE);
 
-	const int n_tree_files =  1 /*42*/;
+	const int n_tree_files = 26;
 	const double HORIZ_INTERVAL = 16;
 
 	TObjArray Hlist_gr(0);
@@ -89,6 +89,7 @@ int main(int argc, char *argv[])
 	vector<int> *signals_x_start = 0;
 	vector<int> *signals_x_stop = 0;
 	vector<double> *integral_one_peak = 0;
+	vector<double> *num_of_pe_in_one_peak = 0;
 	vector<double> *double_integral_one_peak = 0;
 	vector<double> *double_integral_one_peak_vec_y = 0;
 
@@ -122,6 +123,7 @@ int main(int argc, char *argv[])
 		chain.SetBranchAddress("signals_x_start", &signals_x_start);
 		chain.SetBranchAddress("signals_x_stop", &signals_x_stop);
 		chain.SetBranchAddress("integral_one_peak", &integral_one_peak);
+		chain.SetBranchAddress("num_of_pe_in_one_peak", &num_of_pe_in_one_peak);
 		chain.SetBranchAddress("double_integral_one_peak", &double_integral_one_peak);
 		chain.SetBranchAddress("double_integral_one_peak_vec_y", &double_integral_one_peak_vec_y);
 		chain.SetBranchAddress("single_integral_for_calib_one_event", &single_integral_for_calib_one_event);
@@ -157,7 +159,7 @@ int main(int argc, char *argv[])
 	chain.SetMarkerStyle(20);
 	chain.SetMarkerSize(1);
 
-	//chain.Draw("integral", total_cut && "max_element < 900"  && "min_element > -900");
+	//chain.Draw("integral", total_cut /*&& "max_element < 900"  && "min_element > -900"*/);
 	//chain.Draw("integral >> h(500, -1000, 4E6)", total_cut && "max_element < 900"  && "min_element > -900");
 	//chain.Draw("min_element", total_cut);
 	//chain.Draw("baseline", total_cut);
@@ -551,6 +553,69 @@ int main(int argc, char *argv[])
 		//h2->Draw("COLz");
 	}
 
+	const bool is_show_time_spectrum = true;
+	if (is_show_time_spectrum)
+	{
+		chain.SetBranchStatus("*", 0); //disable all branches
+		chain.SetBranchStatus("ch_id", 1);
+		chain.SetBranchStatus("run_id", 1);
+		chain.SetBranchStatus("event_id", 1);
+		chain.SetBranchStatus("signals_x_start", 1);
+		chain.SetBranchStatus("signals_x_stop", 1);
+		chain.SetBranchStatus("num_of_pe_in_one_peak", 1);		
+
+		vector<double> time_position;
+		vector<double> n_pe_in_peak;
+
+		for (int i = 0; i < n_events; i++)
+		{
+			chain.GetEntry(i);
+
+			if (i % 1000 == 0 || i == (n_events - 1))
+			{
+				double val = n_events > 1 ? (100 * i / (double)(n_events - 1)) : 100;
+				cout << "event = " << i << " (" << val << " %)" << endl;
+			}
+
+			if (ch_id == 38)
+			{
+
+				for (int j = 0; j < (*signals_x_start).size(); j++)
+				{					
+					time_position.push_back( HORIZ_INTERVAL * ((*signals_x_start)[j] + (*signals_x_stop)[j]) / 2.0 );
+					n_pe_in_peak.push_back( (*num_of_pe_in_one_peak)[j] );
+				}
+			}
+		}//for
+
+		TH1F *hist = new TH1F("h","hist",100, 0, 160E3);
+		for (int i = 0; i < time_position.size(); i++)
+		{
+			if (n_pe_in_peak[i] == 4)
+			{
+				hist->Fill(time_position[i]);
+			}			
+		}
+		hist->Draw();
+
+		/*TH1F *hist = new TH1F("h","hist",100, 0, 10);
+		for (int i = 0; i < n_pe_in_peak.size(); i++)
+		{
+			hist->Fill(n_pe_in_peak[i]);
+		}
+		hist->Draw();*/
+
+		/*TH2F *hist2 = new TH2F("h2","hist2",100,0,160E3,100,0,10);
+		for (int i = 0; i < time_position.size(); i++)
+		{
+			hist2->Fill(time_position[i], n_pe_in_peak[i]);
+		}
+		hist2->Draw();*/
+
+		/*TGraph *gr = new TGraph(time_position.size(), &time_position[0], &n_pe_in_peak[0]);
+		gr->Draw("AP");*/
+
+	}
 
 	const bool is_show_individual_signals = false;
 	if (is_show_individual_signals)
@@ -594,7 +659,7 @@ int main(int argc, char *argv[])
 				cout << "event = " << i << endl;
 			}
 
-			REMEMBER_CUT(ch_id == 38 && run_id == /*3574*/ 3537 && event_id == /*3*/ 0);
+			REMEMBER_CUT(ch_id == 38 && run_id ==  543 && event_id == 0);
 			if (cut_condition_bool)
 			{
 
@@ -760,7 +825,7 @@ int main(int argc, char *argv[])
 		hist->DrawClone();
 	}
 
-	const bool is_output_pmt_sipm_info = true;
+	const bool is_output_pmt_sipm_info = false;
 	if (is_output_pmt_sipm_info)
 	{
 		chain.SetBranchStatus("*", 0); //disable all branches

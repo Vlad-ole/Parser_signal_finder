@@ -111,11 +111,18 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 			vector<double> data_without_slope = TypeConvertion::GetDifference(smooth_data[i], baseline_vec[i]);
 #else
 			//cout << " DO NOT SMOOTH" << endl;
-			CalcBaselineZeroComp calc_baseline_zero_comp(invert_data, 0, 159900, calc_baseline.GetBaseline(), der_max_position[i], HORIZ_INTERVAL);
-			baseline_vec.push_back(calc_baseline_zero_comp.GetBaselineVec());
+			//CalcBaselineZeroComp calc_baseline_zero_comp(invert_data, 0, 159900, calc_baseline.GetBaseline(), der_max_position[i], HORIZ_INTERVAL);
+			//baseline_vec.push_back(calc_baseline_zero_comp.GetBaselineVec());
 
-			vector<double> data_without_slope = TypeConvertion::GetDifference(invert_data, baseline_vec[i]);
+
+
+			//vector<double> data_without_slope = TypeConvertion::GetDifference(invert_data, baseline_vec[i]);
 #endif  // IS_USE_SMOOTH
+
+			//use usual baseline
+			vector<double> baseline_v_tmp(data[i].size(), calc_baseline.GetBaseline());
+			baseline_vec.push_back(baseline_v_tmp);
+			vector<double> data_without_slope = TypeConvertion::GetDifference(invert_data, baseline_vec[i]);
 
 			PeakFinderFind peak_finder_find(data_without_slope, der_data[i], 0, 1 /*this parameter is very important*/, HORIZ_INTERVAL);
 
@@ -160,7 +167,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 			double_integral_vec.push_back(calc_double_intergral_calib.GetDoubleIntegralVec());
 			double_integral_vec_y.push_back(calc_double_intergral_calib.GetDoubleIntegralVecVy());
 
-			int point_from = 40000 /*32000*/ /*25000*/ / HORIZ_INTERVAL;
+			int point_from = 31000 /*32000*/ /*25000*/ / HORIZ_INTERVAL;
 
 			//calc integral func from point_from to 160 us
 			CalcDoubleIntegral calc_double_int(invert_data, baseline[i], point_from, HORIZ_INTERVAL);
@@ -172,7 +179,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 
 			//calc single integral from point_from to max positive part of integral func
 			//int point_to = calc_double_intergral.GetPointTo();
-			int point_to = 80000 / 16;//it's not so easy to find range of positive part
+			int point_to = 40000 / 16;//it's not so easy to find range of positive part
 			//cout << "point_to = " << point_to << endl;
 			point_to_vec.push_back(point_to);
 

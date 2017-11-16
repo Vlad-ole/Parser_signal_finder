@@ -30,7 +30,7 @@ const bool is_sipm_ch = true;
 
 ////---------------------------------------------
 //August 8 2017
-path_info PathInfo = {"", 0, /*1000*/ 1};
+path_info PathInfo = {"", 0, /*1000*/ 50};
 
 /*Flashlight*/
 //
