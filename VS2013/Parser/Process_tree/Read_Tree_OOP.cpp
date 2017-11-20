@@ -7,6 +7,7 @@
 #include <fstream>
 #include <algorithm>
 #include <sstream>
+#include <string>
 
 #include "TApplication.h"
 #include "TROOT.h"
@@ -35,6 +36,25 @@ string cut_condition_srt;
 bool cut_condition_bool;
 TCut total_cut;
 #define REMEMBER_CUT(x) cut_condition_srt = #x; cut_condition_bool = x; total_cut = cut_condition_srt.c_str();
+
+int GetChId(int array_position)
+{
+	//return array_position + 32;
+
+	//return 0;
+
+	int ch_id;
+	if (array_position >= 0 && array_position <= 2)
+		ch_id = array_position;
+	else if (array_position >= 3 && array_position < 35)
+		ch_id = array_position + 32 - 3;
+	else
+	{
+		cout << "Unknown channel in GetChId " << endl;
+		exit(1);
+	}
+	return ch_id;
+}
 
 //----------------------------
 
@@ -151,7 +171,7 @@ int main(int argc, char *argv[])
 	tree_tmp.Fill();
 	chain.AddFriend("tree_tmp");
 
-	//total_cut = "ch_id == 0 && run_id < 10000 && event_id < 1000";
+	total_cut = "ch_id == 44 && run_id < 10000 && event_id < 1000";
 	//total_cut = "ch_id == 0 && run_id == 546 && event_id == 0";	
 	//COUT(total_cut.GetName());
 	//COUT(total_cut.GetTitle());
@@ -179,7 +199,7 @@ int main(int argc, char *argv[])
 
 	//chain.Draw("num_of_pe_in_event__negative_part_s_int", total_cut);
 	//chain.Draw("num_of_pe_in_event__positive_part_d_int", total_cut);
-	//chain.Draw("num_of_pe_in_event__positive_part_s_int", total_cut);
+	chain.Draw("num_of_pe_in_event__positive_part_s_int", total_cut);
 	
 
 	//chain.Draw("(double_integral_one_peak_vec_y/5000.0):time_v", total_cut, "LP same");
@@ -251,20 +271,26 @@ int main(int argc, char *argv[])
 	bool is_Npe_sipm_matrix = false;
 	if (is_Npe_sipm_matrix)
 	{
-		TH1F *hist = new TH1F("hist", "hist", 400, 0, 400);
+		//TH1F *hist = new TH1F("hist", "hist", 400, 0, 600);
+		TH1F *hist = new TH1F("hist", "hist", 100, 0, 0.23);
 		//hist->SetBit();
 		double val = 0;
 
 		chain.SetBranchStatus("*", 0); //disable all branches
 		chain.SetBranchStatus("run_id", 1);
 		chain.SetBranchStatus("event_id", 1);
+		chain.SetBranchStatus("integral", 1);
 		chain.SetBranchStatus("num_of_pe_in_event_for_cog", 1);
 		chain.SetBranchStatus("num_of_pe_in_event__negative_part_s_int", 1);
 		chain.SetBranchStatus("num_of_pe_in_event__positive_part_s_int", 1);
 		chain.SetBranchStatus("num_of_pe_in_event__positive_part_d_int", 1);
 
-		ofstream file_out("D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\hist.txt");
+		ostringstream oss;
+		oss << path_name_tree << "hist.txt";
+		ofstream file_out(oss.str().c_str());
 		
+		double n_pe_3pmt = 0;
+
 		for (int i = 0; i < n_events; i++)
 		{
 			chain.GetEntry(i);
@@ -273,11 +299,19 @@ int main(int argc, char *argv[])
 				//cout << "event = " << i << ";  ch_id = " << ch_id << endl;
 				cout << "event = " << i << " (" << (100 *i / (double) n_events) << " %)" << endl;
 			}
-				
-			val += num_of_pe_in_event__positive_part_s_int;
 
-			if ( (i % 32 == 31) /*&& run_id < 10000 && event_id < 1000*/)
+			if (GetChId(i % 35) == 0)
+				n_pe_3pmt = integral * 1E-12 * pow(10, (6 / 20.0)) / 8.80454E-9;
+			
+			if (GetChId(i % 35) >= 32)
 			{
+				//if (n_pe_3pmt > 250 && n_pe_3pmt < 350)
+					val += num_of_pe_in_event__positive_part_s_int;
+			}
+
+			if ( (i % 35 == 34) /*&& run_id < 10000 && event_id < 1000*/)
+			{
+				val = val / n_pe_3pmt;
 				hist->Fill(val);
 				//cout << "  fill has been filled hist with val " << val << endl;
 				file_out << val << endl;
@@ -302,7 +336,9 @@ int main(int argc, char *argv[])
 		chain.SetBranchStatus("x_cog_position", 1);
 		chain.SetBranchStatus("y_cog_position", 1);
 
-		ofstream file_out("D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\xy_cog.txt");
+		ostringstream oss;
+		oss << path_name_tree << "xy_cog.txt";
+		ofstream file_out(oss.str().c_str());
 
 		for (int i = 0; i < n_events; i++)
 		{
@@ -334,21 +370,23 @@ int main(int argc, char *argv[])
 		chain.SetBranchStatus("num_of_pe_in_event__positive_part_s_int", 1);
 		chain.SetBranchStatus("num_of_pe_in_event__positive_part_d_int", 1);
 
-		ofstream file_out("D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\xy_cog_event.txt");
-		ofstream file_out_x("D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\xy_cog_event_x_projection.txt");
-		ofstream file_out_y("D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\xy_cog_event_y_projection.txt");
-		ofstream file_out_TL_BR("D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\xy_cog_event_topleft_to_bottomright_projection.txt");
-		ofstream file_out_TR_BL("D:\\Data_work\\170622_caen_trees\\event_x_ray_18_2mmColl\\xy_cog_event_topright_to_bottomleft_projection.txt");
+		string file_out_s = path_name_tree + "xy_cog_event.txt";
+		ofstream file_out(file_out_s.c_str());
 
+		string file_out_x_s = path_name_tree + "xy_cog_event_x_projection.txt";
+		ofstream file_out_x(file_out_x_s.c_str());
+
+		string file_out_y_s = path_name_tree + "xy_cog_event_y_projection.txt";
+		ofstream file_out_y(file_out_y_s.c_str());
 			
-		int your_run_id = 3700;
+		int your_run_id = 555;
 		vector<double> n_pe;
 
 		for (int i = 0; i < n_events; i++)
 		{
 			chain.GetEntry(i);
 
-			if (run_id == your_run_id && event_id == 0)
+			if (run_id == your_run_id && event_id == 5 && (GetChId(i % 35) >= 32) )
 			{
 				n_pe.push_back(num_of_pe_in_event__positive_part_s_int);
 			}
@@ -553,7 +591,7 @@ int main(int argc, char *argv[])
 		//h2->Draw("COLz");
 	}
 
-	const bool is_show_time_spectrum = true;
+	const bool is_show_time_spectrum = false;
 	if (is_show_time_spectrum)
 	{
 		chain.SetBranchStatus("*", 0); //disable all branches

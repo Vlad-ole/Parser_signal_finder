@@ -167,7 +167,12 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 			double_integral_vec.push_back(calc_double_intergral_calib.GetDoubleIntegralVec());
 			double_integral_vec_y.push_back(calc_double_intergral_calib.GetDoubleIntegralVecVy());
 
-			int point_from = 31000 /*32000*/ /*25000*/ / HORIZ_INTERVAL;
+			int point_from = 28000 /*32000*/ /*25000*/ / HORIZ_INTERVAL;
+			//calc single integral from point_from to max positive part of integral func
+			//int point_to = calc_double_intergral.GetPointTo();
+			int point_to = 45000 / 16;//it's not so easy to find range of positive part
+			//cout << "point_to = " << point_to << endl;
+			point_to_vec.push_back(point_to);
 
 			//calc integral func from point_from to 160 us
 			CalcDoubleIntegral calc_double_int(invert_data, baseline[i], point_from, HORIZ_INTERVAL);
@@ -177,11 +182,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 			CalcIntegral calc_double_intergral(int_data[i], HORIZ_INTERVAL, 3);
 			integral.push_back(calc_double_intergral.GetIntegrtal());
 
-			//calc single integral from point_from to max positive part of integral func
-			//int point_to = calc_double_intergral.GetPointTo();
-			int point_to = 40000 / 16;//it's not so easy to find range of positive part
-			//cout << "point_to = " << point_to << endl;
-			point_to_vec.push_back(point_to);
+			
 
 			double single_integral_for_calib_tmp = 0;
 			for (int j = 0; j < pair_vec.size(); j++)
@@ -254,6 +255,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 
 	}
 
+	//interpolation of bad channels using ajacent channels
 	num_of_pe_in_event__positive_part_s_int[56 - 32] =
 		(num_of_pe_in_event__positive_part_s_int[41 - 32] + num_of_pe_in_event__positive_part_s_int[57 - 32] +
 		num_of_pe_in_event__positive_part_s_int[39 - 32] + num_of_pe_in_event__positive_part_s_int[59 - 32] +
@@ -263,6 +265,17 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 	num_of_pe_in_event__positive_part_s_int[44 - 32] =
 		(num_of_pe_in_event__positive_part_s_int[59 - 32] + num_of_pe_in_event__positive_part_s_int[57 - 32] +
 		num_of_pe_in_event__positive_part_s_int[56 - 32] / sqrt(2)) / 3.0;
+
+	num_of_pe_in_event__positive_part_s_int[43 - 32] =
+		(num_of_pe_in_event__positive_part_s_int[42 - 32] + num_of_pe_in_event__positive_part_s_int[40 - 32] +
+		num_of_pe_in_event__positive_part_s_int[58 - 32] + num_of_pe_in_event__positive_part_s_int[55 - 32] / sqrt(2) +
+		num_of_pe_in_event__positive_part_s_int[41 - 32] / sqrt(2)) / 5.0;
+
+	num_of_pe_in_event__positive_part_s_int[37 - 32] =
+		(num_of_pe_in_event__positive_part_s_int[34 - 32] + num_of_pe_in_event__positive_part_s_int[36 - 32] +
+		num_of_pe_in_event__positive_part_s_int[54 - 32] + num_of_pe_in_event__positive_part_s_int[49 - 32] / sqrt(2) +
+		num_of_pe_in_event__positive_part_s_int[39 - 32] / sqrt(2)) / 5.0;
+
 
 	//comment during calibration
 	CoGBase cog_obj(/*num_of_pe_in_event_vec*/ /*num_of_pe_in_event_for_cog*/ num_of_pe_in_event__positive_part_s_int);
