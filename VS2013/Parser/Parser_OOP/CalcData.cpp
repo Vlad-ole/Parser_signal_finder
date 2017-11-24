@@ -37,7 +37,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 
 	for (int i = 0; i < n_ch; i++)
 	{
-		if (i >= 0 && i <= 2)
+		if (GetChId(i) >= 0 && GetChId(i) <= 2)
 		{
 			CalcBaselineTrivial calc_baseline(data[i], 20000, HORIZ_INTERVAL);
 			baseline.push_back(calc_baseline.GetBaseline());
@@ -70,7 +70,7 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 			double_integral_vec_y.push_back(tmp_double_full);
 			double_integral_vec.push_back(tmp_double_full);
 		}
-		else if (i >= 3 && i <= 34)
+		else if (GetChId(i) >= 32 && GetChId(i) <= 63)
 		{
 			//it's nesessry to find trivial baseline. We can use this value for more complex algorithms
 			CalcBaselineTrivial calc_baseline(data[i], 30000, HORIZ_INTERVAL);
@@ -167,10 +167,10 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 			double_integral_vec.push_back(calc_double_intergral_calib.GetDoubleIntegralVec());
 			double_integral_vec_y.push_back(calc_double_intergral_calib.GetDoubleIntegralVecVy());
 
-			int point_from = 28000 /*32000*/ /*25000*/ / HORIZ_INTERVAL;
+			int point_from = 30000 /*32000*/ /*25000*/ / HORIZ_INTERVAL;
 			//calc single integral from point_from to max positive part of integral func
 			//int point_to = calc_double_intergral.GetPointTo();
-			int point_to = 45000 / 16;//it's not so easy to find range of positive part
+			int point_to = 55000 / 16;//it's not so easy to find range of positive part
 			//cout << "point_to = " << point_to << endl;
 			point_to_vec.push_back(point_to);
 
@@ -250,272 +250,41 @@ CalcData::CalcData(std::vector< std::vector<double> >& data_, std::vector<double
 		else
 		{
 			cout << "Unknown channel!" << endl;
-			exit(1);
+			system("pause");
+			exit(1);			
 		}		
 
 	}
 
-	//interpolation of bad channels using ajacent channels
-	num_of_pe_in_event__positive_part_s_int[56 - 32] =
-		(num_of_pe_in_event__positive_part_s_int[41 - 32] + num_of_pe_in_event__positive_part_s_int[57 - 32] +
-		num_of_pe_in_event__positive_part_s_int[39 - 32] + num_of_pe_in_event__positive_part_s_int[59 - 32] +
-		num_of_pe_in_event__positive_part_s_int[38 - 32] / sqrt(2) + num_of_pe_in_event__positive_part_s_int[54 - 32] / sqrt(2) +
-		num_of_pe_in_event__positive_part_s_int[58 - 32] / sqrt(2)) / 7.0;
-
-	num_of_pe_in_event__positive_part_s_int[44 - 32] =
-		(num_of_pe_in_event__positive_part_s_int[59 - 32] + num_of_pe_in_event__positive_part_s_int[57 - 32] +
-		num_of_pe_in_event__positive_part_s_int[56 - 32] / sqrt(2)) / 3.0;
-
-	num_of_pe_in_event__positive_part_s_int[43 - 32] =
-		(num_of_pe_in_event__positive_part_s_int[42 - 32] + num_of_pe_in_event__positive_part_s_int[40 - 32] +
-		num_of_pe_in_event__positive_part_s_int[58 - 32] + num_of_pe_in_event__positive_part_s_int[55 - 32] / sqrt(2) +
-		num_of_pe_in_event__positive_part_s_int[41 - 32] / sqrt(2)) / 5.0;
-
-	num_of_pe_in_event__positive_part_s_int[37 - 32] =
-		(num_of_pe_in_event__positive_part_s_int[34 - 32] + num_of_pe_in_event__positive_part_s_int[36 - 32] +
-		num_of_pe_in_event__positive_part_s_int[54 - 32] + num_of_pe_in_event__positive_part_s_int[49 - 32] / sqrt(2) +
-		num_of_pe_in_event__positive_part_s_int[39 - 32] / sqrt(2)) / 5.0;
-
-
 	//comment during calibration
-	CoGBase cog_obj(/*num_of_pe_in_event_vec*/ /*num_of_pe_in_event_for_cog*/ num_of_pe_in_event__positive_part_s_int);
-	x_cog_position = cog_obj.GetX();
-	y_cog_position = cog_obj.GetY();
+	{
+		//interpolation of bad channels using ajacent channels
+		num_of_pe_in_event__positive_part_s_int[56 - 32] =
+			(num_of_pe_in_event__positive_part_s_int[41 - 32] + num_of_pe_in_event__positive_part_s_int[57 - 32] +
+			num_of_pe_in_event__positive_part_s_int[39 - 32] + num_of_pe_in_event__positive_part_s_int[59 - 32] +
+			num_of_pe_in_event__positive_part_s_int[38 - 32] / sqrt(2) + num_of_pe_in_event__positive_part_s_int[54 - 32] / sqrt(2) +
+			num_of_pe_in_event__positive_part_s_int[58 - 32] / sqrt(2)) / 7.0;
 
-	//
-	//	if (is_sipm_ch)
-	//	{
-	//		for (int i = 0; i < n_ch; i++)
-	//		{
-	//			//cout << "ch = " << i << endl;
-	//
-	//			//it's nesessry to find trivial baseline. We can use this value for more complex algorithms
-	//			CalcBaselineTrivial calc_baseline(data[i], 30000, HORIZ_INTERVAL);
-	//			baseline.push_back(calc_baseline.GetBaseline());
-	//
-	//			//it's comfortable to work with invert signal
-	//			vector<double> invert_data = GetInvertSignal(data[i], baseline[i]);
-	//
-	//			/*CalcDoubleIntegral calc_double_int(invert_data, baseline[i], HORIZ_INTERVAL);
-	//			int_data.push_back(calc_double_int.GetDataIntegrtal());*/
-	//
-	//			//min and max values will help to avoid signals with saturation
-	//			vector<double>::const_iterator it_b = invert_data.begin();
-	//			vector<double>::const_iterator it_e = invert_data.end();
-	//			min[i] = *min_element(it_b, it_e);
-	//			max[i] = *max_element(it_b, it_e);
-	//
-	//			//to find extremum in der and change baseline (optional)
-	//			CalcDer calc_der_tmp(invert_data, 101, 1);
-	//			der_data_tmp = calc_der_tmp.GetDer();
-	//			der_min_position[i] = distance(der_data_tmp.begin(), min_element(der_data_tmp.begin(), der_data_tmp.end()));
-	//			der_max_position[i] = distance(der_data_tmp.begin(), max_element(der_data_tmp.begin(), der_data_tmp.end()));
-	//
-	//			//to find nonoverlapped signals
-	//			CalcDer calc_der(invert_data, 21, 1);
-	//			der_data.push_back(calc_der.GetDer());
-	//
-	//
-	//			//#define IS_USE_SMOOTH
-	//#ifdef IS_USE_SMOOTH
-	//			cout << "SMOOTH" << endl;
-	//			CalcDer calc_smooth(invert_data, /*41*/ 13, 0);
-	//			smooth_data.push_back(calc_smooth.GetDer());
-	//
-	//			CalcBaselineZeroComp calc_baseline_zero_comp(smooth_data[i], 0, 159900, calc_baseline.GetBaseline(), der_max_position[i], HORIZ_INTERVAL);
-	//			baseline_vec.push_back(calc_baseline_zero_comp.GetBaselineVec());
-	//
-	//			vector<double> data_without_slope = TypeConvertion::GetDifference(smooth_data[i], baseline_vec[i]);
-	//#else
-	//			//cout << " DO NOT SMOOTH" << endl;
-	//			CalcBaselineZeroComp calc_baseline_zero_comp(invert_data, 0, 159900, calc_baseline.GetBaseline(), der_max_position[i], HORIZ_INTERVAL);
-	//			baseline_vec.push_back(calc_baseline_zero_comp.GetBaselineVec());
-	//
-	//			vector<double> data_without_slope = TypeConvertion::GetDifference(invert_data, baseline_vec[i]);
-	//#endif  // IS_USE_SMOOTH
-	//
-	//			PeakFinderFind peak_finder_find(data_without_slope, der_data[i], 0, 1 /*this parameter is very important*/, HORIZ_INTERVAL);
-	//
-	//			local_baseline_v.push_back(peak_finder_find.GetLocalBaselineV());
-	//			vector< pair<int, int> > pair_vec = peak_finder_find.GetPeakPositions();
-	//
-	//			vector<int> signals_values_x_first(pair_vec.size());
-	//			vector<int> signals_values_x_second(pair_vec.size());
-	//			for (int j = 0; j < pair_vec.size(); j++)
-	//			{
-	//				signals_values_x_first[j] = pair_vec[j].first;
-	//				signals_values_x_second[j] = pair_vec[j].second;
-	//			}
-	//			signals_x_start_v.push_back(signals_values_x_first);
-	//			signals_x_stop_v.push_back(signals_values_x_second);
-	//
-	//			//caclulate intergal of individual peaks
-	//			double integral_one_event_tmp = 0;
-	//			for (int j = 0; j < pair_vec.size(); j++)
-	//			{
-	//				//choose region  
-	//				//if ( (signals_values_x_second[j] * HORIZ_INTERVAL) < 30000)			
-	//				{
-	//					double integral_tmp = 0;
-	//					for (int k = signals_values_x_first[j]; k < signals_values_x_second[j]; k++)
-	//					{
-	//						integral_tmp += (data_without_slope[k] - local_baseline_v[i][j]) * HORIZ_INTERVAL;
-	//					}
-	//					integral_one_peak[i].push_back(integral_tmp);
-	//
-	//					//if (true)//algorithm is not ideal, so I should add some cuts (depend from ch_id and experimental conditions)
-	//					//{
-	//					//	integral_one_event_tmp += integral_tmp;
-	//					//}
-	//
-	//				}
-	//			}
-	//			//integral_one_event.push_back(integral_one_event_tmp);
-	//
-	//			//double integral calib
-	//			CalcDoubleIntegralCalib calc_double_intergral_calib(invert_data, pair_vec, HORIZ_INTERVAL);
-	//			double_integral_vec.push_back(calc_double_intergral_calib.GetDoubleIntegralVec());
-	//			double_integral_vec_y.push_back(calc_double_intergral_calib.GetDoubleIntegralVecVy());
-	//
-	//			////finaly, we calculate integral of signal
-	//			//CalcIntegral calc_integral_nontriv_baseline(invert_data, baseline[i], baseline_vec[i], 35000, 160000, HORIZ_INTERVAL);
-	//			//integral.push_back(calc_integral_nontriv_baseline.GetIntegrtal());
-	//
-	//			////to caclulate double integral of positive part of integral
-	//			//CalcIntegral calc_double_intergral(int_data[i], 35000, pair_vec, HORIZ_INTERVAL);
-	//			//integral.push_back(calc_double_intergral.GetIntegrtal());
-	//
-	//			//----------
-	//			int point_from = 40000 /*32000*/ /*25000*/ / HORIZ_INTERVAL;
-	//
-	//			////let's find the first signal after time_from and change point_from
-	//			//for (int j = 0; j < pair_vec.size(); j++)
-	//			//{
-	//			//	if ((pair_vec[j].first > point_from))
-	//			//	{
-	//			//		point_from = pair_vec[j].first - 200 / HORIZ_INTERVAL;
-	//			//		break;
-	//			//	}
-	//			//}
-	//
-	//			//calc integral func from point_from to 160 us
-	//			CalcDoubleIntegral calc_double_int(invert_data, baseline[i], point_from, HORIZ_INTERVAL);
-	//			int_data.push_back(calc_double_int.GetDataIntegrtal());
-	//
-	//			//calc double integral from 0 to max positive part
-	//			CalcIntegral calc_double_intergral(int_data[i], HORIZ_INTERVAL, 3);
-	//			integral.push_back(calc_double_intergral.GetIntegrtal());
-	//
-	//			//calc single integral from point_from to max positive part of integral func
-	//			//int point_to = calc_double_intergral.GetPointTo();
-	//			int point_to = 80000 / 16;//it's not so easy to find range of positive part
-	//			//cout << "point_to = " << point_to << endl;
-	//			point_to_vec.push_back(point_to);
-	//
-	//			double single_integral_for_calib_tmp = 0;
-	//			for (int j = 0; j < pair_vec.size(); j++)
-	//			{
-	//				if (pair_vec[j].first >= point_from && pair_vec[j].second < point_to)
-	//				{
-	//					single_integral_for_calib_tmp += integral_one_peak[i][j];
-	//				}
-	//			}
-	//			single_integral_for_calib_one_event.push_back(single_integral_for_calib_tmp);
-	//			//---------
-	//
-	//			////let's calc N_pe using singal integral for negative part
-	//			//num_of_pe_in_event__negative_part_s_int				
-	//			//num_of_pe_in_event__positive_part_s_int
-	//			//num_of_pe_in_event__positive_part_d_int
-	//
-	//
-	//
-	//			//calc num of pe for one event
-	//			vector<ChCharacteristicsStruct> ch_characteristics_struct = ChCharacteristics::GetChCharacteristics();
-	//			double num_of_pe_in_event = 0;//all peaks using s_int
-	//			double num_of_pe_in_event__negative_part_s_int_tmp = 0;
-	//			double num_of_pe_in_event__positive_part_s_int_tmp = 0;
-	//			double num_of_pe_in_event__positive_part_d_int_tmp = 0;
-	//			const double d_int_to_s_int_recalib = 1.75E-4; // (mV*ns) / (mV*ns*ns) = ns^-1 
-	//			for (int k = 0; k < ch_characteristics_struct.size(); k++)
-	//			{
-	//				if (ch_characteristics_struct[k].ch_id == GetChId(i) && ch_characteristics_struct[k].is_spe_separated_from_noise && ch_characteristics_struct[k].is_physical)
-	//				{
-	//					//num_of_pe_in_event = 0;
-	//					for (int j = 0; j < integral_one_peak[i].size(); j++)
-	//					{
-	//						if (integral_one_peak[i][j] > ch_characteristics_struct[k].spe_min) //algorithm is not ideal, so I should add some cuts (depend from ch_id)
-	//						{
-	//							double n_pe_one_peak_tmp = integral_one_peak[i][j] / ch_characteristics_struct[k].spe_mean;
-	//							num_of_pe_in_event += round(n_pe_one_peak_tmp); //should I round this value to integer?
-	//							num_of_pe_in_one_peak[i].push_back(round(n_pe_one_peak_tmp));
-	//
-	//							if (pair_vec[j].first >= point_from && pair_vec[j].second < point_to)
-	//							{
-	//								num_of_pe_in_event__positive_part_s_int_tmp += round(integral_one_peak[i][j] / ch_characteristics_struct[k].spe_mean);
-	//							}
-	//
-	//							if (pair_vec[j].second > point_to)
-	//							{
-	//								num_of_pe_in_event__negative_part_s_int_tmp += round(integral_one_peak[i][j] / ch_characteristics_struct[k].spe_mean);
-	//							}
-	//						}
-	//					}
-	//
-	//					num_of_pe_in_event__positive_part_d_int_tmp = round(integral[i] * d_int_to_s_int_recalib / ch_characteristics_struct[k].spe_mean);
-	//
-	//					break;
-	//				}
-	//			}
-	//			num_of_pe_in_event_vec.push_back(num_of_pe_in_event);
-	//
-	//			num_of_pe_in_event__negative_part_s_int.push_back(num_of_pe_in_event__negative_part_s_int_tmp);
-	//			num_of_pe_in_event__positive_part_s_int.push_back(num_of_pe_in_event__positive_part_s_int_tmp);
-	//			num_of_pe_in_event__positive_part_d_int.push_back(num_of_pe_in_event__positive_part_d_int_tmp);
-	//
-	//			//algorithm will chose double or single integral varinats
-	//			double num_of_pe_in_event_for_cog_tmp;
-	//			num_of_pe_in_event_for_cog_tmp = num_of_pe_in_event__positive_part_s_int_tmp > 100 ? num_of_pe_in_event__positive_part_d_int_tmp : num_of_pe_in_event__positive_part_s_int_tmp;
-	//			num_of_pe_in_event_for_cog_tmp += num_of_pe_in_event__negative_part_s_int_tmp;
-	//			num_of_pe_in_event_for_cog.push_back(round(num_of_pe_in_event_for_cog_tmp));
-	//
-	//			
-	//
-	//		}
-	//
-	//		num_of_pe_in_event__positive_part_s_int[56 - 32] =
-	//			(num_of_pe_in_event__positive_part_s_int[41 - 32] + num_of_pe_in_event__positive_part_s_int[57 - 32] + num_of_pe_in_event__positive_part_s_int[39 - 32] + num_of_pe_in_event__positive_part_s_int[59 - 32] +
-	//			num_of_pe_in_event__positive_part_s_int[38 - 32] / sqrt(2) + num_of_pe_in_event__positive_part_s_int[54 - 32] / sqrt(2) + num_of_pe_in_event__positive_part_s_int[58 - 32] / sqrt(2)) / 7.0;
-	//
-	//		num_of_pe_in_event__positive_part_s_int[44 - 32] =
-	//			(num_of_pe_in_event__positive_part_s_int[59 - 32] + num_of_pe_in_event__positive_part_s_int[57 - 32] + num_of_pe_in_event__positive_part_s_int[56 - 32] / sqrt(2)) / 3.0;
-	//
-	//		//comment during calibration
-	//		CoGBase cog_obj(/*num_of_pe_in_event_vec*/ /*num_of_pe_in_event_for_cog*/ num_of_pe_in_event__positive_part_s_int);
-	//		x_cog_position = cog_obj.GetX();
-	//		y_cog_position = cog_obj.GetY();
-	//	}
-	//	else
-	//	{
-	//		for (int i = 0; i < n_ch; i++)
-	//		{
-	//			CalcBaselineTrivial calc_baseline(data[i], 20000, HORIZ_INTERVAL);
-	//			baseline.push_back(calc_baseline.GetBaseline());
-	//			
-	//			//min and max values will help to avoid signals with saturation
-	//			vector<double>::const_iterator it_b = data[i].begin();
-	//			vector<double>::const_iterator it_e = data[i].end();
-	//			min[i] = *min_element(it_b, it_e);
-	//			max[i] = *max_element(it_b, it_e);
-	//
-	//			CalcIntegral calc_integral(data[i], baseline[i], 28000, 41000, HORIZ_INTERVAL);
-	//			//CalcIntegral calc_integral(data[i], baseline[i], 0, 20000, HORIZ_INTERVAL);
-	//
-	//			integral.push_back(calc_integral.GetIntegrtal());
-	//		}
-	//	}
-	//	
-	//
+		num_of_pe_in_event__positive_part_s_int[44 - 32] =
+			(num_of_pe_in_event__positive_part_s_int[59 - 32] + num_of_pe_in_event__positive_part_s_int[57 - 32] +
+			num_of_pe_in_event__positive_part_s_int[56 - 32] / sqrt(2)) / 3.0;
+
+		num_of_pe_in_event__positive_part_s_int[43 - 32] =
+			(num_of_pe_in_event__positive_part_s_int[42 - 32] + num_of_pe_in_event__positive_part_s_int[40 - 32] +
+			num_of_pe_in_event__positive_part_s_int[58 - 32] + num_of_pe_in_event__positive_part_s_int[55 - 32] / sqrt(2) +
+			num_of_pe_in_event__positive_part_s_int[41 - 32] / sqrt(2)) / 5.0;
+
+		num_of_pe_in_event__positive_part_s_int[37 - 32] =
+			(num_of_pe_in_event__positive_part_s_int[34 - 32] + num_of_pe_in_event__positive_part_s_int[36 - 32] +
+			num_of_pe_in_event__positive_part_s_int[54 - 32] + num_of_pe_in_event__positive_part_s_int[49 - 32] / sqrt(2) +
+			num_of_pe_in_event__positive_part_s_int[39 - 32] / sqrt(2)) / 5.0;
+
+
+
+		CoGBase cog_obj(/*num_of_pe_in_event_vec*/ /*num_of_pe_in_event_for_cog*/ num_of_pe_in_event__positive_part_s_int);
+		x_cog_position = cog_obj.GetX();
+		y_cog_position = cog_obj.GetY();
+	}
 
 }
 

@@ -33,7 +33,7 @@ using namespace std;
 //----------------------------
 //O my God!!! I did it!
 string cut_condition_srt;
-bool cut_condition_bool;
+bool cut_condition_bool = false;
 TCut total_cut;
 #define REMEMBER_CUT(x) cut_condition_srt = #x; cut_condition_bool = x; total_cut = cut_condition_srt.c_str();
 
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 {
 	gROOT->SetBatch(kFALSE);
 
-	const int n_tree_files = 26;
+	const int n_tree_files = 4;
 	const double HORIZ_INTERVAL = 16;
 
 	TObjArray Hlist_gr(0);
@@ -171,8 +171,8 @@ int main(int argc, char *argv[])
 	tree_tmp.Fill();
 	chain.AddFriend("tree_tmp");
 
-	total_cut = "ch_id == 44 && run_id < 10000 && event_id < 1000";
-	//total_cut = "ch_id == 0 && run_id == 546 && event_id == 0";	
+	//total_cut = "ch_id == 0 && run_id < 10000 && event_id < 1000";
+	//total_cut = "ch_id == 0 && run_id == 619 && event_id == 0";	
 	//COUT(total_cut.GetName());
 	//COUT(total_cut.GetTitle());
 
@@ -199,7 +199,7 @@ int main(int argc, char *argv[])
 
 	//chain.Draw("num_of_pe_in_event__negative_part_s_int", total_cut);
 	//chain.Draw("num_of_pe_in_event__positive_part_d_int", total_cut);
-	chain.Draw("num_of_pe_in_event__positive_part_s_int", total_cut);
+	//chain.Draw("num_of_pe_in_event__positive_part_s_int", total_cut);
 	
 
 	//chain.Draw("(double_integral_one_peak_vec_y/5000.0):time_v", total_cut, "LP same");
@@ -217,7 +217,7 @@ int main(int argc, char *argv[])
 	
 	//chain.Draw("double_integral_one_peak >> h(80, -10E6, 50E6)", total_cut, "L");
 	
-	//chain.Draw("integral_one_peak >> h(250, -2000, 10000)", total_cut, "L");
+	//chain.Draw("integral_one_peak >> h(150, -1000, 10000)", total_cut);
 	//chain.Draw("integral_one_peak >> h(150, -2000, 10000)", total_cut, "L");
 	//chain.Draw("integral_one_peak", total_cut, "L");
 
@@ -268,11 +268,11 @@ int main(int argc, char *argv[])
 
 	//chain.Draw("point_to");
 
-	bool is_Npe_sipm_matrix = false;
+	bool is_Npe_sipm_matrix = true;
 	if (is_Npe_sipm_matrix)
 	{
 		//TH1F *hist = new TH1F("hist", "hist", 400, 0, 600);
-		TH1F *hist = new TH1F("hist", "hist", 100, 0, 0.23);
+		TH1F *hist = new TH1F("hist", "hist", 100, 0, 2500);
 		//hist->SetBit();
 		double val = 0;
 
@@ -311,7 +311,7 @@ int main(int argc, char *argv[])
 
 			if ( (i % 35 == 34) /*&& run_id < 10000 && event_id < 1000*/)
 			{
-				val = val / n_pe_3pmt;
+				val = val;
 				hist->Fill(val);
 				//cout << "  fill has been filled hist with val " << val << endl;
 				file_out << val << endl;
@@ -441,7 +441,8 @@ int main(int argc, char *argv[])
 		chain.SetBranchStatus("ch_id", 1);
 		chain.SetBranchStatus("data_raw", 1);
 		chain.SetBranchStatus("baseline", 1);
-
+		chain.SetBranchStatus("min_element", 1);
+		chain.SetBranchStatus("max_element", 1);
 
 		data_raw_average.resize(time_v.size());
 		double baseline_average = 0;
@@ -455,7 +456,7 @@ int main(int argc, char *argv[])
 				cout << "event = " << i << endl;
 			}
 
-			if (ch_id == 0 /*&& integral > 100E3*/)
+			if (ch_id == 38 /*&& integral > 100E3*/ && (max_element < 900)  && (min_element > -900) )
 			{
 				cut_pass_counter++;
 				//baseline_average += baseline;
@@ -539,6 +540,7 @@ int main(int argc, char *argv[])
 		chain.SetBranchStatus("*", 0); //disable all branches
 		chain.SetBranchStatus("ch_id", 1);
 		chain.SetBranchStatus("num_of_pe_in_event", 1);
+
 		
 		vector<double> N_pe_ch_i;
 		vector<double> N_pe_ch_j;
@@ -600,6 +602,8 @@ int main(int argc, char *argv[])
 		chain.SetBranchStatus("event_id", 1);
 		chain.SetBranchStatus("signals_x_start", 1);
 		chain.SetBranchStatus("signals_x_stop", 1);
+		chain.SetBranchStatus("min_element", 1);
+		chain.SetBranchStatus("max_element", 1);
 		chain.SetBranchStatus("num_of_pe_in_one_peak", 1);		
 
 		vector<double> time_position;
@@ -615,7 +619,7 @@ int main(int argc, char *argv[])
 				cout << "event = " << i << " (" << val << " %)" << endl;
 			}
 
-			if (ch_id == 38)
+			if (ch_id == 38 && (max_element < 900) && (min_element > -900) )
 			{
 
 				for (int j = 0; j < (*signals_x_start).size(); j++)
@@ -629,7 +633,7 @@ int main(int argc, char *argv[])
 		TH1F *hist = new TH1F("h","hist",100, 0, 160E3);
 		for (int i = 0; i < time_position.size(); i++)
 		{
-			if (n_pe_in_peak[i] == 4)
+			if (n_pe_in_peak[i] == 3)
 			{
 				hist->Fill(time_position[i]);
 			}			
@@ -673,6 +677,7 @@ int main(int argc, char *argv[])
 		chain.SetBranchStatus("local_baseline", 1);
 		chain.SetBranchStatus("baseline_v", 1);
 		chain.SetBranchStatus("data_int", 1);
+		chain.SetBranchStatus("integral_one_peak", 1);
 
 		TStopwatch timer;
 
@@ -692,15 +697,25 @@ int main(int argc, char *argv[])
 		{
 			chain.GetEntry(i);
 
-			if (i % 10 == 0)
+			if (i % 100 == 0)
 			{
-				cout << "event = " << i << endl;
+				//cout << "event = " << i << endl;
+				cout << "event = " << i << " (*integral_one_peak).size() = " << (*integral_one_peak).size() << endl;
+				if ((*integral_one_peak).size() > 0)
+				{
+					cout << "\t (*integral_one_peak)[0] = " << (*integral_one_peak)[0] << endl;
+				}
 			}
 
-			REMEMBER_CUT(ch_id == 38 && run_id ==  543 && event_id == 0);
-			if (cut_condition_bool)
+			//REMEMBER_CUT(ch_id == 34 && run_id == 154 && event_id == 0);
+			if ( (*integral_one_peak).size() > 0)
 			{
-
+				//REMEMBER_CUT(ch_id == 34 && (*integral_one_peak)[0] < 1200 && (*integral_one_peak)[0] > 800);
+			}
+			
+			if (/*cut_condition_bool*/ ch_id == 38 && run_id == 615 && event_id == 0)
+			{
+				cut_condition_srt = "ch_id == 38 && run_id == 615 && event_id == 0";
 				//signals_x_values.clear();
 				//signals_y_values.clear();
 				cout << "in if (cut_condition_bool)" << endl;
@@ -762,18 +777,19 @@ int main(int argc, char *argv[])
 
 			//var2
 			std::ostringstream gr_title_oss;
-			gr_title_oss << "#splitline{" << cut_condition_srt <<
-				//	"}{double integral values: ";
-				//for (int k = 0; k < (*double_integral_one_peak).size(); k++)
-				//{
-				//	gr_title_oss << (*double_integral_one_peak)[k] << "\t";
-				//}
-				"}{ integral values: ";
-			//for (int k = 0; k < (*integral_one_peak).size(); k++)
-			//{
-			//	gr_title_oss << (*integral_one_peak)[k] << "\t";
-			//}
-			gr_title_oss << "}";
+			//gr_title_oss << "#splitline{" << cut_condition_srt <<
+			//	//	"}{double integral values: ";
+			//	//for (int k = 0; k < (*double_integral_one_peak).size(); k++)
+			//	//{
+			//	//	gr_title_oss << (*double_integral_one_peak)[k] << "\t";
+			//	//}
+			//	"}{ integral values: ";
+			////for (int k = 0; k < (*integral_one_peak).size(); k++)
+			////{
+			////	gr_title_oss << (*integral_one_peak)[k] << "\t";
+			////}
+			//gr_title_oss << "}";
+			gr_title_oss << cut_condition_srt;
 			gr->SetTitle(gr_title_oss.str().c_str());
 
 			TGraph *gr_local_baseline = new TGraph(signals_x_values.size(), &signals_x_values[0], &local_baseline_y_values[0]);
@@ -797,14 +813,38 @@ int main(int argc, char *argv[])
 
 			if (is_baseline_slope)
 			{
-				chain.Draw("(-data_raw + baseline):time_v", total_cut, "same LP ");
+				vector<double> tmp((*data_raw).size());
+				for (int i = 0; i < (*data_raw).size(); i++)
+				{
+					tmp[i] = -(*data_raw)[i] + baseline;
+				}
+
+				TGraph *gr_data = new TGraph((*data_raw).size(), &time_v[0], &tmp[0]);
+				gr_data->SetMarkerStyle(20);
+				gr_data->SetMarkerSize(1);
+				gr_data->SetLineColor(kPink);
+				gr_data->Draw("same LP");
+				//chain.Draw("(-data_raw + baseline):time_v", total_cut, "same LP ");
 				//chain.Draw("(-data_smooth + baseline):time_v", total_cut, "same LP ");
 				timer.Stop();
 				cout << " timer.RealTime() = " << timer.RealTime() << endl;
 			}
 			else
 			{
-				chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
+				//chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "same LP");
+				vector<double> tmp((*data_raw).size());
+				for (int i = 0; i < (*data_raw).size(); i++)
+				{
+					tmp[i] = -(*data_raw)[i] + 2 * baseline - (*baseline_v)[i];
+				}
+
+				TGraph *gr_data = new TGraph((*data_raw).size(), &time_v[0], &tmp[0]);
+				gr_data->SetMarkerStyle(20);
+				gr_data->SetMarkerSize(1);
+				gr_data->SetLineColor(kPink);
+				gr_data->Draw("same LP");
+
+
 				//chain.Draw("(data_smooth - baseline_v):time_v", total_cut, "same LP");
 			}
 
@@ -812,12 +852,12 @@ int main(int argc, char *argv[])
 			//chain.SetMarkerColor(kRed);
 			//chain.Draw("(double_integral_one_peak_vec_y/500):time_v", total_cut, "same L");
 
-			chain.Draw("(data_int/1500.0):time_v", total_cut, "same L");
+			//chain.Draw("(data_int/1500.0):time_v", total_cut, "same L");
 
 		}
 		else
 		{
-			chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "LP");
+			//chain.Draw("(-data_raw + 2*baseline - baseline_v):time_v", total_cut, "LP");
 		}
 
 		cout << "point_to = " << point_to << endl;
